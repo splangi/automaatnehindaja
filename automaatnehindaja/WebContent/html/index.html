@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sisselogimine</title>
+<link href="../CSS/Style.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+	<div id="LogInWindow">
+		<p>Tere tulemast Algoritmide ja Andmestruktuuride automaatsesse kodutööde
+		hindaja rakendusse</p>
+		
+		<form name="LogInForm" method="post" action="j_security_check">
+			<p>Kasutajanimi: <br> <input type="text" name="j_username"> </p>
+			<p>Salasõna: <br> <input type="password" name="j_password"> </p>
+			
+			<button type="submit" hidden="true">Sisene</button>
+		</form>
+		<a href="tasksview.html"><button>Sisene</button></a>
+	</div>
+
+</body>
+</html>

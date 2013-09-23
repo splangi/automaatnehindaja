@@ -1,0 +1,113 @@
+@CHARSET "UTF-8";
+
+html{
+	background: #eee;	
+	font-family:sans-serif;
+}
+
+#discription{
+	border: solid 2px black;
+	padding:10px;
+}
+
+#logoutbutton{
+	float:right;
+}
+
+#backbutton{
+	float:left;
+}
+
+#tasksWindow, #taskWindow, #resultWindow{
+	background-color: white;
+	max-width: 800px;
+	min-height: 300px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:50px;
+	overflow:hidden;
+	
+
+	border: solid #666 1px; 
+		padding: 10px; 
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+}
+
+#tableDiv{
+	float:left;
+}
+#buttonDiv{
+	float:right;
+	margin:10px;
+	
+}
+
+#buttonDiv button {
+	width: 125px;
+}
+
+#tasksTable {
+	border-collapse:collapse;	
+	margin: 10px;
+}
+
+#attemptTable {
+	border-collapse:collapse;
+	margin-top: 20px;
+	width: 100%;
+}
+
+#tasksTable td, #attemptTable td{
+	width: 150px;
+	padding:5px;
+	text-align: center;
+}
+
+#tasksTable th, #attemptTable th{ 
+	background-color: #DEDEDE;
+}
+
+#tasksTable tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
+#tasksTable tr:nth-child(even) td { background-color:#e8ecee } /*even*/
+
+#attemptTable tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
+#attemptTable tr:nth-child(even) td { background-color:#e8ecee } /*even*/
+
+#fileinput {
+	margin-top: 20px;
+	float:left
+}
+
+#sendFile{
+	float:right;
+	margin: 20px;
+}
+
+#LogInWindow{
+	
+	max-width: 400px;
+	max-height: 220px;
+	background-color: white;
+	text-align: center;
+	position: absolute;
+	
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	margin: auto;
+	
+	padding: 20px;
+	
+	border: solid #666 1px; 
+		padding: 10px; 
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+}
+
+#LogInWindow.p {
+	padding:10px;
+}
