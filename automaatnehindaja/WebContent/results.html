@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kõik tulemused</title>
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+	<div id="resultWindow">
+		<div id="backbutton">
+			<a href=tasksview.html>Tagasi</a>
+		</div>
+		<div id = "logoutbutton">
+			<form method = "get" action="/automaatnehindaja/Logout">
+				<input type="submit" value="Logi välja">
+			</form>
+		</div>
+		<h1>Kõik tulemused</h1>
+
+		<div id="attempts">
+			<table id="attemptTable" border=1>
+				<tr>
+					<th>Nimi</th>
+					<th>Ülesanne</th>
+					<th>Tulemus</th>
+					<th>Esitamise aeg</th>
+				</tr>
+				<tr>
+					<td>Siim Plangi</td>
+					<td>Ülesanne 1</td>
+					<td>OK</td>
+					<td>23.09.2013</td>
+				</tr>
+				<tr>
+					<td>Taavo Salumaa</td>
+					<td>Ülesanne 1</td>
+					<td>Fail, Timeout</td>
+					<td>23.09.2013</td>
+				</tr>
+				<tr>
+					<td>Taavo Salumaa</td>
+					<td>Ülesanne 2</td>
+					<td>OK</td>
+					<td>23.09.2013</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
