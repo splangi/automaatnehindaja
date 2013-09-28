@@ -1,0 +1,70 @@
+package automaatnehindaja;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+@WebServlet("/task")
+public class TaskServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Connection c = null;  
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String id = request.getParameter("id");
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			  c =DriverManager.getConnection 
+			  ("jdbc:mysql://localhost:3306/automaatnehindaja","root","t6urott");
+			  
+			String statement = "select name, description, deadline from tasks where id = ?;";
+			stmt = c.prepareStatement(statement);
+			stmt.setInt(1, Integer.parseInt(id));
+			
+			rs = stmt.executeQuery();
+			
+			response.setContentType("application/json");
+			
+			JSONObject json = new JSONObject();
+			
+			try{
+				if (rs.next()){
+					json.put("name", rs.getString(1));
+					json.put("description", rs.getString(2));
+					json.put("deadline", rs.getDate(3).toString());
+				}
+			}
+			
+			catch (JSONException e) {
+			}
+			response.getWriter().write(json.toString());
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException f){
+		}	
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
+}

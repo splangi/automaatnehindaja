@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Ülesanne</title>
 <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="Scripts/taskview.js" charset="ISO-8859-1"></script>
 </head>
 <body>
 	<div id="taskWindow">
@@ -16,31 +18,19 @@
 	</form>
 	</div>
 		<div id="title">
-			<h1>Ülesanne 1</h1>
 		</div>
 		<div id="deadline">
-			<h4>Tähtaeg: 23.09.2013</h4>
 		</div>
-		<div id="discription">Siia läheb ülesande kirjeldus, mille saame
-			serverist SQL-ist.</div>
+		<div id="description"></div>
 		<div id="attempts">
-			<table  id = "attemptTable" border = 1>
-				<tr>
-					<th>Nimi</th>
-					<th>Tulemus</th>
-					<th>Esitamise aeg</th>
-				</tr>
-				<tr>
-					<td>Siim Plangi</td>
-					<td>OK</td>
-					<td>23.09.2013</td>
-				</tr>
-			</table>
+	
 		</div>
 		<div id = "fileinput">
-			<input type="file">
+			<form method="post" action="upload" enctype="multipart/form-data">
+				<input type="file" name = "file">
+				<button>Saada hindamisele</button>
+			</form>		
 		</div>
-		<button id = "sendFile">Saada hindamisele</button>
 	</div>
 </body>
 </html>

@@ -5,7 +5,7 @@ html{
 	font-family:sans-serif;
 }
 
-#discription{
+#description{
 	border: solid 2px black;
 	padding:10px;
 }
@@ -48,36 +48,30 @@ html{
 	width: 125px;
 }
 
-#tasksTable {
-	border-collapse:collapse;	
-	margin: 10px;
-}
-
-#attemptTable {
+.tableclass {
 	border-collapse:collapse;
 	margin-top: 20px;
 	width: 100%;
 }
 
-#tasksTable td, #attemptTable td{
+.tableclass td{
 	width: 150px;
 	padding:5px;
 	text-align: center;
 }
 
-#tasksTable th, #attemptTable th{ 
+.tableclass th{ 
 	background-color: #DEDEDE;
 }
 
-#tasksTable tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
-#tasksTable tr:nth-child(even) td { background-color:#e8ecee } /*even*/
+.tableclass tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
+.tableclass tr:nth-child(even) td { background-color:#e8ecee } /*even*/
 
-#attemptTable tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
-#attemptTable tr:nth-child(even) td { background-color:#e8ecee } /*even*/
+
 
 #fileinput {
 	margin-top: 20px;
-	float:left
+	float:left;
 }
 
 #sendFile{

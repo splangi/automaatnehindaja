@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://java.sun.com/xml/ns/javaee"  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>automaatnehindaja</display-name>
   <welcome-file-list>
     <welcome-file>tasksview.html</welcome-file>
   </welcome-file-list>
-  
-   <servlet>
-		<servlet-name>LogoutServlet</servlet-name>
-		<servlet-class>automaatnehindaja.LogoutServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>LogoutServlet</servlet-name>
-		<url-pattern>/Logout</url-pattern>
-	</servlet-mapping>
-  
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>automaatnehindaja.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/Logout</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>TaskstableServlet</servlet-name>
+    <servlet-class>automaatnehindaja.TaskstableServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TaskstableServlet</servlet-name>
+    <url-pattern>/Taskstable</url-pattern>
+  </servlet-mapping>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>secured</web-resource-name>
@@ -39,7 +45,4 @@
       <form-error-page>/login_failure.html</form-error-page>
     </form-login-config>
   </login-config>
-  
-
-  
 </web-app>

@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <title>Ülesanded</title>
 <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="Scripts/tasksview.js"></script>
 </head>
 <body>
 	
 	<div id = "tasksWindow">
-	<div id="backbutton">
-			<a href=tasksview.html>Tagasi</a>
-		</div>
 	<div id = "logoutbutton">
 	<form method = "get" action="/automaatnehindaja/Logout">
 		<input type="submit" value="Logi välja">
@@ -18,28 +17,7 @@
 	</div>
 		<h2>Ülesanded</h2>
 		<div id = "tableDiv">
-			<table id = "tasksTable" border="1">
-				<tr>
-					<th>Ülesanne</th>
-					<th>Tulemus</th>
-					<th>Tähtaeg</th>
-				</tr>
-				<tr>
-					<td><a href=taskview.html>Ülesanne 1</a></td>
-					<td>OK</td>
-					<td>23.10.2099</td>
-				</tr>
-				<tr>
-					<td><a href=taskview.html>Ülesanne 2</a></td>
-					<td>Fail</td>
-					<td>23.10.2039</td>
-				</tr>
-				<tr>
-					<td><a href=taskview.html>Ülesanne 3</a></td>
-					<td>Pole esitatud</td>
-					<td>23.10.2015</td>
-				</tr>
-			</table>
+			
 		</div>
 		<div id = "buttonDiv">
 			<a href = results.html><button>Näita sooritusi</button></a><br>
