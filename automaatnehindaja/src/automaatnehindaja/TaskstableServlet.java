@@ -16,10 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 @WebServlet("/TaskstableServlet")
 public class TaskstableServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public TaskstableServlet() {
@@ -27,44 +26,88 @@ public class TaskstableServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection c = null;  
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		Connection c = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		
+		String statement;
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			  c =DriverManager.getConnection 
-			  ("jdbc:mysql://localhost:3306/automaatnehindaja","root","t6urott");
-			  
-			String statement = "select id, name, deadline from tasks;";
-			stmt = c.prepareStatement(statement);
-			
+			c = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/automaatnehindaja", "root",
+					"t6urott");
+
+			if (request.isUserInRole("tudeng")) {
+				statement = "SELECT "
+						+ "tasks.id, tasks.name, tasks.deadline, attempt.result "
+						+ "FROM tasks " + "LEFT OUTER JOIN "
+						+ "attempt on tasks.id = attempt.id " + "AND "
+						+ "attempt.username = ?;";
+				stmt = c.prepareStatement(statement);
+				stmt.setString(1, request.getUserPrincipal().getName());
+			} else if (request.isUserInRole("admin")) {
+				statement = "SELECT tasks.id, tasks.name, tasks.deadline, count(attempt.task) AS attempts, "
+						+ "(SELECT count(*) FROM attempt where attempt.task = tasks.id AND "
+						+ "attempt.result = 'OK') AS successful "
+						+ "FROM tasks LEFT JOIN attempt "
+						+ "ON tasks.id = attempt.task " + "GROUP BY tasks.id;";
+				stmt = c.prepareStatement(statement);
+			} else {
+				response.sendRedirect("/automaatnehindaja/error.html");
+				return;
+			}
+
 			rs = stmt.executeQuery();
-			
+
 			response.setContentType("application/json");
-			
+
 			JSONObject json = new JSONObject();
-			
-			while (rs.next()){
+
+			if (request.isUserInRole("tudeng")) {
 				try {
-					json.append("id", rs.getString(1));
-					json.append("name", rs.getString(2));
-					json.append("deadline", rs.getDate(3).toString());
+					json.put("role", "tudeng");
+					while (rs.next()) {
+						json.append("id", rs.getString(1));
+						json.append("name", rs.getString(2));
+						json.append("deadline", rs.getDate(3).toString());
+						String tulemus = rs.getString(4);
+						if (tulemus == null) {
+							tulemus = "Esitamata";
+						}
+						json.append("result", tulemus);
+					}
 				} catch (JSONException e) {
 					response.sendRedirect("/automaatnehindaja/error.html");
-				}				
+				}
 			}
-			
+
+			else if (request.isUserInRole("admin")) {
+				try {
+					json.put("role", "admin");
+					while (rs.next()) {
+						json.append("id", rs.getString(1));
+						json.append("name", rs.getString(2));
+						json.append("deadline", rs.getDate(3).toString());
+						json.append("resultCount", rs.getInt(4));
+						json.append("successCount", rs.getInt(5));
+					}
+				} catch (JSONException e) {
+					response.sendRedirect("/automaatnehindaja/error.html");
+				}
+			} else {
+				response.sendRedirect("/automaatnehindaja/error.html");
+				return;
+			}
 			response.getWriter().write(json.toString());
-		}
-		catch (SQLException e){
+
+		} catch (SQLException e) {
+			response.sendRedirect("/automaatnehindaja/error.html");
+		} catch (ClassNotFoundException f) {
 			response.sendRedirect("/automaatnehindaja/error.html");
 		}
-		catch (ClassNotFoundException f){
-			response.sendRedirect("/automaatnehindaja/error.html");
-		}
-		
+
 	}
-	
+
 }

@@ -8,12 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +46,7 @@ public class TaskServlet extends HttpServlet {
 				if (rs.next()){
 					json.put("name", rs.getString(1));
 					json.put("description", rs.getString(2));
-					json.put("deadline", rs.getDate(3).toString());
+					json.put("deadline", rs.getTimestamp(3).toString());
 				}
 			}
 			

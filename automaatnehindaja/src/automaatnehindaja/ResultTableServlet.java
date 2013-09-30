@@ -16,13 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@WebServlet("/tasktable")
-public class TasktableServlet extends HttpServlet {
+/**
+ * Servlet implementation class ResultTableServlet
+ */
+@WebServlet("/resulttable")
+public class ResultTableServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	public TasktableServlet() {
-		super();
-	}
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -30,33 +29,28 @@ public class TasktableServlet extends HttpServlet {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String username = request.getUserPrincipal().getName();
-		String taskid = request.getParameter("id");
+		String statement;
 
 		try {
-			
 			Class.forName("com.mysql.jdbc.Driver");
 			c = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/automaatnehindaja", "root",
 					"t6urott");
-			String statement;
 			if (request.isUserInRole("tudeng")){
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language "
+				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id "
 						+ "FROM attempt "
-						+ "INNER JOIN users "
-						+ "ON users.username=attempt.username WHERE attempt.username = ? "
-						+ "and attempt.task = ?;";
+						+ "INNER JOIN tasks ON tasks.id = attempt.task "
+						+ "INNER JOIN users on attempt.username = users.username "
+						+ "WHERE attempt.username = ?;";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, username);
-				stmt.setString(2, taskid);
 			}
 			else if (request.isUserInRole("admin")){
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language "
+				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id "
 						+ "FROM attempt "
-						+ "INNER JOIN users "
-						+ "ON users.username=attempt.username WHERE "
-						+ "attempt.task = ?;";
+						+ "INNER JOIN tasks ON tasks.id = attempt.task "
+						+ "INNER JOIN users on attempt.username = users.username ";
 				stmt = c.prepareStatement(statement);
-				stmt.setString(1, taskid);
 			}
 			
 			rs = stmt.executeQuery();
@@ -67,20 +61,27 @@ public class TasktableServlet extends HttpServlet {
 
 			while (rs.next()) {
 				try {
-					json.append("fullname", rs.getString(1));				
-					json.append("result", rs.getString(3));
-					json.append("time", rs.getDate(2).toString());
-					json.append("language", rs.getString(4));
+					json.append("fullname", rs.getString(1));
+					json.append("taskname", rs.getString(2));
+					json.append("time", rs.getDate(3).toString());
+					json.append("result", rs.getString(4));
+					json.append("language", rs.getString(5));
+					json.append("id", rs.getString(6));
 				} catch (JSONException e) {
 					response.sendRedirect("/automaatnehindaja/error.html");
 				}
 			}
+			
 			response.getWriter().write(json.toString());
+			
+		} catch (ClassNotFoundException e) {
+			response.sendRedirect("/automaatnehindaja/error.html");
+			e.printStackTrace();
 		} catch (SQLException e) {
 			response.sendRedirect("/automaatnehindaja/error.html");
-		} catch (ClassNotFoundException f) {
-			response.sendRedirect("/automaatnehindaja/error.html");
+			e.printStackTrace();
 		}
 
 	}
+
 }

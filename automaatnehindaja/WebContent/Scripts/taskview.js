@@ -4,14 +4,28 @@ window.onload = function(){
 		window.location = "error.html";
 	}
 	else{
-	jQuery.getJSON("task?id=" + id, function(data) {
-		 document.getElementById("title").innerHTML = "<h1>" + data.name + "</h1>";
-		 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline + "</h4>";
-		 document.getElementById("description").innerHTML = "<h4>" + data.description + "</h4>";
-		 jQuery.getJSON("tasktable?id=" + id, function(data) {
-				tableCreate(data.fullname, data.time, data.result, data.language);
-			});
+		document.getElementById("uploadform").setAttribute("action", "upload?id=" + id);
+		jQuery.getJSON("task?id=" + id, function(data) {
+			 document.getElementById("title").innerHTML = "<h1>" + data.name + "</h1>";
+			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline + "</h4>";
+			 document.getElementById("description").innerHTML = "<h4>" + data.description + "</h4>";
 		});	
+		jQuery.getJSON("tasktable?id=" + id, function(data) {
+			tableCreate(data.fullname, data.time, data.result, data.language);
+	});
+	}
+	var result = getUrlVars()["result"];
+	console.log(result);
+	if (result !== undefined){
+		if (result === "ok"){
+			document.getElementById("resultOk").hidden = "";
+		}
+		else if (result === "incorrect"){
+			document.getElementById("resultIncorrect").hidden = "";
+		}
+		else if (result === "toolarge"){
+			document.getElementById("resultToolarge").hidden = "";
+		}
 	}
 };
 
@@ -42,7 +56,7 @@ function tableCreate(nameList, timeList, resultList, languageList){
 
 function getUrlVars() {
     var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
         vars[key] = value;
     });
     return vars;
