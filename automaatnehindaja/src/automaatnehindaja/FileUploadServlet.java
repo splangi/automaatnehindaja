@@ -24,7 +24,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 //TODO Õppejõu conf
-@MultipartConfig(location = "/tmp", fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024, maxRequestSize = 1024 * 1024 * 2)
+@MultipartConfig(location = "tmp", fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024, maxRequestSize = 1024 * 1024 * 2)
 @WebServlet("/upload")
 public class FileUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -90,7 +90,6 @@ public class FileUploadServlet extends HttpServlet {
 				}
 				else {
 					stmt.close();
-					System.out.println(c.isClosed());
 					statement = "INSERT INTO attempt (username, task, time, source_code, language) VALUES (?, ?, ?, ?, ?);";
 					stmt = c.prepareStatement(statement);
 					stmt.setString(1, request.getRemoteUser());
