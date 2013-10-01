@@ -23,7 +23,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-//TODO ’ppejıu conf
+//TODO √µppej√µu conf
 @MultipartConfig(location = "tmp", fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024, maxRequestSize = 1024 * 1024 * 2)
 @WebServlet("/upload")
 public class FileUploadServlet extends HttpServlet {
