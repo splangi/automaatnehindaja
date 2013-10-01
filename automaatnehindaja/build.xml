@@ -1,0 +1,87 @@
+<project name="My Project" default="compile" basedir=".">
+
+	<property file="build.properties" />
+	<property name="app.name" value="automaatnehindaja"/>
+	<property name="tomcat.home" value="/var/lib/tomcat7"/>
+	<property name="tomcat" value="/usr/share/tomcat7"/> 
+	<property name="tomcat.bin" value="${tomcat}/bin"/>
+	<property name="tomcat.webapps" value="${tomcat.home}/webapps"/>
+	<property name="base" value="."/>
+	<property name="src.home" value="${base}/src" />
+	<property name="build.home" value="${base}/build" />
+	<property name="lib.home" value="${base}/WebContent/WEB-INF/lib" />
+	<property name="web.home" value="${base}/WebContent" />
+	<property name="dist.home"     value="${base}/dist"/>
+	
+	<path id="compile.classpath">
+		<pathelement location="${tomcat}/lib/servlet-api.jar"/>
+		<fileset dir="${lib.home}" includes="**/*.jar"/>
+		<!-- <fileset dir="${tomcat.bin}">
+		  <include name="*.jar"/>
+		</fileset> -->
+    </path>
+		   
+	<target name="all" depends="clean,compile"
+			description="Clean build and dist directories, then compile."/>
+	
+	<!-- ==================== Clean Target ==================================== -->
+	  <target name="clean" description="Delete old build and dist directories">
+		<delete dir="${build.home}"/>
+		<delete dir="${dist.home}"/>
+	  </target>
+	  
+	<!-- ==================== Compile Target ================================== -->
+	  <target name="compile" depends="prepare"
+	   description="Compile Java sources">
+
+		<!-- Compile Java classes as necessary -->
+		<javac srcdir="${src.home}" destdir="${build.home}/WEB-INF/classes" classpathref="compile.classpath"/>
+
+		<!-- Copy application resources -->
+		<copy  todir="${build.home}/WEB-INF/classes">
+		  <fileset dir="${src.home}" excludes="**/*.java"/>
+		</copy>
+	  </target>
+	
+	
+	<!-- ==================== Dist Target ================================== -->
+	
+	<target name="dist" depends="compile"
+	   description="Create WAR file">
+
+		<!-- Create application JAR file -->
+		<jar jarfile="${dist.home}/${app.name}.war"
+			 basedir="${build.home}"/>
+	</target>
+	
+	
+	<!-- ==================== Install Target ================================== -->
+
+  <target name="install" depends="compile, dist"
+   description="Install application to servlet container">
+   
+	<copy file="${dist.home}/${app.name}.war" todir="${tomcat.webapps}"/>
+	
+  </target>
+  
+  
+  <!-- ==================== Prepare Target ================================== -->
+
+  <target name="prepare">
+    <!-- Create build directories as needed -->
+    <mkdir  dir="${build.home}"/>
+    <mkdir  dir="${build.home}/WEB-INF"/>
+    <mkdir  dir="${build.home}/WEB-INF/classes"/>
+
+    <!-- Copy static content of this web application -->
+    <copy todir="${build.home}">
+      <fileset dir="${web.home}"/>
+    </copy>
+
+    <!-- Copy external dependencies as required -->
+    <mkdir  dir="${build.home}/WEB-INF/lib"/>
+	 <copy todir="${build.home}/WEB-INF/lib">
+      <fileset dir="${lib.home}"/>
+    </copy>
+  </target>
+</project>
