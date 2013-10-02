@@ -7,15 +7,14 @@ window.onload = function(){
 		document.getElementById("uploadform").setAttribute("action", "upload?id=" + id);
 		jQuery.getJSON("task?id=" + id, function(data) {
 			 document.getElementById("title").innerHTML = "<h1>" + data.name + "</h1>";
-			 document.getElementById("deadline").innerHTML = "<h4>T�htaeg: " + data.deadline + "</h4>";
+			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline + "</h4>";
 			 document.getElementById("description").innerHTML = "<h4>" + data.description + "</h4>";
 		});	
 		jQuery.getJSON("tasktable?id=" + id, function(data) {
-			tableCreate(data.fullname, data.time, data.result, data.language);
+			tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId);
 	});
 	}
 	var result = getUrlVars()["result"];
-	console.log(result);
 	if (result !== undefined){
 		if (result === "ok"){
 			document.getElementById("resultOk").hidden = "";
@@ -29,7 +28,11 @@ window.onload = function(){
 	}
 };
 
-function tableCreate(nameList, timeList, resultList, languageList){
+function downloadSourceCode(){
+	
+}
+
+function tableCreate(nameList, timeList, resultList, languageList, attemptIdList){
 	var tableDiv = document.getElementById("attempts");
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
@@ -38,15 +41,19 @@ function tableCreate(nameList, timeList, resultList, languageList){
 	jQuery("<th />").text("Nimi").appendTo(row);
 	jQuery("<th />").text("Esitamise aeg").appendTo(row);
 	jQuery("<th />").text("Tulemus").appendTo(row);
-	//If we add support for other languages
-	//jQuery("<th />").text("Programeerimiskeel").appendTo(row);
+	jQuery("<th />").text("Lähtekood").appendTo(row);
 	table.appendChild(row);
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		jQuery("<td />").text(nameList[i]).appendTo(row);
 		jQuery("<td />").text(timeList[i]).appendTo(row);
 		jQuery("<td />").text(resultList[i]).appendTo(row);
-		//jQuery("<td />").text(languageList[i]).appendTo(row);
+		cell = document.createElement("td");
+		link = document.createElement("a");
+		link.setAttribute("href", "download?id=" + attemptIdList[i]);
+		link.innerHTML = "Python";
+		cell.appendChild(link);
+		row.appendChild(cell);
 		table.appendChild(row);
 	}
 	table.setAttribute("class", "tableclass");

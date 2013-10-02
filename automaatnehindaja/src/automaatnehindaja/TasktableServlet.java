@@ -40,7 +40,7 @@ public class TasktableServlet extends HttpServlet {
 					"t6urott");
 			String statement;
 			if (request.isUserInRole("tudeng")){
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language "
+				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id "
 						+ "FROM attempt "
 						+ "INNER JOIN users "
 						+ "ON users.username=attempt.username WHERE attempt.username = ? "
@@ -50,7 +50,7 @@ public class TasktableServlet extends HttpServlet {
 				stmt.setString(2, taskid);
 			}
 			else if (request.isUserInRole("admin")){
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language "
+				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id "
 						+ "FROM attempt "
 						+ "INNER JOIN users "
 						+ "ON users.username=attempt.username WHERE "
@@ -71,6 +71,7 @@ public class TasktableServlet extends HttpServlet {
 					json.append("result", rs.getString(3));
 					json.append("time", rs.getDate(2).toString());
 					json.append("language", rs.getString(4));
+					json.append("attemptId", rs.getInt(5));
 				} catch (JSONException e) {
 					response.sendRedirect("/automaatnehindaja/error.html");
 				}

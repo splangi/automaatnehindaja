@@ -44,7 +44,6 @@
     </auth-constraint>
   </security-constraint>
   <security-role>
-    <role-name>admin</role-name>
     <role-name>tudeng</role-name>
   </security-role>
   <login-config>

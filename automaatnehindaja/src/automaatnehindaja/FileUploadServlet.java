@@ -79,24 +79,26 @@ public class FileUploadServlet extends HttpServlet {
 				ResultSet rs = stmt.executeQuery();
 				if (rs.next()){
 					stmt.close();
-					statement = "UPDATE attempt SET time = ?, source_code= ?, language = ? WHERE username = ? and task = ?;";
+					statement = "UPDATE attempt SET time = ?, source_code= ?, language = ?, result = ? WHERE username = ? and task = ?;";
 					stmt = c.prepareStatement(statement);
 					stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 					stmt.setBinaryStream(2, fileitem.getInputStream());
 					stmt.setString(3, "python"); // TODO support for other languages
-					stmt.setString(4, request.getRemoteUser());
-					stmt.setInt(5, taskid);
+					stmt.setString(4, "kontrollimata");
+					stmt.setString(5, request.getRemoteUser());
+					stmt.setInt(6, taskid);
 					stmt.executeUpdate();
 				}
 				else {
 					stmt.close();
-					statement = "INSERT INTO attempt (username, task, time, source_code, language) VALUES (?, ?, ?, ?, ?);";
+					statement = "INSERT INTO attempt (username, task, time, source_code, language, result) VALUES (?, ?, ?, ?, ?, ?);";
 					stmt = c.prepareStatement(statement);
 					stmt.setString(1, request.getRemoteUser());
 					stmt.setInt(2, taskid);
 					stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 					stmt.setBinaryStream(4, fileitem.getInputStream());
 					stmt.setString(5, "python"); // TODO support for other languages
+					stmt.setString(6, "kontrollimata");
 					stmt.executeUpdate();
 				}				
 				response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid + "&result=ok");
