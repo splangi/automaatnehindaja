@@ -50,7 +50,7 @@ function tableCreate(nameList, timeList, resultList, languageList, attemptIdList
 		jQuery("<td />").text(resultList[i]).appendTo(row);
 		cell = document.createElement("td");
 		link = document.createElement("a");
-		link.setAttribute("href", "download?id=" + attemptIdList[i]);
+		link.setAttribute("href", "viewfile?id=" + attemptIdList[i]);
 		link.innerHTML = "Python";
 		cell.appendChild(link);
 		row.appendChild(cell);

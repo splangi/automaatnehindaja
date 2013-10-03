@@ -27,6 +27,7 @@
       <url-pattern>/Taskstable</url-pattern>
       <url-pattern>/task</url-pattern>
       <url-pattern>/tasktable</url-pattern>
+      <url-pattern>/viewfile</url-pattern>
       <url-pattern>/results.html</url-pattern>
       <url-pattern>/results.html</url-pattern>
       <url-pattern>/results.html</url-pattern>
