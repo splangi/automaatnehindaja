@@ -44,7 +44,7 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 	jQuery("<th />").text("Ulesanne").appendTo(row);
 	jQuery("<th />").text("Tahtaeg").appendTo(row);
 	jQuery("<th />").text("Esitanuid").appendTo(row);
-	jQuery("<th />").text("Õnnestujaid").appendTo(row);
+	jQuery("<th />").text("Ã•nnestujaid").appendTo(row);
 	table.appendChild(row);
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
