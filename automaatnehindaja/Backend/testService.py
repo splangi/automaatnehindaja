@@ -5,7 +5,7 @@ from subprocess import Popen, STDOUT, PIPE
 #Function for connecting the MySQL database
 #Returns cursor to access database
 def connectToDatabase():
-    cnx = mdb.connect(host='localhost',user='jeff',passwd='jeff',db='automaatnehindaja')
+    cnx = mdb.connect(host='localhost',user='root',passwd='t6urott',db='automaatnehindaja')
     cnx.autocommit(True)
     cursor = cnx.cursor()
     return cursor
@@ -14,6 +14,7 @@ def connectToDatabase():
 #Function for checking if there is unvaluated attempts in the database
 #Returns data about the attempt
 def checkForAttempts(cursor):
+    '''
     queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
     cursor.execute(queryForAttempts)
     if (cursor.rowcount==1):
@@ -32,6 +33,26 @@ def checkForAttempts(cursor):
     else:
         sleep(5)
         tester()
+    '''
+    queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
+    cursor.execute(queryForAttempts)
+    while (cursor.rowcount==0):
+        #print ('hibernate')
+        sleep(5)
+        queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
+        cursor.execute(queryForAttempts)
+    for (line) in cursor:
+        taskId = line[0]
+        username = line[1]
+        task = line[2]
+        time = line[3]
+        result = line[4]
+        source_code = line[5]
+        language = line[6]
+        #Set result to 'Kontrollimisel'
+        queryForResultUpdate = ("UPDATE attempt SET result='Kontrollimisel' WHERE id=%s")
+        cursor.execute(queryForResultUpdate,(taskId))
+        return (taskId, username, task, time, result, source_code, language)
 
 
 #Function for getting input and expected output for the task
@@ -66,16 +87,14 @@ def runStudentsAttempt(taskInput):
 def checkOutputCorrectness(taskOutput, applicationOutput):
     split = taskOutput.split(',')
     for line in split:
-        if line not in split:
+        if line not in applicationOutput:
             return False
     return True
 
 
 #Updates the database with new result. 'OK' if output was right and 'Vale tulemus' if wrong
 def updateDatabase(cursor, taskOutput, applicationOutput, taskId):
-    if(checkOutputCorrectness(taskOutput, applicationOutput)):
-        #TODO
-        
+    if(checkOutputCorrectness(taskOutput, applicationOutput)):        
         #Check if the result is still 'Kontrollimisel'
         queryForResultCheck = ("SELECT result FROM attempt WHERE id=%s")
         cursor.execute(queryForResultCheck,(taskId))
@@ -103,3 +122,9 @@ def tester():
     updateDatabase(cursor, taskOutput, applicationOutput, taskId)
 
 tester()
+
+#TODO
+# * Lahendada probleem while tsukliga
+# * sql commandid koondada
+# * timeout kontroll
+# * kompileerimise vea kontroll
