@@ -14,31 +14,12 @@ def connectToDatabase():
 #Function for checking if there is unvaluated attempts in the database
 #Returns data about the attempt
 def checkForAttempts(cursor):
-    '''
-    queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
-    cursor.execute(queryForAttempts)
-    if (cursor.rowcount==1):
-        for (line) in cursor:
-            taskId = line[0]
-            username = line[1]
-            task = line[2]
-            time = line[3]
-            result = line[4]
-            source_code = line[5]
-            language = line[6]
-            #Set result to 'Kontrollimisel'
-            queryForResultUpdate = ("UPDATE attempt SET result='Kontrollimisel' WHERE id=%s")
-            cursor.execute(queryForResultUpdate,(taskId))
-            return (taskId, username, task, time, result, source_code, language)
-    else:
-        sleep(5)
-        tester()
-    '''
     queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
     cursor.execute(queryForAttempts)
     while (cursor.rowcount==0):
         #print ('hibernate')
-        sleep(5)
+        for i in range(60):
+            sleep(1)
         queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
         cursor.execute(queryForAttempts)
     for (line) in cursor:
@@ -75,12 +56,18 @@ def writeSourcecodeToFile(source_code):
 
 #Function for running students source code
 #Returns applications output
-def runStudentsAttempt(taskInput):
-    taskInput2 = taskInput.replace(',','"\n"')
-    taskInput2 = '"'+taskInput2+'"'
-    connectionToAttempt = Popen(['python','lahendus.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+def runStudentsAttempt(taskInput, language):
+    taskInput2 = taskInput.replace(',','\n')
+    connectionToAttempt = Popen(['python','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
     applicationOutput = connectionToAttempt.communicate (taskInput2.encode('utf-8'))[0]
     return applicationOutput
+    '''
+    taskInput2 = taskInput.replace(',','"\n"')
+    taskInput2 = '"'+taskInput2+'"'
+    connectionToAttempt = Popen(['python','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    applicationOutput = connectionToAttempt.communicate (taskInput2.encode('utf-8'))[0]
+    return applicationOutput
+    '''
 
 #Checks if the expected output occurs in the application output
 #Returns boolean
@@ -94,22 +81,14 @@ def checkOutputCorrectness(taskOutput, applicationOutput):
 
 #Updates the database with new result. 'OK' if output was right and 'Vale tulemus' if wrong
 def updateDatabase(cursor, taskOutput, applicationOutput, taskId):
-    if(checkOutputCorrectness(taskOutput, applicationOutput)):        
-        #Check if the result is still 'Kontrollimisel'
-        queryForResultCheck = ("SELECT result FROM attempt WHERE id=%s")
-        cursor.execute(queryForResultCheck,(taskId))
-        for line in cursor:
-            if line[0]=='Kontrollimisel':
-                #Set result to 'OK'
-                queryForResultUpdate = ("UPDATE attempt SET result='OK' WHERE id=%s")
-                cursor.execute(queryForResultUpdate,(taskId))
-                tester()
-            else:
-                tester()
+    if(checkOutputCorrectness(taskOutput, applicationOutput)):
+        queryForResultUpdate = ("UPDATE attempt SET result='OK' WHERE id=%s AND result=%s")
+        cursor.execute(queryForResultUpdate,(taskId, 'Kontrollimisel'))
+        tester()
     else:
         #Set result to 'Vale tulemus'
-        queryForResultUpdate = ("UPDATE attempt SET result='Vale tulemus' WHERE id=%s")
-        cursor.execute(queryForResultUpdate,(taskId))
+        queryForResultUpdate = ("UPDATE attempt SET result='Vale tulemus' WHERE id=%s AND result=%s")
+        cursor.execute(queryForResultUpdate,(taskId, 'Kontrollimisel'))
         tester()
         
     
@@ -118,7 +97,7 @@ def tester():
     taskId, username, task, time, result, source_code, language = checkForAttempts(cursor)
     taskInput, taskOutput = getTasksInputAndOutput(cursor, task)
     writeSourcecodeToFile(source_code)
-    applicationOutput = runStudentsAttempt(taskInput)
+    applicationOutput = runStudentsAttempt(taskInput, language)
     updateDatabase(cursor, taskOutput, applicationOutput, taskId)
 
 tester()
