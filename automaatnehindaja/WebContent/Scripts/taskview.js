@@ -6,6 +6,7 @@ window.onload = function(){
 	else{
 		document.getElementById("uploadform").setAttribute("action", "upload?id=" + id);
 		jQuery.getJSON("task?id=" + id, function(data) {
+			$("#taskViewLoader").css("display", "none");
 			 document.getElementById("title").innerHTML = "<h1>" + data.name + "</h1>";
 			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline + "</h4>";
 			 document.getElementById("description").innerHTML = "<h4>" + data.description + "</h4>";
