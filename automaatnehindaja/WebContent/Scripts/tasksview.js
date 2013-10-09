@@ -1,10 +1,12 @@
 window.onload = function(){
 	jQuery.getJSON("Taskstable", function(data) {
+		$("#tasksViewLoader").css("display", "none");
 		if (data.role == "tudeng"){
 			tableCreate(data.id, data.name, data.deadline, data.result);
 		}
 		else if (data.role == "admin"){
 			tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount);
+			$('<a>').attr("href","new_task.html").html("<button>Lisa ülesanne</button>").appendTo($("#buttonDiv"));
 		}
 	});	
 	
