@@ -5,7 +5,7 @@ from subprocess import Popen, STDOUT, PIPE
 #Function for connecting the MySQL database
 #Returns cursor to access database
 def connectToDatabase():
-    cnx = mdb.connect(host='localhost',user='root',passwd='t6urott',db='automaatnehindaja')
+    cnx = mdb.connect(host='localhost',user='ahindaja',passwd='k1rven2gu',db='automaatnehindaja')
     cnx.autocommit(True)
     cursor = cnx.cursor()
     return cursor

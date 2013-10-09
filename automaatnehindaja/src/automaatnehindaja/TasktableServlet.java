@@ -36,8 +36,8 @@ public class TasktableServlet extends HttpServlet {
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "root",
-					"t6urott");
+					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
+					"k1rven2gu");
 			String statement;
 			if (request.isUserInRole("tudeng")){
 				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id "

@@ -29,8 +29,8 @@ public class ViewFileServlet extends HttpServlet {
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "root",
-					"t6urott");
+					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
+					"k1rven2gu");
 			String statement = "SELECT source_code FROM attempt WHERE attempt.id = ?";
 			stmt = c.prepareStatement(statement);
 			stmt.setInt(1, attemptId);
