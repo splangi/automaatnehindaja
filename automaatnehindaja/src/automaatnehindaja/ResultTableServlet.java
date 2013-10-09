@@ -34,7 +34,7 @@ public class ResultTableServlet extends HttpServlet {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "automaatnehindaja",
+					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
 					"k1rven2gu");
 			if (request.isUserInRole("tudeng")){
 				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id "
