@@ -1,7 +1,7 @@
 window.onload = function(){
 	var id = getUrlVars()["id"];
 	if (id === undefined){
-		//window.location = "error.html";
+		window.location = "error.html";
 	}
 	else{
 		document.getElementById("uploadform").setAttribute("action", "upload?id=" + id);
