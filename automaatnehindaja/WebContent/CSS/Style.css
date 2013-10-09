@@ -101,8 +101,14 @@ html{
 	padding:10px;
 }
 
-#tasksViewLoader, #resultsLoader, #taskViewLoader {
+#tasksViewLoader  {
 	position: absolute;
 	left: 30%;
+	top: 46%;
+}
+
+#resultsLoader, #taskViewLoader {
+	position: absolute;
+	left: 46%;
 	top: 46%;
 }
