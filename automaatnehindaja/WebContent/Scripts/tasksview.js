@@ -4,9 +4,10 @@ window.onload = function(){
 		if (data.role == "tudeng"){
 			tableCreate(data.id, data.name, data.deadline, data.result);
 		}
-		else if (data.role == "admin"){
+		else if (data.role == "admin" || data.role == "responsible"){
 			tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount);
 			$('<a>').attr("href","new_task.html").html("<button>Lisa ülesanne</button>").appendTo($("#buttonDiv"));
+			$('<a>').attr("href","addusers.html").html("<button>Lisa kasutaja</button>").appendTo($("#buttonDiv"));
 		}
 	});	
 	
@@ -19,7 +20,7 @@ function tableCreate(idList, nameList, deadlineList, resultList){
 	var table = document.createElement("table");
 	table.setId = "tasksTable";
 	var row = document.createElement("tr");
-	jQuery("<th />").text("Ulesanne").appendTo(row);
+	jQuery("<th />").text("Ülesanne").appendTo(row);
 	jQuery("<th />").text("Tahtaeg").appendTo(row);
 	jQuery("<th />").text("Tulemus").appendTo(row);
 	table.appendChild(row);

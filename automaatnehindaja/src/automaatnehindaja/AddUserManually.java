@@ -74,10 +74,11 @@ public class AddUserManually extends HttpServlet {
 					stmt.setString(1, newUsername);
 					stmt.setString(2, role);
 					stmt.executeUpdate();
+					if (autogenerate.equals("true")){
+						emailPassword(newUsername, newPassword);
+					}
 				}
-				if (autogenerate.equals("true")){
-					emailPassword(newUsername, newPassword);
-				}
+				
 				response.setHeader("error", "false");
 			}
 			else{

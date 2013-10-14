@@ -5,6 +5,8 @@ html{
 	font-family:sans-serif;
 }
 
+
+
 .manual{
 	
 	border-right: 2px solid #000;
@@ -91,7 +93,7 @@ html{
 #buttonDiv{
 	float:right;
 	margin:10px;
-	
+	max-width: 130px;
 }
 
 #buttonDiv button {

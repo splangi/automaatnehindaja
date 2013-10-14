@@ -18,13 +18,14 @@ jQuery(document).ready(function(){
 	username = document.getElementById("username");
 	fullname = document.getElementById("fullname");
 	warningtext = document.getElementById("warning");
+	
 });
 
 function manualsubmit(){
 	var validSubmission = true;
 	if ((studentId.value == "" || studentId.value.length != 6) && roleselection.selectedIndex == 2){
 		color(studentId);
-		warningtext.innerHTML = "Ebakorrektne matriklinumber";
+		warningtext.innerHTML = "  Ebakorrektne matriklinumber";
 		validSubmission = false;
 	}
 	else{
@@ -32,7 +33,7 @@ function manualsubmit(){
 	}
 	if (fullname.value == "" || fullname.value.length < 5){
 		color(fullname);
-		warningtext.innerHTML = "Ebakorrektne täisnimi";
+		warningtext.innerHTML = "  Ebakorrektne täisnimi";
 		validSubmission = false;
 	}
 	else{
@@ -40,7 +41,7 @@ function manualsubmit(){
 	}
 	if ((passwordField.value!=passwordRepeat.value) || (passwordRepeat.value.length < 6 && !checkbox.checked)){
 		color(passwordRepeat);
-		warningtext.innerHTML = "Paroolid ei kattu";
+		warningtext.innerHTML = "  Paroolid ei kattu";
 		validSubmission = false;
 	}
 	else{
@@ -48,7 +49,7 @@ function manualsubmit(){
 	}
 	if ((passwordField.value.length < 6) && (!checkbox.checked)){
 		color(passwordField);
-		warningtext.innerHTML = "Parooli pikkus peab olema vähemalt 6 tähemärki";
+		warningtext.innerHTML = "  Parooli pikkus peab olema vähemalt 6 tähemärki";
 		validSubmission = false;
 	}
 	else {
@@ -56,7 +57,7 @@ function manualsubmit(){
 	}
 	if ((username.value == "") || (username.value.indexOf("@") == -1)){
 		color(username);
-		warningtext.innerHTML = "Ebakorrektne emaili aadress";
+		warningtext.innerHTML = "  Ebakorrektne emaili aadress";
 		validSubmission = false;
 	}
 	else{
@@ -64,7 +65,7 @@ function manualsubmit(){
 	}
 	if (roleselection.selectedIndex == 0){
 		color(roleselection);
-		warningtext.innerHTML = "Palun valige isiku roll õppeaines";
+		warningtext.innerHTML = "  Palun valige isiku roll õppeaines";
 		validSubmission = false;
 	}
 	else{
@@ -72,7 +73,7 @@ function manualsubmit(){
 	}
 	if (courseselection.selectedIndex == 0){
 		color(courseselection);
-		warningtext.innerHTML = "Palun valige õppeaine";
+		warningtext.innerHTML = "  Palun valige õppeaine";
 		validSubmission = false;
 	}
 	else{
@@ -80,6 +81,7 @@ function manualsubmit(){
 	}	
 	if (validSubmission){
 		warningtext.innerHTML = "";
+		$("#loader").css("display", "block");
 		post();
 	}
 }
@@ -101,10 +103,20 @@ function post(){
 	
 	var request = jQuery.post("addusermanually", variables);
 	request.done(function(){
-		warningtext.innerHTML = "Kasutaja loomine õnnestus";
+		$("#loader").css("display", "none");
+		if (request.getResponseHeader("exists") === "true"){
+			warningtext.innerHTML = "  Antud emailiga kasutaja on juba olemas";
+		}
+		else if (request.getResponseHeader("error") === "true"){
+			warningtext.innerHTML = "  Kasutaja loomine ebaõnnestus";
+		}
+		else {
+			warningtext.innerHTML = "  Kasutaja loomine õnnestus";
+		}
 	});
 	request.fail(function(){
-		warningtext.innerHTML = "Kasutaja loomine ebaõnnestus";
+		$("#loader").css("display", "none");
+		warningtext.innerHTML = "  Kasutaja loomine ebaõnnestus";
 	})
 }
 
