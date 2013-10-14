@@ -5,6 +5,8 @@ from subprocess import Popen, STDOUT, PIPE
 #Function for connecting the MySQL database
 #Returns cursor to access database
 def connectToDatabase():
+	#### Comment ####
+	print ('Ühendamine andmebaasiga');
     cnx = mdb.connect(host='localhost',user='ahindaja',passwd='k1rven2gu',db='automaatnehindaja')
     cnx.autocommit(True)
     cursor = cnx.cursor()
@@ -14,12 +16,18 @@ def connectToDatabase():
 #Function for checking if there is unvaluated attempts in the database
 #Returns data about the attempt
 def checkForAttempts(cursor):
+	
+	#### Comment ####
+	print ('Andmebaasist uute ülesannete kontrollimine')
     queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
     cursor.execute(queryForAttempts)
     while (cursor.rowcount==0):
-        #print ('hibernate')
+		#### Comment ####
+        print ('Uusi ülesandeid pole, paus 10 sekundit')
         for i in range(60):
             sleep(1)
+        #### Comment ####
+		print ('Andmebaasist uute ülesannete kontrollimine')
         queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
         cursor.execute(queryForAttempts)
     for (line) in cursor:
@@ -31,6 +39,8 @@ def checkForAttempts(cursor):
         source_code = line[5]
         language = line[6]
         #Set result to 'Kontrollimisel'
+        #### Comment ####
+		print ('Uus ülesanne leitud. Esitaja: ' + username + ' Ülesanne: ' + task)    
         queryForResultUpdate = ("UPDATE attempt SET result='Kontrollimisel' WHERE id=%s")
         cursor.execute(queryForResultUpdate,(taskId))
         return (taskId, username, task, time, result, source_code, language)
@@ -39,6 +49,8 @@ def checkForAttempts(cursor):
 #Function for getting input and expected output for the task
 #Returns input and output
 def getTasksInputAndOutput(cursor, task):
+	#### Comment ####
+	print ('Andmebaasis ülesande sisendi ning eeldatava väljundi lugemine')    
     queryForIO = ("SELECT input, output FROM tasks WHERE id=%s")
     cursor.execute(queryForIO, (task))
 
@@ -57,6 +69,8 @@ def writeSourcecodeToFile(source_code):
 #Function for running students source code
 #Returns applications output
 def runStudentsAttempt(taskInput, language):
+	#### Comment ####
+	print ('Tudengi programmi käivitamine etteantud sisenditega')    
     taskInput2 = taskInput.replace(',','\n')
     connectionToAttempt = Popen(['python','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
     applicationOutput = connectionToAttempt.communicate (taskInput2.encode('utf-8'))[0]
@@ -72,6 +86,8 @@ def runStudentsAttempt(taskInput, language):
 #Checks if the expected output occurs in the application output
 #Returns boolean
 def checkOutputCorrectness(taskOutput, applicationOutput):
+	#### Comment ####
+	print ('Tudengi rakenduse väljundi kontrollimine')    
     split = taskOutput.split(',')
     for line in split:
         if line not in applicationOutput:
@@ -82,11 +98,15 @@ def checkOutputCorrectness(taskOutput, applicationOutput):
 #Updates the database with new result. 'OK' if output was right and 'Vale tulemus' if wrong
 def updateDatabase(cursor, taskOutput, applicationOutput, taskId):
     if(checkOutputCorrectness(taskOutput, applicationOutput)):
+    	#### Comment ####
+		print ('Vastus õige, andmebaasi uuendamine')    
         queryForResultUpdate = ("UPDATE attempt SET result='OK' WHERE id=%s AND result=%s")
         cursor.execute(queryForResultUpdate,(taskId, 'Kontrollimisel'))
         tester()
     else:
         #Set result to 'Vale tulemus'
+        #### Comment ####
+		print ('Vastus õige, andmebaasi uuendamine') 
         queryForResultUpdate = ("UPDATE attempt SET result='Vale tulemus' WHERE id=%s AND result=%s")
         cursor.execute(queryForResultUpdate,(taskId, 'Kontrollimisel'))
         tester()
