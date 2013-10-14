@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lisa kasutaja</title>
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="Scripts/adduser.js"></script>
+</head>
+<body>
+
+	<div id="addUserWindow">
+		<div id="backbutton">
+			<a href=tasksview.html>Tagasi</a>
+		</div>
+		<div id="logoutbutton">
+			<form method="get" action="/automaatnehindaja/Logout">
+				<input type="submit" value="Logi välja">
+			</form>
+		</div>
+			<table id="addUserTable">
+				
+				<tr>
+					<td width="50%">
+						<div class = "manual">
+							<h3>Manuaalne lisamine</h3>
+							<hr style="width: 96%; float: left"><br>
+							<span style="font-weight: bold;">Õppeaine</span><br>
+							<select id = "courses">
+								<option value="notSelected"></option>
+								<option value="Algoritmid">Algoritmid ja andmestriktuurid</option>
+							</select>
+							<br>
+							<span style="font-weight: bold;">Kasutajatase</span><br>
+							<select id = "role" onchange="blackOutStudentId()">
+								<option value="notSelected"></option>
+								<option value="responsible">Vastutav kasutaja</option>
+  								<option value="tudeng">Tudeng</option>
+							</select>
+							<br>
+							<span style="font-weight: bold;">E-Mail</span><br>
+							<input class ="inputfields" id="username" maxlength="80" size ="25" type="email"><br>
+							<span style="font-weight: bold;">Salasõna</span><br>
+							<input class ="inputfields" id="secret" maxlength="20"  size ="25" type="password" disabled="disabled">
+							<input class ="inputfields" id="generate" type="checkbox" checked="checked" onclick="change()" >
+							genereeri automaatselt <br>
+							<span style="font-weight: bold;">Korda salasõna</span><br>
+							<input class ="inputfields" id="secretrepeat" maxlength="20"  size ="25" type="password" disabled="disabled"><br>
+							<span style="font-weight: bold;">Täisnimi</span><br>
+							<input class ="inputfields" id="fullname" size="25" maxlength="60" type="text"><br>
+							<span style="font-weight: bold;">Matriklinumber</span><br>
+							<input class ="inputfields" id="studentid" size="25" maxlength="6" type="text" disabled="disabled"><br>
+							<button onclick="manualsubmit()">Lisa</button>
+							<span id = "warning"></span>
+							
+							
+						</div>
+					</td>
+					<td width="50%">
+						<div>
+							<h3 align="center"> CSV-ga Lisamine</h3>
+						</div>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+</body>
+</html>

@@ -31,9 +31,17 @@ public class ViewFileServlet extends HttpServlet {
 			c = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/automaatnehindaja", "root",
 					"t6urott");
-			String statement = "SELECT source_code FROM attempt WHERE attempt.id = ?";
-			stmt = c.prepareStatement(statement);
-			stmt.setInt(1, attemptId);
+			if (request.isUserInRole("tudeng")){
+				String statement = "SELECT source_code FROM attempt WHERE attempt.id = ? AND attempt.username = ?";
+				stmt = c.prepareStatement(statement);
+				stmt.setInt(1, attemptId);
+				stmt.setString(2, request.getRemoteUser());
+			}
+			else if (request.isUserInRole("admin")){
+				String statement = "SELECT source_code FROM attempt WHERE attempt.id = ?";
+				stmt = c.prepareStatement(statement);
+				stmt.setInt(1, attemptId);
+			}
 			rs = stmt.executeQuery();
 			if (rs.next()){
 				String code = new String(rs.getBytes(1), "UTF-8");
@@ -49,6 +57,9 @@ public class ViewFileServlet extends HttpServlet {
 				out.append(code);
 				out.append("</code>");
 				out.append("</pre>");
+			}
+			else {
+				response.sendRedirect("/automaatnehindaja/error.html");
 			}
 			
 		}

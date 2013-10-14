@@ -33,9 +33,17 @@ public class FileDownloadServlet extends HttpServlet {
 			c = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/automaatnehindaja", "root",
 					"t6urott");
-			String statement = "SELECT username, language, tasks.name, source_code FROM attempt INNER JOIN tasks ON tasks.id = attempt.task WHERE attempt.id = ?";
-			stmt = c.prepareStatement(statement);
-			stmt.setInt(1, attemptId);
+			if (request.isUserInRole("tudeng")){
+				String statement = "SELECT username, language, tasks.name, source_code FROM attempt INNER JOIN tasks ON tasks.id = attempt.task WHERE attempt.id = ? AND attempt.username = ?";
+				stmt = c.prepareStatement(statement);
+				stmt.setInt(1, attemptId);
+				stmt.setString(2, request.getRemoteUser());
+			}
+			else if (request.isUserInRole("admin")){
+				String statement = "SELECT username, language, tasks.name, source_code FROM attempt INNER JOIN tasks ON tasks.id = attempt.task WHERE attempt.id = ?";
+				stmt = c.prepareStatement(statement);
+				stmt.setInt(1, attemptId);
+			}
 			rs = stmt.executeQuery();
 			if (rs.next()){
 				String username = rs.getString(1);
