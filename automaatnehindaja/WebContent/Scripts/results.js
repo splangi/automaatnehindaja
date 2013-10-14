@@ -1,5 +1,6 @@
 window.onload = function(){
 	jQuery.getJSON("resulttable", function(data) {
+		$("#resultsLoader").css("display", "none");
 		tableCreate(data.fullname, data.taskname, data.time, data.result, data.language, data.id);
 	});	
 	

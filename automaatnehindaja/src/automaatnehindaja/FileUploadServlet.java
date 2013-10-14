@@ -71,7 +71,7 @@ public class FileUploadServlet extends HttpServlet {
 				Class.forName("com.mysql.jdbc.Driver");
 				c = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"root", "t6urott");
+						"ahindaja", "k1rven2gu");
 				String statement = "select username from attempt where username = ? and task = ?";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, request.getRemoteUser());

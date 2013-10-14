@@ -20,6 +20,7 @@ html{
 }
 
 #description{
+	display: none;
 	border: solid 2px black;
 	padding:10px;
 }
@@ -68,6 +69,7 @@ html{
 	
 
 #tasksWindow, #taskWindow, #resultWindow{
+	position: relative;
 	background-color: white;
 	max-width: 800px;
 	margin-left:auto;
@@ -117,7 +119,8 @@ html{
 
 
 
-#fileinput {
+#fileinput, #newTaskForm {
+	display: none;
 	margin-top: 20px;
 	float:left;
 }
@@ -129,4 +132,16 @@ html{
 
 #LogInWindow.p {
 	padding:10px;
+}
+
+#tasksViewLoader  {
+	position: absolute;
+	left: 30%;
+	top: 46%;
+}
+
+#resultsLoader, #taskViewLoader {
+	position: absolute;
+	left: 46%;
+	top: 46%;
 }
