@@ -20,20 +20,17 @@ window.onload = function(){
 	var result = getUrlVars()["result"];
 	if (result !== undefined){
 		if (result === "ok"){
-			document.getElementById("resultOk").hidden = "";
+			$("#resultOk").css("display", "block");
 		}
 		else if (result === "incorrect"){
-			document.getElementById("resultIncorrect").hidden = "";
+			$("#resultIncorrect").css("display", "block");
 		}
 		else if (result === "toolarge"){
-			document.getElementById("resultToolarge").hidden = "";
+			$("#resultToolarge").css("display", "block");
 		}
 	}
 };
 
-function downloadSourceCode(){
-	
-}
 
 function tableCreate(nameList, timeList, resultList, languageList, attemptIdList){
 	var tableDiv = document.getElementById("attempts");

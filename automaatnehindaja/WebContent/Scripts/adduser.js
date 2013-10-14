@@ -106,6 +106,7 @@ function post(){
 		$("#loader").css("display", "none");
 		if (request.getResponseHeader("exists") === "true"){
 			warningtext.innerHTML = "  Antud emailiga kasutaja on juba olemas";
+			color(username);
 		}
 		else if (request.getResponseHeader("error") === "true"){
 			warningtext.innerHTML = "  Kasutaja loomine ebaõnnestus";
@@ -117,7 +118,7 @@ function post(){
 	request.fail(function(){
 		$("#loader").css("display", "none");
 		warningtext.innerHTML = "  Kasutaja loomine ebaõnnestus";
-	})
+	});
 }
 
 function uncolor(target){
