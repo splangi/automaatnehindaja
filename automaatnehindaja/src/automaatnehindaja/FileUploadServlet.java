@@ -50,8 +50,7 @@ public class FileUploadServlet extends HttpServlet {
 		try {
 			List<FileItem> fields = upload.parseRequest(request);
 			Iterator<FileItem> it = fields.iterator();
-			System.out.println(fields.size());
-			if (fields.size()>1) {
+			if (fields.size()>2) {
 				response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid +"&result=incorrect");
 				return;
 			}
@@ -59,8 +58,9 @@ public class FileUploadServlet extends HttpServlet {
 				Connection c = null;
 				PreparedStatement stmt = null;
 				FileItem fileitem = it.next();
-				if (!fileitem.getName().endsWith(".py")){
-					//TODO other language support
+				FileItem languageitem = it.next();
+				String language = languageitem.getString();
+				if (!(fileitem.getName().endsWith(".py") || fileitem.getName().endsWith(".java"))){
 					response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid +"&result=incorrect");
 					return;
 				}
@@ -83,7 +83,7 @@ public class FileUploadServlet extends HttpServlet {
 					stmt = c.prepareStatement(statement);
 					stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 					stmt.setBinaryStream(2, fileitem.getInputStream());
-					stmt.setString(3, "python"); // TODO support for other languages
+					stmt.setString(3, language); // TODO support for other languages
 					stmt.setString(4, "kontrollimata");
 					stmt.setString(5, request.getRemoteUser());
 					stmt.setInt(6, taskid);
@@ -97,7 +97,7 @@ public class FileUploadServlet extends HttpServlet {
 					stmt.setInt(2, taskid);
 					stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 					stmt.setBinaryStream(4, fileitem.getInputStream());
-					stmt.setString(5, "python"); // TODO support for other languages
+					stmt.setString(5, language); // TODO support for other languages
 					stmt.setString(6, "kontrollimata");
 					stmt.executeUpdate();
 				}				
