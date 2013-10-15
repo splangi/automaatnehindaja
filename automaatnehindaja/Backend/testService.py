@@ -24,10 +24,10 @@ def checkForAttempts(cursor):
     while (cursor.rowcount==0):
 	#### Comment ####
         print ('Uusi ulesandeid pole, paus 10 sekundit')
-        for i in range(60):
+        for i in range(10):
             sleep(1)
         #### Comment ####
-	print ('Andmebaasist uute ulesannete kontrollimine')
+        print ('Andmebaasist uute ulesannete kontrollimine')
         queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
         cursor.execute(queryForAttempts)
     for (line) in cursor:
@@ -40,7 +40,7 @@ def checkForAttempts(cursor):
         language = line[6]
         #Set result to 'Kontrollimisel'
         #### Comment ####
-	print ('Uus ulesanne leitud. Esitaja: ' + username + ' Ulesanne: ' + str(task))    
+        print ('Uus ulesanne leitud. Esitaja: ' + username + ' Ulesanne: ' + str(task))    
         queryForResultUpdate = ("UPDATE attempt SET result='Kontrollimisel' WHERE id=%s")
         cursor.execute(queryForResultUpdate,(taskId))
         return (taskId, username, task, time, result, source_code, language)
@@ -88,7 +88,7 @@ def runStudentsAttempt(taskInput, language):
 def checkOutputCorrectness(taskOutput, applicationOutput):
     #### Comment ####
     print ('Tudengi rakenduse valjundi kontrollimine')
-    if (taskOutput == applicationOutput):
+    if (str(taskOutput).rstrip() == str(applicationOutput).rstrip()):
         return True
     else:
         return False
@@ -105,16 +105,16 @@ def checkOutputCorrectness(taskOutput, applicationOutput):
 def updateDatabase(cursor, taskOutput, applicationOutput, taskId):
     if(checkOutputCorrectness(taskOutput, applicationOutput)):
     	#### Comment ####
-	print ('Vastus oige, andmebaasi uuendamine')
-	print ('')
+        print ('Vastus oige, andmebaasi uuendamine')
+        print ('')
         queryForResultUpdate = ("UPDATE attempt SET result='OK' WHERE id=%s AND result=%s")
         cursor.execute(queryForResultUpdate,(taskId, 'Kontrollimisel'))
         tester()
     else:
         #Set result to 'Vale tulemus'
         #### Comment ####
-	print ('Vastus vale, andmebaasi uuendamine')
-	print ('')
+        print ('Vastus vale, andmebaasi uuendamine')
+        print ('')
         queryForResultUpdate = ("UPDATE attempt SET result='Vale tulemus' WHERE id=%s AND result=%s")
         cursor.execute(queryForResultUpdate,(taskId, 'Kontrollimisel'))
         tester()
