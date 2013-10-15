@@ -87,12 +87,18 @@ def runStudentsAttempt(taskInput, language):
 #Returns boolean
 def checkOutputCorrectness(taskOutput, applicationOutput):
     #### Comment ####
-    print ('Tudengi rakenduse valjundi kontrollimine')    
+    print ('Tudengi rakenduse valjundi kontrollimine')
+    if (taskOutput == applicationOutput):
+        return True
+    else:
+        return False
+    '''
     split = taskOutput.split(',')
     for line in split:
         if line not in applicationOutput:
             return False
     return True
+    '''
 
 
 #Updates the database with new result. 'OK' if output was right and 'Vale tulemus' if wrong
