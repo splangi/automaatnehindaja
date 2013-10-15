@@ -1,4 +1,5 @@
 var courseselection;
+var courseselectionCSV;
 var roleselection;
 var checkbox;
 var passwordField;
@@ -18,8 +19,26 @@ jQuery(document).ready(function(){
 	username = document.getElementById("username");
 	fullname = document.getElementById("fullname");
 	warningtext = document.getElementById("warning");
+	courseselectionCSV = document.getElementById("coursesCSV");	
+	jQuery.getJSON("getcoursenames", function(data){
+		var courses = data.coursenames;
+		for (var i = 0; i<courses.length; i++){
+			var course = courses[i];
+			$('#coursesCSV').append($("<option></option>").attr("value",course).text(course));
+			$('#courses').append($("<option></option>").attr("value",course).text(course));
+		}
+		if (data.role === "admin"){
+			$('#role').append($("<option></option>").attr("value",data.role).text(data.role));
+		}
+	});
 	
 });
+
+window.onload=function(){
+	
+	
+	
+};
 
 function manualsubmit(){
 	var validSubmission = true;
@@ -81,9 +100,17 @@ function manualsubmit(){
 	}	
 	if (validSubmission){
 		warningtext.innerHTML = "";
-		$("#loader").css("display", "block");
+		unhide("loader");
 		post();
 	}
+}
+
+function hide(targetid){
+	$("#"+targetid).css("display", "none");
+}
+
+function unhide(targerid){
+	$("#"+targetid).css("display", "block");
 }
 
 function post(){
@@ -103,7 +130,7 @@ function post(){
 	
 	var request = jQuery.post("addusermanually", variables);
 	request.done(function(){
-		$("#loader").css("display", "none");
+		hide("loader");
 		if (request.getResponseHeader("exists") === "true"){
 			warningtext.innerHTML = "  Antud emailiga kasutaja on juba olemas";
 			color(username);
@@ -116,7 +143,7 @@ function post(){
 		}
 	});
 	request.fail(function(){
-		$("#loader").css("display", "none");
+		hide("loader");
 		warningtext.innerHTML = "  Kasutaja loomine ebaõnnestus";
 	});
 }

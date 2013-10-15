@@ -27,8 +27,7 @@
 							<hr style="width: 96%; float: left"><br>
 							<span style="font-weight: bold;">Õppeaine</span><br>
 							<select id = "courses">
-								<option value="notSelected"></option>
-								<option value="Algoritmid">Algoritmid ja andmestriktuurid</option>
+								
 							</select>
 							<br>
 							<span style="font-weight: bold;">Kasutajatase</span><br>
@@ -58,12 +57,22 @@
 							
 						</div>
 					</td>
-					<td width="50%">
-						<div>
-							<h3 align="center"> CSV-ga Lisamine</h3>
-						</div>
-					</td>
-				</tr>
+				<td width="50%" style="vertical-align: top">
+					<div>
+						<h3>CSV-ga Lisamine</h3>
+						<hr style="width: 96%; float: left"><br>
+						<form id="uploadform" method="post" action = "AddCSV" enctype="multipart/form-data">
+							<span style="font-weight: bold;">Õppeaine</span><br>
+							<select name="course" id = "coursesCSV">
+								
+							</select><br>
+							<p>	<span style="font-weight: bold;">Lisa ÕIS-ist allalaetud CSV fail</span><br>
+							<input type="file" name="file"> <br></p>
+							<p><button>Lisa õpilased</button></p>
+						</form>
+					</div>
+				</td>
+			</tr>
 
 			</table>
 		</div>

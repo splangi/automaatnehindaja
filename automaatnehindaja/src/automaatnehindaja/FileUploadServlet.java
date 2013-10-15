@@ -50,7 +50,7 @@ public class FileUploadServlet extends HttpServlet {
 		try {
 			List<FileItem> fields = upload.parseRequest(request);
 			Iterator<FileItem> it = fields.iterator();
-			if (fields.size()>2) {
+			if (fields.size()!=2) {
 				response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid +"&result=incorrect");
 				return;
 			}

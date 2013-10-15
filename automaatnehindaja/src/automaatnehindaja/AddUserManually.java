@@ -1,7 +1,6 @@
 package automaatnehindaja;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,15 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.*;
-
-import javax.mail.*;
-import javax.mail.internet.*;
-
 @WebServlet(urlPatterns = { "/addusermanually" })
 public class AddUserManually extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private SecureRandom random = new SecureRandom();
+	private static PasswordGeneratorAndMailer generator = new PasswordGeneratorAndMailer();
        
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection c = null;
@@ -38,7 +32,7 @@ public class AddUserManually extends HttpServlet {
 		@SuppressWarnings("unused")
 		String course = request.getParameter("course");
 		if (autogenerate.equals("true")){
-			newPassword = generatePassword();
+			newPassword = generator.generatePassword();
 		}
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -77,10 +71,9 @@ public class AddUserManually extends HttpServlet {
 					stmt.setString(2, role);
 					stmt.executeUpdate();
 					if (autogenerate.equals("true")){
-						emailPassword(newUsername, newPassword);
+						generator.emailPassword(newUsername, newPassword);
 					}
-				}
-				
+				}				
 				response.setHeader("error", "false");
 			}
 			else{
@@ -95,51 +88,5 @@ public class AddUserManually extends HttpServlet {
 		}
 
 	}
-	
-	protected String generatePassword(){
-		char[] allowedCharacters = {'a','b','c','d','f','e','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','z','1','2','3','4','5','6','7','8','9'};
-		StringBuffer password = new StringBuffer();
-		for (int i = 0; i<8; i++){
-			password.append(allowedCharacters[random.nextInt(allowedCharacters.length)]);
-		}
-		return password.toString();
-	}
 
-
-	protected void emailPassword(String to, String passwordToSend){
-		final String username = "automaatkontroll@gmail.com";
-		final String password = "k1rven2gu";
- 
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
- 
-		Session session = Session.getInstance(props,
-		  new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		  });
- 
-		try {
- 
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("automaatkontroll@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(to));
-			message.setSubject("Genereeritud parool");
-			message.setText("Tere, \n" 
-			+"Antud e-mail on automaatselt genereeritud ning ärge vastake sellele \n" 
-			+"Sinu parool automaatsehindaja rakenduses on: " 
-			+ passwordToSend + "\n\n"
-			+ "Ärge unustage oma parool esimesel sisselogimisel vahetada");
- 
-			Transport.send(message);
- 
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	}
+}
