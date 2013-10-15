@@ -43,7 +43,7 @@ public class TaskstableServlet extends HttpServlet {
 				statement = "SELECT "
 						+ "tasks.id, tasks.name, tasks.deadline, attempt.result "
 						+ "FROM tasks " + "LEFT OUTER JOIN "
-						+ "attempt on tasks.id = attempt.id " + "AND "
+						+ "attempt on tasks.id = attempt.task " + "AND "
 						+ "attempt.username = ?;";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, request.getUserPrincipal().getName());
