@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.*;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 
@@ -34,6 +35,7 @@ public class AddUserManually extends HttpServlet {
 		String autogenerate = request.getParameter("autogenerate");
 		String role = request.getParameter("role");
 		//TODO course
+		@SuppressWarnings("unused")
 		String course = request.getParameter("course");
 		if (autogenerate.equals("true")){
 			newPassword = generatePassword();

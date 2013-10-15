@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Servlet implementation class ChangePassServlet
@@ -47,7 +45,6 @@ public class ChangePassServlet extends HttpServlet {
 		
 		String oldPass = request.getParameter("oldPass");
 		String newPass1 = request.getParameter("newPass1");
-		String newPass2 = request.getParameter("newPass2");
 		
 		Connection c = null;
 		PreparedStatement stmt = null;
