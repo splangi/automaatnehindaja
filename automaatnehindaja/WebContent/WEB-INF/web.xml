@@ -29,9 +29,7 @@
       <url-pattern>/tasktable</url-pattern>
       <url-pattern>/viewfile</url-pattern>
       <url-pattern>/results.html</url-pattern>
-      <url-pattern>/results.html</url-pattern>
-      <url-pattern>/results.html</url-pattern>
-      <url-pattern>/results.html</url-pattern>
+      <url-pattern>/download.html</url-pattern>
       <url-pattern>/taskview.html</url-pattern>
       <url-pattern>/tasksview.html</url-pattern>
       <url-pattern>/CSS/*</url-pattern>
@@ -50,11 +48,14 @@
       <web-resource-name>secured</web-resource-name>
       <url-pattern>/addusersmanually</url-pattern>
       <url-pattern>/addusers.html</url-pattern>
+      <url-pattern>/new_task.html</url-pattern>
+      <url-pattern>/addTask</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>
+      <role-name>responsible</role-name>
     </auth-constraint>
   </security-constraint>
   <security-role>

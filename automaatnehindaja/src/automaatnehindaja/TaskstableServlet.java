@@ -100,6 +100,8 @@ public class TaskstableServlet extends HttpServlet {
 				response.sendRedirect("/automaatnehindaja/error.html");
 				return;
 			}
+			
+			c.close();
 			response.getWriter().write(json.toString());
 
 		} catch (SQLException e) {

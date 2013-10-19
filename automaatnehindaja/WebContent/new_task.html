@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Lisa ülesanne</title>
+<script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
+<link href="CSS/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="Scripts/zebra_datepicker.js"></script>
+<script type="text/javascript" src="Scripts/addtask.js"></script>
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+	<div id="addTaskWindow">
+		<a href="javascript:openOverlay()" style="float:right;">Õpetus</a>
+		<div id="overlay" style="right:10px;">
+		<a href ="javascript:closeOverlay()" style="float: right;"><img alt="X" src="images/close.png" height="20px;"></a>
+		Et ülesannet lisada tuleb järgida järgnevat protseduuri: <br>
+		
+		<ol>
+			<li>Vali õppeaine kuhu soovite ülesannet lisada</li>
+			<li>Kehtesta tähtaeg mis ajaks peavad tudengid ülesande esitama</li>
+			<li>Kirjelda ülesannet võimalikult täpselt andes tudengitele teada, mis sisendid programm edastab ning mis väljundeid ta ootab</li>
+			<li>Lisa sisendite kasti sisendid ning väljundite kasti väljudid. Erinevad sisendid eralda semikooloniga. Ära lisa mittevajalikke tühikuid!</li>
+			<li>Kui soovid tudengi programmi jooksutada mitu korda, siis lisa + nupu abil niipalju sisend-väljundpaare kui vaja.</li>
+		</ol>
+		</div>
+		<p class="field">
+			Õppeaine<br> <select id="courses">
+			</select>
+		</p>
+		<p class="field">
+			Tähtaeg<br> <input class="inputfields" id="deadline"
+				type="text">
+		</p>
+		<p class="field">
+			Ülesande nimi<br> <input class="inputfields" id="name"
+				type="text">
+		</p>
+		<p class="field">
+			Ülesande kirjeldus<br> <textarea id = "desc" rows="3" cols="64" style="overflow:auto; resize:none;"></textarea>
+		</p>
+			<table id = "iotable">
+				<tbody id = "iotableBody">
+				<tr>
+					<td class = "field">Sisendid</td>
+					<td class = "field">Väljundid</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><textarea id = "input0" rows="2" cols="30" style="overflow: auto; resize:none"></textarea></td>
+					<td><textarea id = "output0" rows="2" cols="30" style="overflow: auto; resize:none"></textarea></td>
+					<td></td>
+				</tr>
+				</tbody>
+			</table>
+			
+			
+			
+			<button onclick="addio()"> + </button>
+			<button onclick="checkFields()"> Lisa ülesanne </button>
+			
+			<span id = "message"></span>
+	</div>
+	
+	
+
+</body>
+</html>

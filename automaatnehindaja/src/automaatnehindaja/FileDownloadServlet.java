@@ -81,6 +81,8 @@ public class FileDownloadServlet extends HttpServlet {
 			else{
 				response.getWriter().print("File not found for the id: " + attemptId); 
 			}
+			
+			c.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -5,7 +5,9 @@ html{
 	font-family:sans-serif;
 }
 
-
+.field{
+	font-weight: bold;
+}
 
 .manual{
 	
@@ -46,9 +48,7 @@ html{
 
 	border: solid #666 1px; 
 		padding: 10px; 
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
+		
 	
 }
 
@@ -64,13 +64,22 @@ html{
 
 	border: solid #666 1px; 
 		padding: 10px; 
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
 }
 	
+	
+#overlay{
+	position: absolute;
+	z-index: 2;
+	display: none;
+	max-width: 400px;
+	background-color: #fff;
+	border: solid 1px #000;
+	font-size: 12px;
+	
+}
 
-#tasksWindow, #taskWindow, #resultWindow{
+#tasksWindow, #taskWindow, #resultWindow, #addTaskWindow{
+	z-index: 1;
 	position: relative;
 	background-color: white;
 	max-width: 800px;
@@ -82,9 +91,6 @@ html{
 
 	border: solid #666 1px; 
 		padding: 10px; 
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
 }
 
 #tableDiv{

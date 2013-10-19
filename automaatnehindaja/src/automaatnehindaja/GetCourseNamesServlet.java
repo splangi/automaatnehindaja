@@ -53,6 +53,8 @@ public class GetCourseNamesServlet extends HttpServlet {
 				json.put("role", "admin");
 			}
 			
+			c.close();
+			
 			response.setContentType("application/json");
 			response.getWriter().write(json.toString());
 			

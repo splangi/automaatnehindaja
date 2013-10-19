@@ -150,6 +150,8 @@ protected boolean AddUsersToSql(InputStream stream, String course){
         stmt.executeBatch();
         stmt.close();
 
+        c.close();
+        
         generator.sendAsyncEmails(emails, passwords);
         
     } 

@@ -47,7 +47,6 @@ public class AddUserManually extends HttpServlet {
 				rs = stmt.executeQuery();
 				if (rs.next()){
 					response.setHeader("exists", "true");
-					System.out.println("tere");
 				}
 				else{
 					response.setHeader("exists", "false");
@@ -76,9 +75,11 @@ public class AddUserManually extends HttpServlet {
 				}				
 				response.setHeader("error", "false");
 			}
+			
 			else{
 				response.setHeader("error", "true");
 			}
+			c.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setHeader("error", "true");

@@ -102,7 +102,9 @@ public class FileUploadServlet extends HttpServlet {
 					stmt.executeUpdate();
 				}				
 				response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid + "&result=ok");
+				c.close();
 			}
+			
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();

@@ -78,6 +78,8 @@ public class ChangePassServlet extends HttpServlet {
 					 response.getWriter().write("wrongPass");
 				 }
 			}
+			
+			c.close();
 
 		} catch (SQLException e) {
 			response.sendRedirect("/automaatnehindaja/error.html");

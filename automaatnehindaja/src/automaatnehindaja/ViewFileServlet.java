@@ -62,6 +62,8 @@ public class ViewFileServlet extends HttpServlet {
 				response.sendRedirect("/automaatnehindaja/error.html");
 			}
 			
+			c.close();
+			
 		}
 		catch (ClassNotFoundException | SQLException e){
 			e.printStackTrace();

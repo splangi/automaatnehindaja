@@ -74,6 +74,8 @@ public class ResultTableServlet extends HttpServlet {
 			
 			response.getWriter().write(json.toString());
 			
+			c.close();
+			
 		} catch (ClassNotFoundException e) {
 			response.sendRedirect("/automaatnehindaja/error.html");
 			e.printStackTrace();

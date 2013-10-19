@@ -1,80 +1,99 @@
-<!DOCTYPE html>
+e<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Lisa kasutaja</title>
 <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<link href="CSS/tabs.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="Scripts/adduser.js"></script>
+<script type="text/javascript" src="Scripts/jquery.easytabs.min.js"></script>
+
 </head>
 <body>
 
 	<div id="addUserWindow">
-		<div id="backbutton">
-			<a href=tasksview.html>Tagasi</a>
+		<div>
+			<a href=tasksview.html>Tagasi</a> <a style="float: right" href=logout>Logi
+				välja</a>
 		</div>
-		<div id="logoutbutton">
-			<form method="get" action="/automaatnehindaja/Logout">
-				<input type="submit" value="Logi välja">
-			</form>
-		</div>
-			<table id="addUserTable">
-				
-				<tr>
-					<td width="50%">
-						<div class = "manual">
-							<h3>Manuaalne lisamine</h3>
-							<hr style="width: 96%; float: left"><br>
-							<span style="font-weight: bold;">Õppeaine</span><br>
-							<select id = "courses">
-								
-							</select>
-							<br>
-							<span style="font-weight: bold;">Kasutajatase</span><br>
-							<select id = "role" onchange="blackOutStudentId()">
-								<option value="notSelected"></option>
-								<option value="responsible">Vastutav kasutaja</option>
-  								<option value="tudeng">Tudeng</option>
-							</select>
-							<br>
-							<span style="font-weight: bold;">E-Mail</span><br>
-							<input class ="inputfields" id="username" maxlength="80" size ="25" type="email"><br>
-							<span style="font-weight: bold;">Salasõna</span><br>
-							<input class ="inputfields" id="secret" maxlength="20"  size ="25" type="password" disabled="disabled">
-							<input class ="inputfields" id="generate" type="checkbox" checked="checked" onclick="change()" >
-							genereeri automaatselt <br>
-							<span style="font-weight: bold;">Korda salasõna</span><br>
-							<input class ="inputfields" id="secretrepeat" maxlength="20"  size ="25" type="password" disabled="disabled"><br>
-							<span style="font-weight: bold;">Täisnimi</span><br>
-							<input class ="inputfields" id="fullname" size="25" maxlength="60" type="text"><br>
-							<span style="font-weight: bold;">Matriklinumber</span><br>
-							<input class ="inputfields" id="studentid" size="25" maxlength="6" type="text" disabled="disabled"><br>
-							<span style= "white-space: nowrap;">
-							<button onclick="manualsubmit()" style="float: left;">Lisa</button>
-							<img height="20px" id = "loader" src = "images/ajax-loader.gif" alt = "lisan..." style="display: none; float: left">
-							<span id = "warning"></span>
-							
-							
-						</div>
-					</td>
-				<td width="50%" style="vertical-align: top">
-					<div>
-						<h3>CSV-ga Lisamine</h3>
-						<hr style="width: 96%; float: left"><br>
-						<form id="uploadform" method="post" action = "AddCSV" enctype="multipart/form-data">
-							<span style="font-weight: bold;">Õppeaine</span><br>
-							<select name="course" id = "coursesCSV">
-								
-							</select><br>
-							<p>	<span style="font-weight: bold;">Lisa ÕIS-ist allalaetud CSV fail</span><br>
-							<input type="file" name="file"> <br></p>
-							<p><button>Lisa õpilased</button></p>
-						</form>
-					</div>
-				</td>
-			</tr>
+		<br>
+		<div id="tab-container" class="tab-container">
+			<ul class='etabs'>
+				<li class='tab'><a href="#manuaalne" class="active">Manuaalne
+						lisamine</a></li>
+				<li class='tab'><a href="#CSV">CSV-ga lisamine</a></li>
+				<li class='tab'><a href="#kursusele">Kasutaja lisamine
+						kursusele</a></li>
+			</ul>
+			<div class="panel-container">
+				<div id="manuaalne">
+					<p class="field">
+						Õppeaine<br> <select id="courses">
+							<option value="notSelected"></option>
+						</select>
+					</p>
+					<p class="field">
+						Kasutajatase<br> <select id="role"
+							onchange="blackOutStudentId()">
+							<option value="notSelected"></option>
+							<option value="responsible">Vastutav kasutaja</option>
+							<option value="tudeng">Tudeng</option>
+						</select>
+					</p>
+					<p class="field">
+						E-Mail<br> <input class="inputfields" id="username"
+							maxlength="80" size="25" type="email">
+					</p>
+					<p class="field">
+						Salasõna<br> <input class="inputfields" id="secret"
+							maxlength="20" size="25" type="password" disabled="disabled">
+						<input type="checkbox" id="generate" checked="checked"
+							onclick="change()">genereeri automaatselt
+					</p>
+					<p class="field">
+						Korda salasõna<br> <input class="inputfields"
+							id="secretrepeat" maxlength="20" size="25" type="password"
+							disabled="disabled">
+					</p>
+					<p class="field">
+						Täisnimi<br> <input class="inputfields" id="fullname"
+							size="25" maxlength="60" type="text">
+					</p>
+					<p class="field">
+						Matriklinumber<br> <input class="inputfields" id="studentid"
+							size="25" disabled="disabled" maxlength="6" type="text">
+					</p>
+					<p class="field">
+						<button onclick="manualsubmit()" style="float: left;">Lisa</button>
+						<img height="20px" id="loader" src="images/ajax-loader.gif"
+							alt="lisan..."
+							style="display: none; float: left; margin-left: 10px;"> <span
+							id="warning"></span>
+					</p>
+				</div>
+				<div id="CSV">
 
-			</table>
+					<form id="uploadform" method="post" action="AddCSV"
+						enctype="multipart/form-data">
+						<p class="field">
+							Õppeaine<br> <select name="course" id="coursesCSV">
+
+							</select>
+						<p class="field">
+							Lisa ÕIS-ist allalaetud CSV fail<br> <input type="file"
+								name="file">
+						</p>
+						<p>
+							<button>Lisa õpilased</button>
+						</p>
+					</form>
+
+				</div>
+			</div>
 		</div>
+	</div>
+
+
 </body>
 </html>

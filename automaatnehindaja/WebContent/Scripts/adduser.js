@@ -10,6 +10,8 @@ var warningtext;
 var studentId;
 
 jQuery(document).ready(function(){
+	$('#tab-container').easytabs();
+	$(window).hashchange();
 	studentId = document.getElementById("studentid");
 	courseselection = document.getElementById("courses");
 	roleselection = document.getElementById("role");
@@ -34,11 +36,7 @@ jQuery(document).ready(function(){
 	
 });
 
-window.onload=function(){
-	
-	
-	
-};
+
 
 function manualsubmit(){
 	var validSubmission = true;

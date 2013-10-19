@@ -52,6 +52,8 @@ public class TaskServlet extends HttpServlet {
 			
 			catch (JSONException e) {
 			}
+			
+			c.close();
 			response.getWriter().write(json.toString());
 		}
 		catch (SQLException e){

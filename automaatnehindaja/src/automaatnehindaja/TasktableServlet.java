@@ -76,6 +76,8 @@ public class TasktableServlet extends HttpServlet {
 					response.sendRedirect("/automaatnehindaja/error.html");
 				}
 			}
+			
+			c.close();
 			response.getWriter().write(json.toString());
 		} catch (SQLException e) {
 			response.sendRedirect("/automaatnehindaja/error.html");

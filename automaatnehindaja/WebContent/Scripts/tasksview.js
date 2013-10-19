@@ -6,8 +6,11 @@ window.onload = function(){
 		}
 		else if (data.role == "admin" || data.role == "responsible"){
 			tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount);
-			$('<a>').attr("href","new_task.html").html("<button>Lisa ülesanne</button>").appendTo($("#buttonDiv"));
-			$('<a>').attr("href","addusers.html").html("<button>Lisa kasutaja</button>").appendTo($("#buttonDiv"));
+			$('<a>').attr("href","new_task.html").html("<button>Ülesannete haldus</button>").appendTo($("#buttonDiv"));
+			$('<a>').attr("href","addusers.html").html("<button>Kasutajate haldus</button>").appendTo($("#buttonDiv"));
+			if (data.role == "admin"){
+				$('<a>').attr("href","addusers.html").html("<button>Kursuste haldus</button>").appendTo($("#buttonDiv"));
+			}
 		}
 	});	
 	
