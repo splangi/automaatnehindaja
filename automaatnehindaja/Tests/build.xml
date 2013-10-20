@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="seleniumTests">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+	
+    <path id="seleniumServer">
+        <pathelement location="lib/selenium-server-standalone-2.37.0.jar"/>
+    </path>
+	
+    <path id="selenium.classpath">
+        <pathelement location="bin"/>
+        <path refid="seleniumServer"/>
+    </path>
+	
+	<target name="clean">
+        <delete dir="bin"/>
+    </target>
+	
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+	
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="selenium.classpath"/>
+        </javac>
+    </target>
+	
+	<target name="testAll">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes">
+            <formatter type="plain" usefile="false"/>
+            <test name="AddTaskTest" todir="${junit.output.dir}"/>
+			<test name="StudentUploadTest" todir="${junit.output.dir}"/>
+            <classpath refid="selenium.classpath"/>
+        </junit>
+    </target>
+	
+</project>
