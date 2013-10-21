@@ -1,0 +1,45 @@
+<meta charset="UTF-8">
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+
+<div id="manuaalne">
+	<p class="field">
+		Õppeaine<br> <select id="courses">
+			<option value="notSelected"></option>
+		</select>
+	</p>
+	<p class="field">
+		Kasutajatase<br> <select id="role" onchange="blackOutStudentId()">
+			<option value="notSelected"></option>
+			<option value="responsible">Vastutav kasutaja</option>
+			<option value="tudeng">Tudeng</option>
+		</select>
+	</p>
+	<p class="field">
+		E-Mail<br> <input class="inputfields" id="username"
+			maxlength="80" size="25" type="email">
+	</p>
+	<p class="field">
+		Salasõna<br> <input class="inputfields" id="secret"
+			maxlength="20" size="25" type="password" disabled="disabled">
+		<input type="checkbox" id="generate" checked="checked"
+			onclick="change()">genereeri automaatselt
+	</p>
+	<p class="field">
+		Korda salasõna<br> <input class="inputfields" id="secretrepeat"
+			maxlength="20" size="25" type="password" disabled="disabled">
+	</p>
+	<p class="field">
+		Täisnimi<br> <input class="inputfields" id="fullname" size="25"
+			maxlength="60" type="text">
+	</p>
+	<p class="field">
+		Matriklinumber<br> <input class="inputfields" id="studentid"
+			size="25" disabled="disabled" maxlength="6" type="text">
+	</p>
+	<p class="field">
+		<button onclick="manualsubmit()">Lisa</button>
+		<img height="20px" id="loader" src="images/ajax-loader.gif"
+			alt="lisan..." style="display: none; float: left; margin-left: 10px;">
+		<span id="warning"></span>
+	</p>
+</div>

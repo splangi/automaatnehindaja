@@ -18,12 +18,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class AddTaskServlet
  */
 @WebServlet("/addTask")
 public class AddTaskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(AddTaskServlet.class);
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -47,15 +50,15 @@ public class AddTaskServlet extends HttpServlet {
 				json_input = new JSONObject(input);
 				json_output = new JSONObject(output);
 			} catch (JSONException e1) {
-				e1.printStackTrace();
+				logger.error("JSON parsing error", e1);
 			}
-			
-			System.out.println(input.toString());
 
 			GregorianCalendar deadlineDate = new GregorianCalendar(
 					Integer.parseInt(deadline[0])-1900,
 					Integer.parseInt(deadline[1]),
 					Integer.parseInt(deadline[2]), 23, 59, 59);
+			
+			deadlineDate.toString();
 
 			Connection c = null;
 			PreparedStatement stmt = null;
@@ -68,6 +71,7 @@ public class AddTaskServlet extends HttpServlet {
 				c = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
 						"ahindaja", "k1rven2gu");
+				logger.info("Inserting a new task by: " + request.getRemoteUser());
 				statement = "INSERT INTO tasks (name, description, deadline, coursename) VALUES (?,?,?,?);";
 				stmt = c.prepareStatement(statement,
 						PreparedStatement.RETURN_GENERATED_KEYS);
@@ -80,10 +84,8 @@ public class AddTaskServlet extends HttpServlet {
 				stmt.executeUpdate();
 				rs = stmt.getGeneratedKeys();
 				int id = -1;
-				System.out.println("Juhhu!");
 				if (rs.next()) {
 					id = rs.getInt(1);
-					System.out.println("Juhhu!2");
 				}
 				else{
 					return;
@@ -120,15 +122,19 @@ public class AddTaskServlet extends HttpServlet {
 						stmt.addBatch();
 					}
 				}
+				logger.info("Task insertion succeeded, new task ID: " + id);
 				stmt.executeBatch();
 				stmt.close();
 				c.close();
 			} catch (SQLException | ClassNotFoundException | JSONException e) {
-				e.printStackTrace();
+				logger.error("Task insertion failed", e);
 				return;
 			}
 
 		}
+		else{
+			logger.warn("Unauthorized access by" + request.getRemoteUser());
+			response.sendRedirect("logout");
+		}
 	}
-
 }

@@ -10,8 +10,6 @@ var warningtext;
 var studentId;
 
 jQuery(document).ready(function(){
-	$('#tab-container').easytabs();
-	$(window).hashchange();
 	studentId = document.getElementById("studentid");
 	courseselection = document.getElementById("courses");
 	roleselection = document.getElementById("role");
@@ -107,7 +105,7 @@ function hide(targetid){
 	$("#"+targetid).css("display", "none");
 }
 
-function unhide(targerid){
+function unhide(targetid){
 	$("#"+targetid).css("display", "block");
 }
 
@@ -130,7 +128,7 @@ function post(){
 	request.done(function(){
 		hide("loader");
 		if (request.getResponseHeader("exists") === "true"){
-			warningtext.innerHTML = "  Antud emailiga kasutaja on juba olemas";
+			warningtext.innerHTML = "  Antud emailiga kasutaja on juba olemas, lisage õpilane hoopis kursusele";
 			color(username);
 		}
 		else if (request.getResponseHeader("error") === "true"){

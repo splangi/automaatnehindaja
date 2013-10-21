@@ -1,8 +1,10 @@
+@import url(http://fonts.googleapis.com/css?family=Lato);
+
 @CHARSET "UTF-8";
 
 html{
 	background: #eee;	
-	font-family:sans-serif;
+	font-family:'Lato', sans-serif;
 }
 
 .field{
@@ -26,7 +28,8 @@ html{
 #description{
 	display: none;
 	border: solid 2px black;
-	padding:10px;
+	padding-left:10px;
+	margin-bottom:10px; 
 }
 
 #logoutbutton{
@@ -94,7 +97,7 @@ html{
 }
 
 #tableDiv{
-	float:left;
+	width: 100%;
 }
 #buttonDiv{
 	float:right;
@@ -108,18 +111,22 @@ html{
 
 .tableclass {
 	border-collapse:collapse;
-	margin-top: 20px;
 	width: 100%;
 }
 
 .tableclass td{
-	width: 150px;
 	padding:5px;
+	padding-left:10px;
+	padding-right:10px;
 	text-align: center;
 }
 
+
+
 .tableclass th{ 
 	background-color: #DEDEDE;
+	padding-left:10px;
+	padding-right:10px;
 }
 
 .tableclass tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
@@ -130,7 +137,6 @@ html{
 #fileinput, #newTaskForm {
 	display: none;
 	margin-top: 20px;
-	float:left;
 }
 
 #sendFile{

@@ -1,4 +1,4 @@
-window.onload = function(){
+$(document).ready(function(){
 	var id = getUrlVars()["id"];
 	if (id === undefined){
 		window.location = "error.html";
@@ -29,7 +29,7 @@ window.onload = function(){
 			$("#resultToolarge").css("display", "block");
 		}
 	}
-};
+});
 
 
 function tableCreate(nameList, timeList, resultList, languageList, attemptIdList){

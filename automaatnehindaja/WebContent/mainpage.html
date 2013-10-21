@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Automaatne kodutööde hindaja</title>
+<link href="CSS/menu.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="Scripts/jquery.hashchange.min.js"></script>
+<script type="text/javascript" src="Scripts/menu.js"></script>
+</head>
+<body>
+	<div id = "header">
+		<h1>Automaatne kodutööde hindaja</h1>
+	</div>
+	<div id="container">
+		<div id='cssmenu' style="float: left;">
+			<ul>
+				<li class='active'><a href='#main'><span>Pealeht</span></a></li>
+				<li><a href='#tasksview'><span>Ülesanded</span></a></li>
+				<li><a href='#results'><span>Näita sooritusi</span></a>
+				<li class='has-sub'><a><span>Kasutajate haldus</span></a>
+					<ul>
+						<li><a href='#addUserManually'><span>Kasutaja lisamine</span></a></li>
+						<li><a href='#addUsersCSV'><span>Automaatne lisammine</span></a></li>
+						<li class = 'last'><a href='#addUserToCourse'><span>Lisa kasutaja kursusele</span></a></li>
+					</ul></li>
+				<li class='has-sub'><a href='#addTask'><span>Ülesannete haldus</span></a>
+					<ul>
+						<li><a href='#addTask'><span>Lisa ülesanne</span></a></li>
+						<li class='last'><a href='#closeTask'><span>Ülesannete sulgemine</span></a></li>
+					</ul></li>
+				<li class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>
+					<ul>
+						<li><a href='#addCourse'><span>Lisa kursus</span></a></li>
+						<li class='last'><a href='#'><span>kursuse sulgemine</span></a></li>
+					</ul></li>
+				<li><a href='#changepass'><span>Vaheta parool</span></a></li>
+				<li class='last'><a href='Logout'><span>Logi Välja</span></a></li>
+			</ul>
+		</div>
+		<div id ="content">
+		
+		</div>
+	</div>
+</body>
+</html>

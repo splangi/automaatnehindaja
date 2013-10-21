@@ -11,7 +11,9 @@ var	message;
 
 $(document).ready(function(){
 	getCourses();
-	 $('#deadline').Zebra_DatePicker({direction: 1, format: "d-m-Y"});
+	$.getScript("Scripts/zebra_datepicker.js", function(){
+		 $('#deadline').Zebra_DatePicker({direction: 1, format: "d-m-Y"});
+	});
 	 courses = document.getElementById("courses");
 	 description = document.getElementById("desc");
 	 deadline = document.getElementById("deadline");
@@ -66,7 +68,7 @@ function checkFields(){
 			break;
 		}
 	}
-	if (valid && tasksname.value != "" && deadline.value != "" && description.value != ""){
+	if (valid && taskname.value != "" && deadline.value != "" && description.value != ""){
 		post();
 	}
 	else {

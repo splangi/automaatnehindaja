@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>automaatnehindaja</display-name>
   <welcome-file-list>
-    <welcome-file>tasksview.html</welcome-file>
+    <welcome-file>mainpage.html</welcome-file>
   </welcome-file-list>
   <servlet>
     <servlet-name>LogoutServlet</servlet-name>
@@ -28,10 +28,12 @@
       <url-pattern>/task</url-pattern>
       <url-pattern>/tasktable</url-pattern>
       <url-pattern>/viewfile</url-pattern>
-      <url-pattern>/results.html</url-pattern>
-      <url-pattern>/download.html</url-pattern>
-      <url-pattern>/taskview.html</url-pattern>
-      <url-pattern>/tasksview.html</url-pattern>
+      <url-pattern>/mainpage.html</url-pattern>
+      <url-pattern>/html/change_pass.html</url-pattern>
+      <url-pattern>/html/main.html</url-pattern>
+      <url-pattern>/html/results.html</url-pattern>
+      <url-pattern>/html/tasksview.html</url-pattern>
+      <url-pattern>/html/tasksiew.html</url-pattern>
       <url-pattern>/CSS/*</url-pattern>
       <url-pattern>/Scripts/*</url-pattern>
       <url-pattern>/download</url-pattern>
@@ -46,10 +48,12 @@
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>secured</web-resource-name>
-      <url-pattern>/addusersmanually</url-pattern>
-      <url-pattern>/addusers.html</url-pattern>
-      <url-pattern>/new_task.html</url-pattern>
+      <url-pattern>/html/addusermanually</url-pattern>
+      <url-pattern>/html/adduserscsv.html</url-pattern>
+      <url-pattern>/addTask.html</url-pattern>
       <url-pattern>/addTask</url-pattern>
+      <url-pattern>/addusermanually</url-pattern>
+      <url-pattern>/AddCSV</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>

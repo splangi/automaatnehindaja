@@ -4,7 +4,26 @@
 <meta charset="UTF-8">
 <title>Viga</title>
 <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
-<script  type="text/javascript" src="Scripts/error.js"></script>
+<script  type="text/javascript">
+
+var count=5;
+
+var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+
+function timer()
+{
+  count=count-1;
+  if (count <= 0)
+  {
+     clearInterval(counter);
+     window.location = "mainpage.html#main";
+     return;
+  }
+
+  document.getElementById("seconds").innerHTML=count;
+}
+
+</script>
 </head>
 <body>
 

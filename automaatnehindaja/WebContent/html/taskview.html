@@ -1,0 +1,26 @@
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<meta charset="UTF-8">
+<img id="taskViewLoader" src="images/ajax-loader.gif" alt="loading">
+<div id="title"></div>
+<div id="deadline"></div>
+<div id="description"></div>
+<div id="attempts"></div>
+<div id="fileinput">
+	<p id="resultOk" hidden="true"
+		style="background: #CCFF99; display: none; padding:5px;">
+		Üleslaadimine õnnestus!</p>
+	<p id="resultIncorrect" hidden="true"
+		style="background: #FF5C33; display: none">Fail puudus või oli
+		vale vorminguga</p>
+	<p id="resultToolarge" hidden="true"
+		style="background: #FF5C33; display: none; padding:5px;">Fail on
+		liiga suur, Maksimaalne suurus 1MB</p>
+	<form id="uploadform" method="post" enctype="multipart/form-data">
+		<input type="file" name="file"> <select name="language">
+			<option value="Python 3">Python 3</option>
+			<option value="Python 2">Python 2.7</option>
+			<option value="java">Java</option>
+		</select>
+		<button>Saada hindamisele</button>
+	</form>
+</div>

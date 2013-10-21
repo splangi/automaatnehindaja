@@ -1,4 +1,6 @@
-window.onload = function(){
+$(document).ready(initialize());
+	
+function initialize(){
 	jQuery.getJSON("resulttable", function(data) {
 		$("#resultsLoader").css("display", "none");
 		tableCreate(data.fullname, data.taskname, data.time, data.result, data.language, data.id);
@@ -22,7 +24,7 @@ function tableCreate(nameList, tasknameList, deadlineList, resultList, languageL
 		row = document.createElement("tr");
 		jQuery("<td />").text(nameList[i]).appendTo(row);
 		var cell = document.createElement("td");
-		cell.innerHTML = "<a href = taskview.html?id="+ idList[i] + ">" + tasknameList[i] + "</a>";
+		cell.innerHTML = "<a href = #taskview.html?id="+ idList[i] + ">" + tasknameList[i] + "</a>";
 		row.appendChild(cell);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultList[i]).appendTo(row);

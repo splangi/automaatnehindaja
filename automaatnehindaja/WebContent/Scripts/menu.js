@@ -1,0 +1,76 @@
+$(document).ready(function() {
+	$(window).hashchange(function() {
+		var hash = location.hash;
+		load(hash);
+	});
+	var hash = location.hash;
+	if (hash == ""){
+		hash = "#main";
+	}
+	load(hash);
+	$('#cssmenu ul ul li:odd').addClass('odd');
+	$('#cssmenu ul ul li:even').addClass('even');
+	$('#cssmenu > ul > li > a').click(function() {
+		$('#cssmenu li').removeClass('active');
+		$(this).closest('li').addClass('active');
+		var checkElement = $(this).next();
+		if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+			$(this).closest('li').removeClass('active');
+			checkElement.slideUp('normal');
+		}
+		if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+			$('#cssmenu ul ul:visible').slideUp('normal');
+			checkElement.slideDown('normal');
+		}
+		if ($(this).closest('li').find('ul').children().length == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+});
+
+function changeActive(){
+	
+}
+
+function load(page){
+	if (page.indexOf("#tasksview") != -1){
+		$("#content").load("html/tasksview.html");
+		$.getScript("Scripts/tasksview.js");
+		$('a[href$="#tasksview"]').trigger("click");
+	}
+	else if (page == "#main"){
+		$("#content").load("html/main.html");
+		$('a[href$="#main"]').trigger("click");
+	}
+	else if (page == "#changepass"){
+		$("#content").load("html/change_pass.html");
+		$.getScript("Scripts/changepass.js");
+		$('a[href$="#changepass"]').trigger("click");
+	}
+	else if (page == "#results"){
+		$("#content").load("html/results.html");
+		$.getScript("Scripts/results.js");
+		$('a[href$="#results"]').trigger("click");
+	}
+	else if (page == "#addUserManually"){
+		$("#content").load("html/addusermanually.html");
+		$.getScript("Scripts/adduser.js");
+		$('a[href$="#addUserManually"]').trigger("click");
+	}
+	else if (page == "#addUsersCSV"){
+		$("#content").load("html/addusercsv.html");
+		$.getScript("Scripts/adduser.js");
+		$('a[href$="#addUsersCSV"]').trigger("click");
+	}
+	else if (page == "#addTask"){
+		$("#content").load("html/addTask.html");
+		$.getScript("Scripts/addtask.js");
+		$('a[href$="#addTask"]').trigger("click");
+	}
+	else if (page.indexOf("#taskview") != -1){
+		$("#content").load("html/taskview.html");
+		$.getScript("Scripts/taskview.js");
+	}
+}

@@ -1,4 +1,7 @@
-window.onload = function(){
+$(document).ready(initialLoad());
+
+
+function initialLoad(){
 	jQuery.getJSON("Taskstable", function(data) {
 		$("#tasksViewLoader").css("display", "none");
 		if (data.role == "tudeng"){
@@ -13,8 +16,7 @@ window.onload = function(){
 			}
 		}
 	});	
-	
-};
+}
 
 
 function tableCreate(idList, nameList, deadlineList, resultList){
@@ -30,7 +32,8 @@ function tableCreate(idList, nameList, deadlineList, resultList){
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
-		cell.innerHTML = "<a href = taskview.html?id="+ idList[i] + ">" + nameList[i] + "</a>";
+		cell.innerHTML = '<a href="#taskview.html?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		//link.setAttribute("onclick", 'load("html/taskview.html?id="' + idList[i] + ', "adduser.js")');
 		row.appendChild(cell);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultList[i]).appendTo(row);
@@ -55,7 +58,7 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
-		cell.innerHTML = "<a href = taskview.html?id="+ idList[i] + ">" + nameList[i] + "</a>";
+		cell.innerHTML = '<a href = "#taskview?id=' + idList[i] + '" onclick = load("html/taskview.html","taskview.js") >' + nameList[i] + "</a>";
 		row.appendChild(cell);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultCount[i]).appendTo(row);
