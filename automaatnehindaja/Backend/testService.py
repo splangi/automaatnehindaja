@@ -119,7 +119,7 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
         else:            
             aOutput = applicationOutput.split('\n')
             for k in range(len(taskOutputArray[i])):
-                if (aOutput[k].rstrip() != aOutput[k].rstrip()):
+                if (aOutput[k].rstrip() != taskOutputArray[i][k].rstrip()):
                     updateDatabase(cursor, attemptId, 'Vale tulemus')
                     return
             updateDatabase(cursor, attemptId, 'OK')
