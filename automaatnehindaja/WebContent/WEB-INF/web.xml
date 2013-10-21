@@ -36,7 +36,10 @@
       <url-pattern>/html/tasksiew.html</url-pattern>
       <url-pattern>/CSS/*</url-pattern>
       <url-pattern>/Scripts/*</url-pattern>
+      <url-pattern>/images/*</url-pattern>
       <url-pattern>/download</url-pattern>
+      <url-pattern>/resulttable</url-pattern>
+      <url-pattern>/getcoursenames</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
@@ -44,11 +47,14 @@
       <role-name>tudeng</role-name>
       <role-name>admin</role-name>
     </auth-constraint>
+    <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
   </security-constraint>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>secured</web-resource-name>
-      <url-pattern>/html/addusermanually</url-pattern>
+      <url-pattern>/html/addusermanually.html</url-pattern>
       <url-pattern>/html/adduserscsv.html</url-pattern>
       <url-pattern>/addTask.html</url-pattern>
       <url-pattern>/addTask</url-pattern>
@@ -61,18 +67,14 @@
       <role-name>admin</role-name>
       <role-name>responsible</role-name>
     </auth-constraint>
-  </security-constraint>
-  <security-constraint>
-    <web-resource-collection>
-        <web-resource-name>securedapp</web-resource-name>
-        <url-pattern>/*</url-pattern>
-    </web-resource-collection>
     <user-data-constraint>
         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
-  </security-constraint>
+   </security-constraint>
   <security-role>
     <role-name>tudeng</role-name>
+    <role-name>responsible</role-name>
+    <role-name>admin</role-name>
   </security-role>
   <login-config>
     <auth-method>FORM</auth-method>
