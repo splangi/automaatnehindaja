@@ -35,7 +35,7 @@ public class AddTaskTest {
     username.clear();
     username.sendKeys("henri");
     
-    WebElement pass = driver.findElement(By.name("j_password"));
+    WebElement pass = driver.findElement(By.name("password"));
     pass.clear();
     pass.sendKeys("passwd");
     pass.submit();

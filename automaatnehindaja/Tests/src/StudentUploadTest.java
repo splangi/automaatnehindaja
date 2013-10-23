@@ -30,7 +30,7 @@ public class StudentUploadTest {
     username.clear();
     username.sendKeys("splangi");
     
-    WebElement pass = driver.findElement(By.name("j_password"));
+    WebElement pass = driver.findElement(By.name("password"));
     pass.clear();
     pass.sendKeys("password");
     pass.submit();
