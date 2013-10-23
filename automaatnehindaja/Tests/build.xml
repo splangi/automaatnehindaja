@@ -9,10 +9,14 @@
     <path id="seleniumServer">
         <pathelement location="lib/selenium-server-standalone-2.37.0.jar"/>
     </path>
+	<path id="MySQLConnector">
+        <pathelement location="lib/mysql-connector-java-5.1.26-bin.jar"/>
+    </path>
 	
     <path id="selenium.classpath">
         <pathelement location="bin"/>
         <path refid="seleniumServer"/>
+		<path refid="MySQLConnector"/>
     </path>
 	
 	<target name="clean">
