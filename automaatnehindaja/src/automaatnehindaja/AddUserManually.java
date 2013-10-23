@@ -1,6 +1,7 @@
 package automaatnehindaja;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -39,7 +40,10 @@ public class AddUserManually extends HttpServlet {
 			if (autogenerate.equals("true")) {
 				newPassword = generator.generatePassword();
 			}
+			
 			try {
+				String newPasswordHash = PasswordGeneratorAndMailer.sha1(newPassword);
+				
 				Class.forName("com.mysql.jdbc.Driver");
 				c = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
@@ -59,7 +63,7 @@ public class AddUserManually extends HttpServlet {
 						statement = "INSERT INTO users VALUES (?,?,?,?);";
 						stmt = c.prepareStatement(statement);
 						stmt.setString(1, newUsername);
-						stmt.setString(2, newPassword);
+						stmt.setString(2, newPasswordHash);
 						stmt.setString(3, fullname);
 						if (studentid.length() != 6) {
 							stmt.setNull(4, java.sql.Types.VARCHAR);
@@ -95,6 +99,8 @@ public class AddUserManually extends HttpServlet {
 				logger.error("ClassNotFoundException when adding user. Request By:" + request.getRemoteUser(), f);
 				f.printStackTrace();
 				response.setHeader("error", "true");
+			} catch (NoSuchAlgorithmException e1) {
+				e1.printStackTrace();
 			}
 		} else {
 			logger.warn("Unauthorized access by: " + request.getRemoteUser());
