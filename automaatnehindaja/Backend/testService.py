@@ -92,6 +92,7 @@ def writeSourcecodeToFile(source_code):
 #Function for running students source code
 #Function also checks for timeout, compile errors and checks if the answer is correct
 def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemptId):
+    resultRight = True
     for i in range(len(taskInputArray)):
         inputString = ''
         for j in range(len(taskInputArray[i])):
@@ -106,23 +107,32 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
         applicationOutput = connectionToAttempt.communicate (inputString.encode('utf-8'))[0]
         endTime = datetime.datetime.now()
         deltaTime = endTime - startTime
-
+        if (len(applicationOutput)>2000):
+            applicationOutput = ''
+            updateDatabase(cursor, attemptId, 'Timeout')
+            resultRight = False
+            break
         queryForAttemptOutput = ("DELETE FROM attempt_output where attempt_id=%s AND seq=%s")
         cursor.execute(queryForAttemptOutput,(attemptId, i+1))
         queryForAttemptOutput = ("INSERT INTO attempt_output (attempt_id, seq, output) VALUES (%s, %s, %s)")
         cursor.execute(queryForAttemptOutput,(attemptId, i+1, applicationOutput))
-        
         if (deltaTime.seconds >= 30):
             updateDatabase(cursor, attemptId, 'Timeout')
+            resultRight = False
+            break
         elif (('Error' in applicationOutput) & ('File "temp.py"' in applicationOutput)):
             updateDatabase(cursor, attemptId, 'Kompileerimise viga')
-        else:            
+            resultRight = False
+            break
+        else:
             aOutput = applicationOutput.split('\n')
             for k in range(len(taskOutputArray[i])):
                 if (aOutput[k].rstrip() != taskOutputArray[i][k].rstrip()):
                     updateDatabase(cursor, attemptId, 'Vale tulemus')
+                    resultRight = False
                     return
-            updateDatabase(cursor, attemptId, 'OK')
+            if (resultRight):
+                updateDatabase(cursor, attemptId, 'OK')
 
 
 #Updates the database with new result. 'OK' if output was right and 'Vale tulemus' if wrong
