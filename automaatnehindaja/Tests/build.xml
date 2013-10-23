@@ -43,7 +43,7 @@
 	<target name="testAll">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes">
-            <formatter type="plain" usefile="false"/>
+            <formatter type="xml" usefile="true"/>
             <test name="AddTaskTest" todir="${junit.output.dir}"/>
 			<test name="StudentUploadTest" todir="${junit.output.dir}"/>
             <classpath refid="selenium.classpath"/>
