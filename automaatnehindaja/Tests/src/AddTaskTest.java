@@ -69,7 +69,7 @@ public class AddTaskTest {
     driver.findElement(By.xpath("//button[@onclick='addio()']")).click();
     driver.findElement(By.id("input1")).sendKeys("test2");
     driver.findElement(By.id("output1")).sendKeys("test2");
-    Thread.sleep(200);
+    Thread.sleep(1000);
     driver.findElement(By.xpath("//button[@onclick='checkFields()']")).click();
     
     (new WebDriverWait(driver, 10)).

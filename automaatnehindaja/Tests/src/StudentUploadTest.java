@@ -14,7 +14,7 @@ public class StudentUploadTest {
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
-  private String uploadFilePath = "C:\\Users\\JUSS\\Desktop\\TVP\\TESTING\\splangi_Maatriksi transponeerimine.py";
+  private String uploadFilePath = "/home/ubuntu/web/tests/splangi_Maatriksi transponeerimine.py";
 
   @Before
   public void setUp() throws Exception {
