@@ -52,8 +52,6 @@ public class StudentUploadTest {
     
     (new WebDriverWait(driver, 10)).
     	until(ExpectedConditions.visibilityOfElementLocated(By.id("resultOk")));
-    
-    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
   }
 
   @After
