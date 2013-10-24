@@ -15,6 +15,8 @@ $(document).ready(function(){
 		});	
 		jQuery.getJSON("tasktable?id=" + id, function(data) {
 			tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId);
+			document.getElementById("taskViewLoader").display = "none";
+			
 	});
 	}
 	var result = getUrlVars()["result"];

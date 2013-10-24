@@ -12,7 +12,7 @@
 	}
 
 	#LogInWindow{
-		
+		z-index: 1;
 		width: 400px;
 		height: 220px;
 		background-color: white;
@@ -31,6 +31,9 @@
 	}
 
 </style>
+<script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="Scripts/sha1.js"></script>
+<script type="text/javascript" src="Scripts/login.js"></script>
 </head>
 
 <body>
@@ -38,10 +41,11 @@
 	<div id="LogInWindow" align="center">
 		<p>Tere tulemast automaatse programeerimisülesannete kontrollija rakendusse</p>
 		
-		<form method="post" action="j_security_check">
+		<form id="login" method="post" action="j_security_check">
 			<p>E-mail: <br> <input type="text" name="j_username" autofocus="autofocus"> </p>
-			<p>Salasõna: <br> <input type="password" name="j_password"> </p>
-			<button>Sisene</button>
+			<p>Salasõna: <br> <input type="password" name="password"> </p>
+			<input type="password" name="j_password" style="display: none;">
+			<input type="submit" value="Sisene">
 		</form>
 	</div>
 

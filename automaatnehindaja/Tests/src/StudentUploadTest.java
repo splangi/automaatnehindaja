@@ -14,7 +14,7 @@ public class StudentUploadTest {
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
-  private String uploadFilePath = "/home/ubuntu/testylesanne.py";
+  private String uploadFilePath = "/home/ubuntu/web/tests/splangi_Maatriksi transponeerimine.py";
 
   @Before
   public void setUp() throws Exception {
@@ -30,14 +30,18 @@ public class StudentUploadTest {
     username.clear();
     username.sendKeys("splangi");
     
-    WebElement pass = driver.findElement(By.name("j_password"));
+    WebElement pass = driver.findElement(By.name("password"));
     pass.clear();
     pass.sendKeys("password");
     pass.submit();
     
     WebDriverWait wait = new WebDriverWait(driver, 10);
-    WebElement ylesanne1 = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Ülesanne 1")));
-    ylesanne1.click(); 
+    WebElement ylesanded = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Ülesanded")));
+    ylesanded.click(); 
+    
+    WebDriverWait wait2 = new WebDriverWait(driver, 10);
+    WebElement ylesanne = wait2.until(ExpectedConditions.elementToBeClickable(By.linkText("Maatriksi transponeerimine")));
+    ylesanne.click();
     
     WebElement fileInput = (new WebDriverWait(driver, 10)).
     	until(ExpectedConditions.visibilityOfElementLocated(By.name("file")));
@@ -48,8 +52,6 @@ public class StudentUploadTest {
     
     (new WebDriverWait(driver, 10)).
     	until(ExpectedConditions.visibilityOfElementLocated(By.id("resultOk")));
-    
-    driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
   }
 
   @After

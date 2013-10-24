@@ -39,8 +39,6 @@ public class GetCourseNamesServlet extends HttpServlet {
 			stmt = c.prepareStatement(statement);
 			stmt.setString(1, request.getRemoteUser());
 			
-			System.out.println(stmt.toString());
-			
 			rs = stmt.executeQuery();
 			
 			JSONObject json = new JSONObject();

@@ -1,6 +1,7 @@
 package automaatnehindaja;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class AddUserManually extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		if (request.isUserInRole("admin")
 				|| request.isUserInRole("responsible")) {
-			
+						
 			Connection c = null;
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
@@ -39,7 +40,16 @@ public class AddUserManually extends HttpServlet {
 			if (autogenerate.equals("true")) {
 				newPassword = generator.generatePassword();
 			}
+			
+			if (!request.isUserInRole("admin") && role == "admin"){
+				logger.warn("Unathorized admin adding, request by: " + request.getRemoteUser());
+				response.setHeader("error", "true");
+				return;
+			}
+			
 			try {
+				String newPasswordHash = PasswordGeneratorAndMailer.sha1(newPassword);
+				
 				Class.forName("com.mysql.jdbc.Driver");
 				c = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
@@ -59,7 +69,7 @@ public class AddUserManually extends HttpServlet {
 						statement = "INSERT INTO users VALUES (?,?,?,?);";
 						stmt = c.prepareStatement(statement);
 						stmt.setString(1, newUsername);
-						stmt.setString(2, newPassword);
+						stmt.setString(2, newPasswordHash);
 						stmt.setString(3, fullname);
 						if (studentid.length() != 6) {
 							stmt.setNull(4, java.sql.Types.VARCHAR);
@@ -68,18 +78,36 @@ public class AddUserManually extends HttpServlet {
 						}
 						stmt.executeUpdate();
 						stmt.close();
+						
 						statement = "INSERT INTO users_roles VALUES (?,?);";
 						stmt = c.prepareStatement(statement);
 						stmt.setString(1, newUsername);
 						stmt.setString(2, role);
 						stmt.executeUpdate();
 						stmt.close();
-						statement = "INSERT INTO users_courses VALUES (?,?);";
-						stmt = c.prepareStatement(statement);
-						stmt.setString(1, newUsername);
-						stmt.setString(2, course);
-						stmt.executeUpdate();
-						stmt.close();
+						if (role == "admin"){
+							statement = "SELECT coursename FROM courses;";
+							stmt = c.prepareStatement(statement);
+							rs = stmt.executeQuery();
+							String statement2 = "INSERT INTO users_courses VALUES (?,?)";
+							PreparedStatement stmt2 = c.prepareStatement(statement2);
+							while (rs.next()){
+								stmt2.setString(1, newUsername);
+								stmt2.setString(2, rs.getString(1));
+								stmt2.addBatch();
+							}
+							stmt2.executeBatch();
+							stmt.close();
+							stmt2.close();
+						}
+						else{
+							statement = "INSERT INTO users_courses VALUES (?,?);";
+							stmt = c.prepareStatement(statement);
+							stmt.setString(1, newUsername);
+							stmt.setString(2, course);
+							stmt.executeUpdate();
+							stmt.close();
+						}
 						if (autogenerate.equals("true")) {
 							generator.emailPassword(newUsername, newPassword);
 						}
@@ -95,6 +123,8 @@ public class AddUserManually extends HttpServlet {
 				logger.error("ClassNotFoundException when adding user. Request By:" + request.getRemoteUser(), f);
 				f.printStackTrace();
 				response.setHeader("error", "true");
+			} catch (NoSuchAlgorithmException e1) {
+				e1.printStackTrace();
 			}
 		} else {
 			logger.warn("Unauthorized access by: " + request.getRemoteUser());

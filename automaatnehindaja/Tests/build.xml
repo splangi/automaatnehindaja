@@ -9,10 +9,14 @@
     <path id="seleniumServer">
         <pathelement location="lib/selenium-server-standalone-2.37.0.jar"/>
     </path>
+	<path id="MySQLConnector">
+        <pathelement location="lib/mysql-connector-java-5.1.26-bin.jar"/>
+    </path>
 	
     <path id="selenium.classpath">
         <pathelement location="bin"/>
         <path refid="seleniumServer"/>
+		<path refid="MySQLConnector"/>
     </path>
 	
 	<target name="clean">
@@ -39,7 +43,7 @@
 	<target name="testAll">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes">
-            <formatter type="plain" usefile="false"/>
+            <formatter type="xml" usefile="true"/>
             <test name="AddTaskTest" todir="${junit.output.dir}"/>
 			<test name="StudentUploadTest" todir="${junit.output.dir}"/>
             <classpath refid="selenium.classpath"/>

@@ -25,21 +25,20 @@
       <web-resource-name>secured</web-resource-name>
       <url-pattern>/upload</url-pattern>
       <url-pattern>/Taskstable</url-pattern>
+      <url-pattern>/ChangePassServlet</url-pattern>
       <url-pattern>/task</url-pattern>
+      <url-pattern>/getRole</url-pattern>
       <url-pattern>/tasktable</url-pattern>
       <url-pattern>/viewfile</url-pattern>
+      <url-pattern>/download</url-pattern>
+      <url-pattern>/resulttable</url-pattern>
+      <url-pattern>/getcoursenames</url-pattern>
       <url-pattern>/mainpage.html</url-pattern>
       <url-pattern>/html/change_pass.html</url-pattern>
       <url-pattern>/html/main.html</url-pattern>
       <url-pattern>/html/results.html</url-pattern>
       <url-pattern>/html/tasksview.html</url-pattern>
       <url-pattern>/html/tasksiew.html</url-pattern>
-      <url-pattern>/CSS/*</url-pattern>
-      <url-pattern>/Scripts/*</url-pattern>
-      <url-pattern>/images/*</url-pattern>
-      <url-pattern>/download</url-pattern>
-      <url-pattern>/resulttable</url-pattern>
-      <url-pattern>/getcoursenames</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
@@ -48,15 +47,15 @@
       <role-name>admin</role-name>
     </auth-constraint>
     <user-data-constraint>
-        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>secured</web-resource-name>
       <url-pattern>/html/addusermanually.html</url-pattern>
-      <url-pattern>/html/adduserscsv.html</url-pattern>
-      <url-pattern>/addTask.html</url-pattern>
+      <url-pattern>/html/addusercsv.html</url-pattern>
+      <url-pattern>/html/addTask.html</url-pattern>
       <url-pattern>/addTask</url-pattern>
       <url-pattern>/addusermanually</url-pattern>
       <url-pattern>/AddCSV</url-pattern>
@@ -68,19 +67,17 @@
       <role-name>responsible</role-name>
     </auth-constraint>
     <user-data-constraint>
-        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
-   </security-constraint>
+  </security-constraint>
   <security-role>
-    <role-name>tudeng</role-name>
-    <role-name>responsible</role-name>
     <role-name>admin</role-name>
   </security-role>
   <login-config>
     <auth-method>FORM</auth-method>
     <form-login-config>
       <form-login-page>/login_page.html</form-login-page>
-      <form-error-page>/login_failure.html</form-error-page>
+      <form-error-page>/login_page.html</form-error-page>
     </form-login-config>
   </login-config>
 </web-app>
