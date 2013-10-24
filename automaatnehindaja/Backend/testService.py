@@ -167,7 +167,7 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
             updateDatabase(cursor, attemptId, 'Timeout')
             resultRight=False
             break
-        elif (('Error' in applicationOutput) & ('File "temp.py"' in applicationOutput)):
+        elif (('Error' in applicationOutput) & ('File "' + clocation + '\temp.py",' in applicationOutput)):
             updateDatabase(cursor, attemptId, 'Kompileerimise viga')
             resultRight=False
             break
