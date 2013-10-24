@@ -1,0 +1,15 @@
+#Database configuration
+host=localhost
+dbuser=ahindaja
+passwd=k1rven2gu
+database=automaatnehindaja
+
+#Application configuration
+#How long students program can run before timeout is called (seconds)
+timeout=5
+#How long students program output can be (characters)
+output_length=2000
+#How often application should check database for new tasks (seconds)
+wait_time=30
+#Username which will be used to run students application (should not have permissions to delete files, etc)
+username=ahindaja

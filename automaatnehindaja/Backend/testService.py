@@ -2,13 +2,52 @@ import MySQLdb as mdb
 from time import sleep
 from subprocess import Popen, STDOUT, PIPE
 import datetime
+import os
 
 
+#Database
+chost = ''
+cuser = ''
+cpasswd = ''
+cdb = ''
+
+#Application
+ctimeout = ''
+coutputlen = ''
+cwaittime = ''
+cusername = ''
+clocation = os.getcwd() +'/temp.py'
+
+
+#Function for reading configuration
+if (True):
+    f = open('config')
+    for line in f:
+        if (line.startswith('host')):
+            chost = line.split('=')[1].strip()
+        elif (line.startswith('dbuser')):
+            cuser = line.split('=')[1].strip()
+        elif (line.startswith('passwd')):
+            cpasswd = line.split('=')[1].strip()
+        elif (line.startswith('host')):
+            chost = line.split('=')[1].strip()
+        elif (line.startswith('database')):
+            cdb = line.split('=')[1].strip()
+        elif (line.startswith('timeout')):
+            ctimeout = line.split('=')[1].strip()
+        elif (line.startswith('output_length')):
+            coutputlen = int(line.split('=')[1].strip())
+        elif (line.startswith('wait_time')):
+            cwaittime = int(line.split('=')[1].strip())
+        elif (line.startswith('username')):
+            cusername = line.split('=')[1].strip()
+    
+    
 
 #Function for connecting the MySQL database
 #Returns cursor to access database
 def connectToDatabase():
-    cnx = mdb.connect(host='localhost',user='ahindaja',passwd='k1rven2gu',db='automaatnehindaja')
+    cnx = mdb.connect(host=chost,user=cuser,passwd=cpasswd,db=cdb)
     cnx.autocommit(True)
     cursor = cnx.cursor()
     return cursor
@@ -20,8 +59,8 @@ def checkForAttempts(cursor):
     queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
     cursor.execute(queryForAttempts)
     while (cursor.rowcount==0):
-        for i in range(10):
-            sleep(3)
+        for i in range(cwaittime):
+            sleep(1)
         queryForAttempts = ("SELECT * FROM attempt WHERE result='Kontrollimata' LIMIT 0, 1")
         cursor.execute(queryForAttempts)
     for (line) in cursor:
@@ -31,7 +70,7 @@ def checkForAttempts(cursor):
         time = line[3]
         result = line[4]
         source_code = line[5]
-        language = line[6]  
+        language = line[6]
         queryForResultUpdate = ("UPDATE attempt SET result='Kontrollimisel' WHERE id=%s")
         cursor.execute(queryForResultUpdate,(attemptId))
         return (attemptId, username, task, time, result, source_code, language)
@@ -44,7 +83,7 @@ def getTasksInput(cursor, task):
     cursor.execute(queryForIO, (task))
     outerArray = []
     innerArray = []
-    outerCounter = 1
+    outerCounter = 0
     for (line) in cursor:
         outer_seq = line[0]
         inner_seq = line[1]
@@ -67,12 +106,12 @@ def getTasksExOutput(cursor, task):
     cursor.execute(queryForIO, (task))
     outerArray = []
     innerArray = []
-    outerCounter = 1
+    outerCounter = 0
     for (line) in cursor:
         outer_seq = line[0]
         inner_seq = line[1]
         taskInput = line[2]
-        if (outer_seq != outerCounter) :
+        if (outer_seq != outerCounter):
             outerCounter = outer_seq
             outerArray.append(innerArray)
             innerArray = []
@@ -87,6 +126,7 @@ def getTasksExOutput(cursor, task):
 def writeSourcecodeToFile(source_code):
     file = open('temp.py','w')
     file.write("".join(source_code))
+    file.close()
     
 
 #Function for running students source code
@@ -100,37 +140,44 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
             if (j != len(taskInputArray[i])-1):
                 inputString += '\n'
         startTime = datetime.datetime.now()
-        if (language == 'Python3.2'):
-            connectionToAttempt = Popen(['timeout','30','python3','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-        else:
-            connectionToAttempt = Popen(['timeout','30','python','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        if (language == 'Python 3'):
+            stri = 'timeout ' + ctimeout + ' python3 ' + clocation
+            connectionToAttempt = Popen(['/bin/su', '-', cusername, '-c', stri],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+
+            #connectionToAttempt = Popen(['timeout',ctimeout,'python3','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        elif (language == 'Python 2'):
+            stri = 'timeout ' + ctimeout + ' python ' + clocation
+            connectionToAttempt = Popen(['/bin/su', '-', cusername, '-c', stri],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        
+            #connectionToAttempt = Popen(['timeout',ctimeout,'python','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         applicationOutput = connectionToAttempt.communicate (inputString.encode('utf-8'))[0]
         endTime = datetime.datetime.now()
         deltaTime = endTime - startTime
-        if (len(applicationOutput)>2000):
-            applicationOutput = ''
+        if (len(applicationOutput)>coutputlen):
+            applicationOutput=''
             updateDatabase(cursor, attemptId, 'Timeout')
-            resultRight = False
+            resultRight=False
             break
         queryForAttemptOutput = ("DELETE FROM attempt_output where attempt_id=%s AND seq=%s")
         cursor.execute(queryForAttemptOutput,(attemptId, i+1))
         queryForAttemptOutput = ("INSERT INTO attempt_output (attempt_id, seq, output) VALUES (%s, %s, %s)")
         cursor.execute(queryForAttemptOutput,(attemptId, i+1, applicationOutput))
-        if (deltaTime.seconds >= 30):
+        
+        if (deltaTime.seconds >= ctimeout):
             updateDatabase(cursor, attemptId, 'Timeout')
-            resultRight = False
+            resultRight=False
             break
         elif (('Error' in applicationOutput) & ('File "temp.py"' in applicationOutput)):
             updateDatabase(cursor, attemptId, 'Kompileerimise viga')
-            resultRight = False
+            resultRight=False
             break
-        else:
+        else:            
             aOutput = applicationOutput.split('\n')
             for k in range(len(taskOutputArray[i])):
                 if (aOutput[k].rstrip() != taskOutputArray[i][k].rstrip()):
                     updateDatabase(cursor, attemptId, 'Vale tulemus')
-                    resultRight = False
-                    return
+                    resultRight=False
+                    break
             if (resultRight):
                 updateDatabase(cursor, attemptId, 'OK')
 
@@ -139,8 +186,8 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
 def updateDatabase(cursor, attempId, result):
     queryForResultUpdate = ("UPDATE attempt SET result=%s WHERE id=%s AND result='Kontrollimisel'")
     cursor.execute(queryForResultUpdate,(result, attemptId))
-    
-        
+
+
 
 while (True):
     cursor = connectToDatabase()        
