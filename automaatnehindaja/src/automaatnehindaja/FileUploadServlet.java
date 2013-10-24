@@ -22,12 +22,14 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 //TODO õppejõu conf
 @MultipartConfig(location = "tmp", fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024, maxRequestSize = 1024 * 1024 * 2)
 @WebServlet("/upload")
 public class FileUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(FileUploadServlet.class);
 
 	public FileUploadServlet() {
 		super();
@@ -45,13 +47,14 @@ public class FileUploadServlet extends HttpServlet {
 			response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid +"&result=incorrect");
 			return;
 		}
+		logger.info("Starting to upload a students solution, by: " + request.getRemoteUser());
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		try {
 			List<FileItem> fields = upload.parseRequest(request);
 			Iterator<FileItem> it = fields.iterator();
 			if (fields.size()!=2) {
-				response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid +"&result=incorrect");
+				response.sendRedirect("/automaatnehindaja/mainpage.html#taskview?id=" + taskid +"&result=incorrect");
 				return;
 			}
 			if (it.hasNext()) {
@@ -61,11 +64,13 @@ public class FileUploadServlet extends HttpServlet {
 				FileItem languageitem = it.next();
 				String language = languageitem.getString();
 				if (!(fileitem.getName().endsWith(".py") || fileitem.getName().endsWith(".java"))){
-					response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid +"&result=incorrect");
+					logger.info("Upload failed!, notcorrect file end");
+					response.sendRedirect("/automaatnehindaja/mainpage.html#taskview?id=" + taskid +"&result=incorrect");
 					return;
 				}
 				if (fileitem.getSize()>1024*1024){
-					response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid +"&result=toolarge");
+					logger.info("Upload failed!, too large");
+					response.sendRedirect("/automaatnehindaja/mainpage.html#taskview?id=" + taskid +"&result=toolarge");
 					return;
 				}
 				Class.forName("com.mysql.jdbc.Driver");
@@ -101,24 +106,22 @@ public class FileUploadServlet extends HttpServlet {
 					stmt.setString(6, "kontrollimata");
 					stmt.executeUpdate();
 				}				
-				response.sendRedirect("/automaatnehindaja/taskview.html?id=" + taskid + "&result=ok");
+				response.sendRedirect("/automaatnehindaja/mainpage.html#taskview?id=" + taskid + "&result=ok");
 				c.close();
 			}
+			logger.info("Upload succeeded!");
 			
 		} 
 		catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("SQL Exception");
+			logger.error("SQL Exception. Request by: " + request.getRemoteUser(), e);
 			response.sendRedirect("/automaatnehindaja/error.html");
 		}
 		catch (FileUploadException f){
-			f.printStackTrace();
-			System.out.println("FileUploadException");
+			logger.error("FileUploadException. Request by: " + request.getRemoteUser(), f);
 			response.sendRedirect("/automaatnehindaja/error.html");
 		}
 		catch (ClassNotFoundException g){
-			g.printStackTrace();
-			System.out.println("ClassNotFoundException");
+			logger.error("ClassNotFoundEception. Request by: " + request.getRemoteUser(), g);
 			response.sendRedirect("/automaatnehindaja/error.html");
 		}
 		  

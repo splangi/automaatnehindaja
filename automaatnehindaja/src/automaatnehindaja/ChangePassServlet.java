@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Servlet implementation class ChangePassServlet
@@ -20,25 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/ChangePassServlet")
 public class ChangePassServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(ChangePassServlet.class);
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ChangePassServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String username = request.getRemoteUser();
@@ -50,7 +35,7 @@ public class ChangePassServlet extends HttpServlet {
 		PreparedStatement stmt = null;
 		String statement;
 		ResultSet rs;
-		
+		logger.info("Change password initiated by: " + request.getRemoteUser());
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			c = DriverManager.getConnection(
@@ -73,8 +58,10 @@ public class ChangePassServlet extends HttpServlet {
 					
 					stmt.executeUpdate();
 					response.getWriter().write("success");
+					logger.info("Password changed, request by: " + request.getRemoteUser());
 				 }
 				 else {
+					 logger.info("Wrong old password, request by: " + request.getRemoteUser());
 					 response.getWriter().write("wrongPass");
 				 }
 			}
@@ -82,9 +69,9 @@ public class ChangePassServlet extends HttpServlet {
 			c.close();
 
 		} catch (SQLException e) {
-			response.sendRedirect("/automaatnehindaja/error.html");
+			logger.error("SQLException, request by: " + request.getRemoteUser(), e);
 		} catch (ClassNotFoundException f) {
-			response.sendRedirect("/automaatnehindaja/error.html");
+			logger.error("ClassNotFountEcveption, request by: " + request.getRemoteUser(), f);
 		}
 	}
 

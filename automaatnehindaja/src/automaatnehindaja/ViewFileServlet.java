@@ -48,8 +48,8 @@ public class ViewFileServlet extends HttpServlet {
 				response.setContentType("text/html");
 				
 				PrintWriter out = response.getWriter();
-				out.append("<link rel='stylesheet' href='http://yandex.st/highlightjs/7.3/styles/default.min.css'>");
-				out.append("<script src='http://yandex.st/highlightjs/7.3/highlight.min.js'></script>");
+				out.append("<link rel='stylesheet' href='CSS/default.min.css'>");
+				out.append("<script src='Scripts/highlight.min.js'></script>");
 				out.append("<script>hljs.initHighlightingOnLoad();</script>");
 				out.append("<a href = 'download?id="+attemptId + "'>Laadi see fail alla</a>");
 				out.append("<pre>");

@@ -12,7 +12,7 @@ function checkPassword() {
 		$("#message").text("Salasõnad ei kattu!");
 	}
 	else {
-		$.post( "/automaatnehindaja/ChangePassServlet", { oldPass : oldPass, newPass1: newPass1, newPass2: newPass2 }, 
+		$.post( "ChangePassServlet", { oldPass : oldPass, newPass1: newPass1, newPass2: newPass2 }, 
 				function( data ) { 
 			if (data === "success") {
 				$("#message").text("Salasõna muudetud!").css("color", "green");

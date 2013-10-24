@@ -26,7 +26,7 @@ public class AddUserManually extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		if (request.isUserInRole("admin")
 				|| request.isUserInRole("responsible")) {
-			
+						
 			Connection c = null;
 			PreparedStatement stmt = null;
 			ResultSet rs = null;
@@ -39,6 +39,12 @@ public class AddUserManually extends HttpServlet {
 			String course = request.getParameter("course");
 			if (autogenerate.equals("true")) {
 				newPassword = generator.generatePassword();
+			}
+			
+			if (!request.isUserInRole("admin") && role == "admin"){
+				logger.warn("Unathorized admin adding, request by: " + request.getRemoteUser());
+				response.setHeader("error", "true");
+				return;
 			}
 			
 			try {
@@ -72,18 +78,36 @@ public class AddUserManually extends HttpServlet {
 						}
 						stmt.executeUpdate();
 						stmt.close();
+						
 						statement = "INSERT INTO users_roles VALUES (?,?);";
 						stmt = c.prepareStatement(statement);
 						stmt.setString(1, newUsername);
 						stmt.setString(2, role);
 						stmt.executeUpdate();
 						stmt.close();
-						statement = "INSERT INTO users_courses VALUES (?,?);";
-						stmt = c.prepareStatement(statement);
-						stmt.setString(1, newUsername);
-						stmt.setString(2, course);
-						stmt.executeUpdate();
-						stmt.close();
+						if (role == "admin"){
+							statement = "SELECT coursename FROM courses;";
+							stmt = c.prepareStatement(statement);
+							rs = stmt.executeQuery();
+							String statement2 = "INSERT INTO users_courses VALUES (?,?)";
+							PreparedStatement stmt2 = c.prepareStatement(statement2);
+							while (rs.next()){
+								stmt2.setString(1, newUsername);
+								stmt2.setString(2, rs.getString(1));
+								stmt2.addBatch();
+							}
+							stmt2.executeBatch();
+							stmt.close();
+							stmt2.close();
+						}
+						else{
+							statement = "INSERT INTO users_courses VALUES (?,?);";
+							stmt = c.prepareStatement(statement);
+							stmt.setString(1, newUsername);
+							stmt.setString(2, course);
+							stmt.executeUpdate();
+							stmt.close();
+						}
 						if (autogenerate.equals("true")) {
 							generator.emailPassword(newUsername, newPassword);
 						}

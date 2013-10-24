@@ -25,21 +25,19 @@
       <web-resource-name>secured</web-resource-name>
       <url-pattern>/upload</url-pattern>
       <url-pattern>/Taskstable</url-pattern>
+      <url-pattern>/ChangePassServlet</url-pattern>
       <url-pattern>/task</url-pattern>
       <url-pattern>/tasktable</url-pattern>
       <url-pattern>/viewfile</url-pattern>
+      <url-pattern>/download</url-pattern>
+      <url-pattern>/resulttable</url-pattern>
+      <url-pattern>/getcoursenames</url-pattern>
       <url-pattern>/mainpage.html</url-pattern>
       <url-pattern>/html/change_pass.html</url-pattern>
       <url-pattern>/html/main.html</url-pattern>
       <url-pattern>/html/results.html</url-pattern>
       <url-pattern>/html/tasksview.html</url-pattern>
       <url-pattern>/html/tasksiew.html</url-pattern>
-      <url-pattern>/CSS/*</url-pattern>
-      <url-pattern>/Scripts/*</url-pattern>
-      <url-pattern>/images/*</url-pattern>
-      <url-pattern>/download</url-pattern>
-      <url-pattern>/resulttable</url-pattern>
-      <url-pattern>/getcoursenames</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
@@ -80,7 +78,7 @@
     <auth-method>FORM</auth-method>
     <form-login-config>
       <form-login-page>/login_page.html</form-login-page>
-      <form-error-page>/login_failure.html</form-error-page>
+      <form-error-page>/login_page.html</form-error-page>
     </form-login-config>
   </login-config>
 </web-app>
