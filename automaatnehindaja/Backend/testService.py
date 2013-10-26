@@ -16,7 +16,7 @@ ctimeout = ''
 coutputlen = ''
 cwaittime = ''
 cusername = ''
-clocation = os.getcwd() +'/temp.py'
+clocation = os.getcwd()
 
 
 #Function for reading configuration
@@ -142,12 +142,12 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
                 inputString += '\n'
         startTime = datetime.datetime.now()
         if (language == 'Python 3'):
-            stri = 'timeout ' + ctimeout + ' python3 ' + clocation
+            stri = 'timeout ' + ctimeout + ' python3 ' + clocation + '/temp.py'
             connectionToAttempt = Popen(['/bin/su', '-', cusername, '-c', stri],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
 
             #connectionToAttempt = Popen(['timeout',ctimeout,'python3','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         elif (language == 'Python 2'):
-            stri = 'timeout ' + ctimeout + ' python ' + clocation
+            stri = 'timeout ' + ctimeout + ' python ' + clocation +'/temp.py'
             connectionToAttempt = Popen(['/bin/su', '-', cusername, '-c', stri],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         
             #connectionToAttempt = Popen(['timeout',ctimeout,'python','temp.py'],stdout=PIPE, stdin=PIPE, stderr=STDOUT)
@@ -172,7 +172,7 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
                 resultRight=False
                 databaseUpdated = True
             return
-        elif (('Error' in applicationOutput) & ('Traceback' in applicationOutput)):
+        elif (('Error' in applicationOutput) & ('Traceback' in applicationOutput) & (clocation in applicationOutput)):
             if (not databaseUpdated):
                 updateDatabase(cursor, attemptId, 'Kompileerimise viga')
                 resultRight=False
