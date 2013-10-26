@@ -21,7 +21,7 @@ clocation = os.getcwd() +'/temp.py'
 
 #Function for reading configuration
 if (True):
-    f = open('config')
+    f = open(clocation+'/config')
     for line in f:
         if (line.startswith('host')):
             chost = line.split('=')[1].strip()
@@ -133,6 +133,7 @@ def writeSourcecodeToFile(source_code):
 #Function also checks for timeout, compile errors and checks if the answer is correct
 def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemptId):
     resultRight = True
+    databaseUpdated = False
     for i in range(len(taskInputArray)):
         inputString = ''
         for j in range(len(taskInputArray[i])):
@@ -155,31 +156,40 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
         deltaTime = endTime - startTime
         if (len(applicationOutput)>coutputlen):
             applicationOutput=''
-            updateDatabase(cursor, attemptId, 'Timeout')
-            resultRight=False
-            break
+            if (not databaseUpdated):
+                updateDatabase(cursor, attemptId, 'Timeout')
+                resultRight=False
+                databaseUpdated = True
+            return
         queryForAttemptOutput = ("DELETE FROM attempt_output where attempt_id=%s AND seq=%s")
         cursor.execute(queryForAttemptOutput,(attemptId, i+1))
         queryForAttemptOutput = ("INSERT INTO attempt_output (attempt_id, seq, output) VALUES (%s, %s, %s)")
         cursor.execute(queryForAttemptOutput,(attemptId, i+1, applicationOutput))
         
         if (deltaTime.seconds >= ctimeout):
-            updateDatabase(cursor, attemptId, 'Timeout')
-            resultRight=False
-            break
-        elif (('Error' in applicationOutput) & ('File "' + clocation + '\temp.py",' in applicationOutput)):
-            updateDatabase(cursor, attemptId, 'Kompileerimise viga')
-            resultRight=False
-            break
-        else:            
+            if (not databaseUpdated):
+                updateDatabase(cursor, attemptId, 'Timeout')
+                resultRight=False
+                databaseUpdated = True
+            return
+        elif (('Error' in applicationOutput) & ('Traceback' in applicationOutput)):
+            if (not databaseUpdated):
+                updateDatabase(cursor, attemptId, 'Kompileerimise viga')
+                resultRight=False
+                databaseUpdated = True
+            return
+        else:
             aOutput = applicationOutput.split('\n')
             for k in range(len(taskOutputArray[i])):
                 if (aOutput[k].rstrip() != taskOutputArray[i][k].rstrip()):
-                    updateDatabase(cursor, attemptId, 'Vale tulemus')
-                    resultRight=False
-                    break
-            if (resultRight):
-                updateDatabase(cursor, attemptId, 'OK')
+                    if (not databaseUpdated):
+                        updateDatabase(cursor, attemptId, 'Vale tulemus')
+                        resultRight=False
+                        databaseUpdated = True
+                    return
+    if (resultRight):
+        if (not databaseUpdated):
+            updateDatabase(cursor, attemptId, 'OK')
 
 
 #Updates the database with new result. 'OK' if output was right and 'Vale tulemus' if wrong
@@ -190,11 +200,9 @@ def updateDatabase(cursor, attempId, result):
 
 
 while (True):
-    cursor = connectToDatabase()        
+    cursor = connectToDatabase()
     attemptId, username, task, time, result, source_code, language = checkForAttempts(cursor)
     taskInputArray = getTasksInput(cursor, task)
     taskOutputArray = getTasksExOutput(cursor, task)
     writeSourcecodeToFile(source_code)
     runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemptId)
-
-
