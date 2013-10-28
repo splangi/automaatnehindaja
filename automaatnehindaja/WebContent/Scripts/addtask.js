@@ -18,6 +18,7 @@ $(document).ready(function(){
 	 description = document.getElementById("desc");
 	 deadline = document.getElementById("deadline");
 	 taskname = document.getElementById("name");
+	 console.log(taskname.value);
 	 message = document.getElementById("message");
 });
 
@@ -87,7 +88,7 @@ function post(){
 		outputs[i] = output.value;
 		inputs[i] = input.value;
 	}
-	
+	console.log(taskname.value);
 	var variables ={
 			course: courses.value,
 			name: taskname.value,

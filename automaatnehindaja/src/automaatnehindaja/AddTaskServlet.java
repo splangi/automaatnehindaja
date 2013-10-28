@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 
 import org.json.JSONException;
@@ -52,14 +53,12 @@ public class AddTaskServlet extends HttpServlet {
 			} catch (JSONException e1) {
 				logger.error("JSON parsing error", e1);
 			}
-
-			GregorianCalendar deadlineDate = new GregorianCalendar(
-					Integer.parseInt(deadline[0])-1900,
-					Integer.parseInt(deadline[1]),
-					Integer.parseInt(deadline[2]), 23, 59, 59);
 			
-			deadlineDate.toString();
-
+			GregorianCalendar deadlineDate = new GregorianCalendar(
+					Integer.parseInt(deadline[2]),
+					Integer.parseInt(deadline[1])-1,
+					Integer.parseInt(deadline[0]), 23, 59, 59);
+			Timestamp tsmp = new Timestamp(deadlineDate.getTimeInMillis());
 			Connection c = null;
 			PreparedStatement stmt = null;
 			String statement;
@@ -77,9 +76,7 @@ public class AddTaskServlet extends HttpServlet {
 						PreparedStatement.RETURN_GENERATED_KEYS);
 				stmt.setString(1, taskname);
 				stmt.setString(2, description);
-				stmt.setDate(
-						3,
-						(java.sql.Date) new Date(deadlineDate.getTimeInMillis()));
+				stmt.setTimestamp(3, tsmp);
 				stmt.setString(4, course);
 				stmt.executeUpdate();
 				rs = stmt.getGeneratedKeys();
