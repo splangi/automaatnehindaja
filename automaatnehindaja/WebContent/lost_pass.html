@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Parool ununes</title>
+
+<style type="text/css">
+
+	html{
+		background: #eee;	
+		font-family:sans-serif;
+	}
+
+	#LostPassWindow{
+		
+		width: 400px;
+		height: 200px;
+		background-color: white;
+		text-align: center;
+		position: fixed;
+		
+	    top:50%;
+	    left: 50%;
+		margin-left: -200px;
+		margin-top: -110px;
+		
+		padding: 20px;
+		
+		border: solid #666 1px; 
+			padding: 10px; 
+	}
+
+</style>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="lostPass.js"></script>
+</head>
+
+<body>
+
+	<div id="LostPassWindow" align="center">
+		<p>Täitke allolev lahter ning Teile saadetakse e-mail uue parooli saamise juhistega</p>
+		<form id="resetPass" method="post" action="resetpass">
+			<p>E-mail: <br> <input type="text" name="mail" autofocus="autofocus"> </p>
+			<input type="submit" value="Saada">
+			<p id="message"></p>
+		</form>
+	</div>
+
+</body>
+</html>

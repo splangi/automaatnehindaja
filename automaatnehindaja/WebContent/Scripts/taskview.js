@@ -10,7 +10,7 @@ $(document).ready(function(){
 			$("#description").css("display","block");
 			$("#fileinput").css("display","block");
 			 document.getElementById("title").innerHTML = "<h1>" + data.name + "</h1>";
-			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline + "</h4>";
+			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline.substring(0,16) + "</h4>";
 			 document.getElementById("description").innerHTML = "<h4>" + data.description + "</h4>";
 		});	
 		jQuery.getJSON("tasktable?id=" + id, function(data) {

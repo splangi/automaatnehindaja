@@ -2,7 +2,7 @@ $(document).ready(function() {
 	$.get("getRole", function(data){
 		console.log(data);
 		if (data == "admin"){
-			var kursusehaldus = "<li class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>" +
+			var kursusehaldus = "<li id = 'coursechoices' class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>" +
 			"<ul>" + 
 			"<li><a href='#addCourse'><span>Lisa kursus</span></a></li>" + 
 			"<li class='last'><a href='#'><span>kursuse sulgemine</span></a></li>" +
@@ -10,13 +10,13 @@ $(document).ready(function() {
 			$(kursusehaldus).insertAfter("#afterThis");
 		}
 		if (data == "responsible" || data == "admin"){
-			var kasutajahaldus = "<li class='has-sub'><a><span>Kasutajate haldus</span></a>" + 
+			var kasutajahaldus = "<li id = 'userchoices' class='has-sub'><a><span>Kasutajate haldus</span></a>" + 
 					"<ul>" +
 						"<li><a href='#addUserManually'><span>Kasutaja lisamine</span></a></li>" +
 						"<li><a href='#addUsersCSV'><span>Automaatne lisammine</span></a></li>" +
 						"<li class = 'last'><a href='#addUserToCourse'><span>Lisa kasutaja kursusele</span></a></li>" +
 					"</ul></li>";
-			var ulesannetehaldus = "<li class='has-sub'><a href='#addTask'><span>Ülesannete haldus</span></a>" + 
+			var ulesannetehaldus = "<li id = 'taskchoices' class='has-sub'><a href='#addTask'><span>Ülesannete haldus</span></a>" + 
 					"<ul>" +
 						"<li><a href='#addTask'><span>Lisa ülesanne</span></a></li>" +
 						"<li class='last'><a href='#closeTask'><span>Ülesannete sulgemine</span></a></li>" +
@@ -85,17 +85,22 @@ function load(page){
 	else if (page == "#addUserManually"){
 		$("#content").load("html/addusermanually.html");
 		$.getScript("Scripts/adduser.js");
-		$('a[href$="#addUserManually"]').trigger("click");
+		$('#userchoice').trigger("click");		
 	}
 	else if (page == "#addUsersCSV"){
 		$("#content").load("html/addusercsv.html");
 		$.getScript("Scripts/adduser.js");
-		$('a[href$="#addUsersCSV"]').trigger("click");
+		$('#userchoice').trigger("click");
 	}
 	else if (page == "#addTask"){
 		$("#content").load("html/addTask.html");
 		$.getScript("Scripts/addtask.js");
-		$('a[href$="#addTask"]').trigger("click");
+		$('#taskchoice').trigger("click");
+	}
+	else if (page == "#addCourse"){
+		$("#content").load("html/addCourse.html");
+		$.getScript("Scripts/addCourse.js");
+		$('#coursechoice').trigger("click");
 	}
 	else if (page.indexOf("#taskview") != -1){
 		$("#content").load("html/taskview.html");

@@ -1,23 +1,37 @@
 $(document).ready(initialLoad());
 
-
 function initialLoad(){
-	jQuery.getJSON("Taskstable", function(data) {
+	getCourses();
+}
+
+function changeCourse(){
+	fillUpTasks($("#courses option:selected").value);
+}
+
+function fillUpTasks(course){
+	jQuery.getJSON("Taskstable?course=" +course, function(data) {
 		$("#tasksViewLoader").css("display", "none");
 		if (data.role == "tudeng"){
 			tableCreate(data.id, data.name, data.deadline, data.result);
 		}
 		else if (data.role == "admin" || data.role == "responsible"){
 			tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount);
-			$('<a>').attr("href","new_task.html").html("<button>Ülesannete haldus</button>").appendTo($("#buttonDiv"));
-			$('<a>').attr("href","addusers.html").html("<button>Kasutajate haldus</button>").appendTo($("#buttonDiv"));
-			if (data.role == "admin"){
-				$('<a>').attr("href","addusers.html").html("<button>Kursuste haldus</button>").appendTo($("#buttonDiv"));
-			}
 		}
 	});	
 }
 
+function getCourses(){
+	jQuery.getJSON("getcoursenames", function(data){
+		var courses = data.coursenames;
+		if (courses.length > 0){
+			fillUpTasks(courses[0]);
+		}
+		for (var i = 0; i<courses.length; i++){
+			var course = courses[i];
+			$('#courses').append($("<option></option>").attr("value",course).text(course));
+		};
+	});
+};
 
 function tableCreate(idList, nameList, deadlineList, resultList){
 	var tableDiv = document.getElementById("tableDiv");
