@@ -13,13 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@WebServlet("/TaskstableServlet")
+@WebServlet("/Taskstable")
 public class TaskstableServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger logger = Logger.getLogger(TaskstableServlet.class);
 
 	public TaskstableServlet() {
 		super();
@@ -32,6 +34,8 @@ public class TaskstableServlet extends HttpServlet {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String statement;
+		String course = request.getParameter("course");
+		System.out.println(course);
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -42,20 +46,25 @@ public class TaskstableServlet extends HttpServlet {
 			if (request.isUserInRole("tudeng")) {
 				statement = "SELECT "
 						+ "tasks.id, tasks.name, tasks.deadline, attempt.result "
-						+ "FROM tasks " + "LEFT OUTER JOIN "
+						+ "FROM tasks " 
+						+ "LEFT OUTER JOIN "
 						+ "attempt on tasks.id = attempt.task " + "AND "
-						+ "attempt.username = ?;";
+						+ "attempt.username = ? "
+						+ "WHERE tasks.coursename = ?;";
 				stmt = c.prepareStatement(statement);
+				stmt.setString(2, course);
 				stmt.setString(1, request.getUserPrincipal().getName());
-			} else if (request.isUserInRole("admin")) {
+			} else if (request.isUserInRole("admin") || request.isUserInRole("responsible")) {
 				statement = "SELECT tasks.id, tasks.name, tasks.deadline, count(attempt.task) AS attempts, "
 						+ "(SELECT count(*) FROM attempt where attempt.task = tasks.id AND "
 						+ "attempt.result = 'OK') AS successful "
-						+ "FROM tasks LEFT JOIN attempt "
-						+ "ON tasks.id = attempt.task " + "GROUP BY tasks.id;";
+						+ "FROM tasks " + "LEFT JOIN attempt "
+						+ "ON tasks.id = attempt.task " 
+						+ "WHERE tasks.coursename = ? "
+						+ "GROUP BY tasks.id;";
 				stmt = c.prepareStatement(statement);
+				stmt.setString(1, course);
 			} else {
-				response.sendRedirect("/automaatnehindaja/error.html");
 				return;
 			}
 
@@ -79,11 +88,11 @@ public class TaskstableServlet extends HttpServlet {
 						json.append("result", tulemus);
 					}
 				} catch (JSONException e) {
-					response.sendRedirect("/automaatnehindaja/error.html");
+					logger.debug("JSONEXCEPTION", e);
 				}
 			}
 
-			else if (request.isUserInRole("admin")) {
+			else if (request.isUserInRole("admin") || request.isUserInRole("responsible")) {
 				try {
 					json.put("role", "admin");
 					while (rs.next()) {
@@ -94,7 +103,7 @@ public class TaskstableServlet extends HttpServlet {
 						json.append("successCount", rs.getInt(5));
 					}
 				} catch (JSONException e) {
-					response.sendRedirect("/automaatnehindaja/error.html");
+					logger.debug("JSONEXCEPTION", e);
 				}
 			} else {
 				response.sendRedirect("/automaatnehindaja/error.html");
@@ -105,9 +114,9 @@ public class TaskstableServlet extends HttpServlet {
 			response.getWriter().write(json.toString());
 
 		} catch (SQLException e) {
-			response.sendRedirect("/automaatnehindaja/error.html");
+			logger.debug("SQLEXCEPTION", e);
 		} catch (ClassNotFoundException f) {
-			response.sendRedirect("/automaatnehindaja/error.html");
+			logger.debug("CLASSNOTFOUNDEXCEPTION", f);
 		}
 
 	}

@@ -4,14 +4,6 @@
   <welcome-file-list>
     <welcome-file>mainpage.html</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <servlet-name>TaskstableServlet</servlet-name>
-    <servlet-class>automaatnehindaja.TaskstableServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>TaskstableServlet</servlet-name>
-    <url-pattern>/Taskstable</url-pattern>
-  </servlet-mapping>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>secured</web-resource-name>
@@ -48,6 +40,7 @@
       <url-pattern>/html/addusermanually.html</url-pattern>
       <url-pattern>/html/addusercsv.html</url-pattern>
       <url-pattern>/html/addTask.html</url-pattern>
+      <url-pattern>/html/addCourse.html</url-pattern>
       <url-pattern>/addTask</url-pattern>
       <url-pattern>/addusermanually</url-pattern>
       <url-pattern>/AddCSV</url-pattern>
