@@ -1,6 +1,7 @@
 package automaatnehindaja;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -30,6 +31,11 @@ public class ChangePassServlet extends HttpServlet {
 		
 		String oldPass = request.getParameter("oldPass");
 		String newPass1 = request.getParameter("newPass1");
+		try {
+			newPass1 = PasswordGeneratorAndMailer.sha1(newPass1);
+		} catch (NoSuchAlgorithmException e1) {
+			e1.printStackTrace();
+		}
 		
 		Connection c = null;
 		PreparedStatement stmt = null;
