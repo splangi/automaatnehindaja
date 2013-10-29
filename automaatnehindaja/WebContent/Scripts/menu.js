@@ -74,7 +74,7 @@ function load(page){
 	}
 	else if (page == "#changepass"){
 		$("#content").load("html/change_pass.html");
-		$.getScript("Scripts/changepass.js");
+		//$.getScript("Scripts/changepass.js");
 		$('a[href$="#changepass"]').trigger("click");
 	}
 	else if (page == "#results"){

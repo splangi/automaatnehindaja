@@ -1,12 +1,12 @@
 <link href="CSS/Style.css" rel="stylesheet" type="text/css" />
 <meta charset="UTF-8">
-<div id="changePass" align="center">
+<div id="changePassw" align="center">
 
 	<div id="notification">
 		<p id="message"></p>
 	</div>
 
-	<form method="get" action="" onsubmit="checkPassword();return false;">
+	<form id="changePassForm" method="post">
 		<p class = "field">
 			Praegune salasõna: <br> <input type="password" name="oldPass">
 		</p>
@@ -21,3 +21,6 @@
 		<input type="submit" value="Muuda parool">
 	</form>
 </div>
+<script type="text/javascript" src="Scripts/sha1.js"></script>
+<script type="text/javascript" src="Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="Scripts/changepass.js"></script>

@@ -30,12 +30,7 @@ public class ChangePassServlet extends HttpServlet {
 		String username = request.getRemoteUser();
 		
 		String oldPass = request.getParameter("oldPass");
-		String newPass1 = request.getParameter("newPass1");
-		try {
-			newPass1 = PasswordGeneratorAndMailer.sha1(newPass1);
-		} catch (NoSuchAlgorithmException e1) {
-			e1.printStackTrace();
-		}
+		String newPass = request.getParameter("newPass");
 		
 		Connection c = null;
 		PreparedStatement stmt = null;
@@ -59,7 +54,7 @@ public class ChangePassServlet extends HttpServlet {
 					 
 					statement = "UPDATE users SET password = ? WHERE username = ?;";
 					stmt = c.prepareStatement(statement);
-					stmt.setString(1, newPass1);
+					stmt.setString(1, newPass);
 					stmt.setString(2, username);
 					
 					stmt.executeUpdate();
