@@ -39,12 +39,16 @@ function tableCreate(nameList, timeList, resultList, languageList, attemptIdList
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
 	table.setId = "tasksTable";
+	var head = document.createElement("thead");
 	var row = document.createElement("tr");
 	jQuery("<th />").text("Nimi").appendTo(row);
 	jQuery("<th />").text("Esitamise aeg").appendTo(row);
 	jQuery("<th />").text("Tulemus").appendTo(row);
 	jQuery("<th />").text("Lähtekood").appendTo(row);
-	table.appendChild(row);
+	table.appendChild(head);
+	head.appendChild(row);
+	var body = document.createElement("tbody");
+	table.appendChild(body);
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		jQuery("<td />").text(nameList[i]).appendTo(row);
@@ -56,11 +60,16 @@ function tableCreate(nameList, timeList, resultList, languageList, attemptIdList
 		link.innerHTML = "Python";
 		cell.appendChild(link);
 		row.appendChild(cell);
-		table.appendChild(row);
+		body.appendChild(row);
 	}
-	table.setAttribute("class", "tableclass");
+	table.setAttribute("class", "tablesorter");
+	table.setAttribute("id", "tasksTable");
 	table.setAttribute("border", "1");
 	tableDiv.appendChild(table);
+	
+	$.getScript("Scripts/jquery.tablesorter.min.js", function() {
+		$("#tasksTable").tablesorter( { sortList: [[0,0]] } ); 
+	});
 }
 
 function getUrlVars() {
