@@ -164,3 +164,7 @@ th.headerSortDown {
 	left: 46%;
 	top: 46%;
 }
+
+#logTable {
+	font-size: small;
+}

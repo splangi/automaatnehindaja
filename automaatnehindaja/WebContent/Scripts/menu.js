@@ -106,6 +106,11 @@ function load(page){
 		$.getScript("Scripts/addCourse.js");
 		$('#coursechoice').trigger("click");
 	}
+	else if (page == "#logs"){
+		$("#content").load("html/serverlogs.html");
+		$.getScript("Scripts/serverlogs.js");
+		$('#logs').trigger("click");
+	}
 	else if (page.indexOf("#taskview") != -1){
 		$("#content").load("html/taskview.html");
 		$.getScript("Scripts/taskview.js");
