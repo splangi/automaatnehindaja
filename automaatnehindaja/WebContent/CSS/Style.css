@@ -50,8 +50,6 @@ html{
 
 	border: solid #666 1px; 
 		padding: 10px; 
-		
-	
 }
 
 #addUserWindow{
@@ -98,19 +96,11 @@ html{
 #tableDiv{
 	width: 100%;
 }
-#buttonDiv{
-	float:right;
-	margin:10px;
-	max-width: 130px;
-}
-
-#buttonDiv button {
-	width: 125px;
-}
 
 .tableclass {
 	border-collapse:collapse;
 	width: 100%;
+	font-size: small;
 }
 
 .tableclass td{

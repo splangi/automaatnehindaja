@@ -2,24 +2,27 @@ $(document).ready(function() {
 	$.get("getRole", function(data){
 		console.log(data);
 		if (data == "admin"){
+			var logid = "<li><a href='#logs'><span>Logid</span></a></li>";
 			var kursusehaldus = "<li id = 'coursechoices' class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>" +
 			"<ul>" + 
 			"<li><a href='#addCourse'><span>Lisa kursus</span></a></li>" + 
-			"<li class='last'><a href='#'><span>kursuse sulgemine</span></a></li>" +
+			"<li class='last'><a href='#'><span>Kursuse sulgemine</span></a></li>" +
 		"</ul></li>";
+			$(logid).insertAfter("#afterThis");
 			$(kursusehaldus).insertAfter("#afterThis");
 		}
 		if (data == "responsible" || data == "admin"){
 			var kasutajahaldus = "<li id = 'userchoices' class='has-sub'><a><span>Kasutajate haldus</span></a>" + 
 					"<ul>" +
 						"<li><a href='#addUserManually'><span>Kasutaja lisamine</span></a></li>" +
-						"<li><a href='#addUsersCSV'><span>Automaatne lisammine</span></a></li>" +
+						"<li><a href='#addUsersCSV'><span>Automaatne lisamine</span></a></li>" +
 						"<li class = 'last'><a href='#addUserToCourse'><span>Lisa kasutaja kursusele</span></a></li>" +
 					"</ul></li>";
 			var ulesannetehaldus = "<li id = 'taskchoices' class='has-sub'><a href='#addTask'><span>Ülesannete haldus</span></a>" + 
 					"<ul>" +
 						"<li><a href='#addTask'><span>Lisa ülesanne</span></a></li>" +
-						"<li class='last'><a href='#closeTask'><span>Ülesannete sulgemine</span></a></li>" +
+						"<li><a href='#changeTask'><span>Muuda ülesanne</span></a></li>" +
+						"<li class='last'><a href='#closeTask'><span>Ülesannete arhiveerimine</span></a></li>" +
 					"</ul></li>";
 			$(ulesannetehaldus).insertAfter("#afterThis");
 			$(kasutajahaldus).insertAfter("#afterThis");
@@ -53,6 +56,7 @@ $(document).ready(function() {
 	var hash = location.hash;
 	if (hash == ""){
 		hash = "#main";
+		window.history.pushState(null, null, "mainpage.html#main");
 	}
 	load(hash);
 	

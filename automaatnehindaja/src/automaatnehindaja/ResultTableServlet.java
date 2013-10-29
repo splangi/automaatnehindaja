@@ -37,7 +37,7 @@ public class ResultTableServlet extends HttpServlet {
 					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
 					"k1rven2gu");
 			if (request.isUserInRole("tudeng")){
-				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id "
+				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id, tasks.coursename "
 						+ "FROM attempt "
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
 						+ "INNER JOIN users on attempt.username = users.username "
@@ -45,8 +45,8 @@ public class ResultTableServlet extends HttpServlet {
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, username);
 			}
-			else if (request.isUserInRole("admin")){
-				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id "
+			else if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
+				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id, tasks.coursename "
 						+ "FROM attempt "
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
 						+ "INNER JOIN users on attempt.username = users.username ";
@@ -67,6 +67,7 @@ public class ResultTableServlet extends HttpServlet {
 					json.append("result", rs.getString(4));
 					json.append("language", rs.getString(5));
 					json.append("id", rs.getString(6));
+					json.append("course", rs.getString(7));
 				} catch (JSONException e) {
 					response.sendRedirect("/automaatnehindaja/error.html");
 				}
