@@ -49,7 +49,7 @@ public class LogsServlet extends HttpServlet {
 					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
 					"k1rven2gu");
 			
-			statement = "SELECT DATED, LEVEL, MESSAGE FROM logs;";
+			statement = "SELECT DATED, LEVEL, MESSAGE FROM LOGS;";
 			stmt = c.prepareStatement(statement);
 			rs = stmt.executeQuery();
 			
