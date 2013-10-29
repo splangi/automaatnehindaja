@@ -49,12 +49,12 @@ public class LogsServlet extends HttpServlet {
 					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
 					"k1rven2gu");
 			
-			statement = "SELECT DATED, LEVEL, MESSAGE FROM LOGS;";
+			statement = "SELECT DATED, LEVEL, MESSAGE FROM logs;";
 			stmt = c.prepareStatement(statement);
 			rs = stmt.executeQuery();
 			
 			while (rs.next()) {
-				json.append("date", formatter.format(rs.getTime(1)));
+				json.append("date", formatter.format(rs.getTimestamp(1)));
 				json.append("level", rs.getString(2));
 				json.append("message", rs.getString(3));
 				
