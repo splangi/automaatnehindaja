@@ -1,6 +1,7 @@
 package automaatnehindaja;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,7 +30,7 @@ public class ChangePassServlet extends HttpServlet {
 		String username = request.getRemoteUser();
 		
 		String oldPass = request.getParameter("oldPass");
-		String newPass1 = request.getParameter("newPass1");
+		String newPass = request.getParameter("newPass");
 		
 		Connection c = null;
 		PreparedStatement stmt = null;
@@ -53,7 +54,7 @@ public class ChangePassServlet extends HttpServlet {
 					 
 					statement = "UPDATE users SET password = ? WHERE username = ?;";
 					stmt = c.prepareStatement(statement);
-					stmt.setString(1, newPass1);
+					stmt.setString(1, newPass);
 					stmt.setString(2, username);
 					
 					stmt.executeUpdate();

@@ -97,13 +97,13 @@ html{
 	width: 100%;
 }
 
-.tableclass {
+.tablesorter {
 	border-collapse:collapse;
 	width: 100%;
 	font-size: small;
 }
 
-.tableclass td{
+.tablesorter td{
 	padding:5px;
 	padding-left:10px;
 	padding-right:10px;
@@ -112,16 +112,32 @@ html{
 
 
 
-.tableclass th{ 
+.tablesorter th{ 
 	background-color: #DEDEDE;
 	padding-left:10px;
 	padding-right:10px;
 }
 
-.tableclass tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
-.tableclass tr:nth-child(even) td { background-color:#e8ecee } /*even*/
+.tablesorter tr:nth-child(odd) td { background-color:#fbfbfb } /*odd*/
+.tablesorter tr:nth-child(even) td { background-color:#e8ecee } /*even*/
 
+th.header {
+	background-image: url(../images/bg.gif); 
+	cursor: pointer;
+	font-weight: bold; 
+	background-repeat: no-repeat; 
+    background-position: center right; 
+}
 
+th.headerSortUp { 
+    background-image: url(../images/asc.gif); 
+    background-color: #B5B5B5; 
+} 
+
+th.headerSortDown { 
+    background-image: url(../images/desc.gif);
+    background-color: #B5B5B5; 
+} 
 
 #fileinput, #newTaskForm {
 	display: none;
