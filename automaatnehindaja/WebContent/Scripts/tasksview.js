@@ -2,6 +2,7 @@ $(document).ready(initialLoad());
 
 function initialLoad(){
 	getCourses();
+	
 }
 
 function changeCourse(){
@@ -38,11 +39,15 @@ function tableCreate(idList, nameList, deadlineList, resultList){
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
 	table.setId = "tasksTable";
+	var head = document.createElement("thead");
 	var row = document.createElement("tr");
 	jQuery("<th />").text("Ülesanne").appendTo(row);
 	jQuery("<th />").text("Tahtaeg").appendTo(row);
 	jQuery("<th />").text("Tulemus").appendTo(row);
-	table.appendChild(row);
+	table.appendChild(head);
+	head.appendChild(row);
+	var body = document.createElement("tbody");
+	table.appendChild(body);
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
@@ -51,11 +56,16 @@ function tableCreate(idList, nameList, deadlineList, resultList){
 		row.appendChild(cell);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultList[i]).appendTo(row);
-		table.appendChild(row);
+		body.appendChild(row);
 	}
-	table.setAttribute("class", "tableclass");
+	table.setAttribute("class", "tablesorter");
+	table.setAttribute("id", "tasksTable");
 	table.setAttribute("border", "1");
 	tableDiv.appendChild(table);
+
+	$.getScript("Scripts/jquery.tablesorter.min.js", function() {
+		$("#tasksTable").tablesorter( { sortList: [[0,0]] } ); 
+	});
 }
 
 function tableCreate2(idList, nameList, deadlineList, resultCount, successCount){
@@ -63,12 +73,16 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
 	table.setId = "tasksTable";
+	var head = document.createElement("thead");
 	var row = document.createElement("tr");
 	jQuery("<th />").text("Ulesanne").appendTo(row);
 	jQuery("<th />").text("Tahtaeg").appendTo(row);
 	jQuery("<th />").text("Esitanuid").appendTo(row);
 	jQuery("<th />").text("Õnnestujaid").appendTo(row);
-	table.appendChild(row);
+	table.appendChild(head);
+	head.appendChild(row);
+	var body = document.createElement("tbody");
+	table.appendChild(body);
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
@@ -77,9 +91,14 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultCount[i]).appendTo(row);
 		jQuery("<td />").text(successCount[i]).appendTo(row);
-		table.appendChild(row);
+		body.appendChild(row);
 	}
-	table.setAttribute("class", "tableclass");
+	table.setAttribute("class", "tablesorter");
+	table.setAttribute("id", "tasksTable");
 	table.setAttribute("border", "1");
 	tableDiv.appendChild(table);
+	
+	$.getScript("Scripts/jquery.tablesorter.min.js", function() {
+		$("#tasksTable").tablesorter( { sortList: [[0,0]] } ); 
+	});
 }
