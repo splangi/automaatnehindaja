@@ -9,19 +9,6 @@ var deadline;
 var taskname;
 var	message;
 
-$(document).ready(function(){
-	getCourses();
-	$.getScript("Scripts/zebra_datepicker.js", function(){
-		 $('#deadline').Zebra_DatePicker({direction: 1, format: "d-m-Y"});
-	});
-	 courses = document.getElementById("courses");
-	 description = document.getElementById("desc");
-	 deadline = document.getElementById("deadline");
-	 taskname = document.getElementById("name");
-	 console.log(taskname.value);
-	 message = document.getElementById("message");
-});
-
 
 
 function openOverlay(){
@@ -37,10 +24,10 @@ function addio(){
 	var iotable = document.getElementById("iotableBody");
 	var row = document.createElement("tr");
 	var cell = document.createElement("td");
-	cell.innerHTML='<textarea id = "input' + iopairs + '" rows="2" cols="30" style="overflow: auto; resize:none"></textarea>';
+	cell.innerHTML='<textarea id = "input' + iopairs + '" rows="2" cols="38" style="overflow: auto; resize:none"></textarea>';
 	row.appendChild(cell);
 	cell = document.createElement("td");
-	cell.innerHTML='<textarea id = "output' + iopairs + '" rows="2" cols="30" style="overflow: auto; resize:none"></textarea>';
+	cell.innerHTML='<textarea id = "output' + iopairs + '" rows="2" cols="38" style="overflow: auto; resize:none"></textarea>';
 	row.appendChild(cell);
 	cell = document.createElement("td");
 	cell.innerHTML='<button id = "button' + buttoncount + '" onclick = deleteRow(' + buttoncount + ') style="vertical-align: middle;"> - </button>';
@@ -115,3 +102,18 @@ function getCourses(){
 		};
 	});
 };
+
+function init(){
+	getCourses();
+	$.getScript("Scripts/zebra_datepicker.js", function(){
+		 $('#deadline').Zebra_DatePicker({direction: 1, format: "d-m-Y"});
+	});
+	 courses = document.getElementById("courses");
+	 description = document.getElementById("desc");
+	 deadline = document.getElementById("deadline");
+	 taskname = document.getElementById("name");
+	 console.log(taskname.value);
+	 message = document.getElementById("message");
+}
+
+init();

@@ -1,6 +1,6 @@
-$(document).ready(initialize());
+
 	
-function initialize(){
+function init(){
 	jQuery.getJSON("resulttable", function(data) {
 		$("#resultsLoader").css("display", "none");
 		tableCreate(data.fullname, data.taskname, data.time, data.result, data.language, data.id, data.course);
@@ -46,3 +46,5 @@ function tableCreate(nameList, tasknameList, deadlineList, resultList, languageL
 		$("#attemptTable").tablesorter( { sortList: [[0,0]] } ); 
 	});
 }
+
+init();

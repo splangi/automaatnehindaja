@@ -1,6 +1,6 @@
-$(document).ready(initialLoad());
 
-function initialLoad(){
+
+function init(){
 	getCourses();
 	
 }
@@ -10,6 +10,7 @@ function changeCourse(){
 }
 
 function fillUpTasks(course){
+	console.log("fillUpTasks: " + course);
 	jQuery.getJSON("Taskstable?course=" +course, function(data) {
 		$("#tasksViewLoader").css("display", "none");
 		if (data.role == "tudeng"){
@@ -23,6 +24,7 @@ function fillUpTasks(course){
 
 function getCourses(){
 	jQuery.getJSON("getcoursenames", function(data){
+		console.log("getCourses: " + data);
 		var courses = data.coursenames;
 		if (courses.length > 0){
 			fillUpTasks(courses[0]);
@@ -101,3 +103,5 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 		$("#tasksTable").tablesorter( { sortList: [[0,0]] } ); 
 	});
 }
+
+init();

@@ -9,7 +9,7 @@ var fullname;
 var warningtext;
 var studentId;
 
-jQuery(document).ready(function(){
+function init(){
 	studentId = document.getElementById("studentid");
 	courseselection = document.getElementById("courses");
 	roleselection = document.getElementById("role");
@@ -32,7 +32,7 @@ jQuery(document).ready(function(){
 		}
 	});
 	
-});
+}
 
 
 
@@ -182,3 +182,5 @@ function blackOutStudentId(){
 		studentId.setAttribute("disabled", "disabled");
 	}
 }
+
+init();

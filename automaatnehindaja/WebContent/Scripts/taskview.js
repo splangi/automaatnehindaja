@@ -1,4 +1,4 @@
-$(document).ready(function(){
+function init(){
 	var id = getUrlVars()["id"];
 	if (id === undefined){
 		window.location = "error.html";
@@ -31,7 +31,7 @@ $(document).ready(function(){
 			$("#resultToolarge").css("display", "block");
 		}
 	}
-});
+}
 
 
 function tableCreate(nameList, timeList, resultList, languageList, attemptIdList){
@@ -79,3 +79,5 @@ function getUrlVars() {
     });
     return vars;
 }
+
+init();
