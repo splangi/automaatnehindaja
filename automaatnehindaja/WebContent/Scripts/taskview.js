@@ -11,7 +11,7 @@ function init(){
 			$("#fileinput").css("display","block");
 			 document.getElementById("title").innerHTML = "<h1>" + data.name + "</h1>";
 			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline.substring(0,16) + "</h4>";
-			 document.getElementById("description").innerHTML = "<h4>" + data.description + "</h4>";
+			 document.getElementById("description").innerHTML = data.description.replace(/\n/g, "<br />");
 		});	
 		jQuery.getJSON("tasktable?id=" + id, function(data) {
 			tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId);
