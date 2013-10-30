@@ -26,7 +26,6 @@ public class ChangePassServlet extends HttpServlet {
 	private static Logger logger = Logger.getLogger(ChangePassServlet.class);
        
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String username = request.getRemoteUser();
 		
 		String oldPass = request.getParameter("oldPass");
@@ -36,6 +35,7 @@ public class ChangePassServlet extends HttpServlet {
 		PreparedStatement stmt = null;
 		String statement;
 		ResultSet rs;
+		
 		logger.info("Change password initiated by: " + request.getRemoteUser());
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

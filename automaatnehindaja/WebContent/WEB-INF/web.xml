@@ -9,6 +9,7 @@
       <web-resource-name>secured</web-resource-name>
       <url-pattern>/upload</url-pattern>
       <url-pattern>/Taskstable</url-pattern>
+      <url-pattern>/LogsServlet</url-pattern>
       <url-pattern>/ChangePassServlet</url-pattern>
       <url-pattern>/task</url-pattern>
       <url-pattern>/getRole</url-pattern>
