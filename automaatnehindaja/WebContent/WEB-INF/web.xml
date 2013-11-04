@@ -42,7 +42,9 @@
       <url-pattern>/html/addusercsv.html</url-pattern>
       <url-pattern>/html/addTask.html</url-pattern>
       <url-pattern>/html/addCourse.html</url-pattern>
+      <url-pattern>/html/addusertocourse.html</url-pattern>
       <url-pattern>/addTask</url-pattern>
+      <url-pattern>/addtocourse</url-pattern>
       <url-pattern>/addusermanually</url-pattern>
       <url-pattern>/AddCSV</url-pattern>
       <http-method>GET</http-method>
