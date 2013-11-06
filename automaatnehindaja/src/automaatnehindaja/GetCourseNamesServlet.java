@@ -23,45 +23,62 @@ import org.json.JSONObject;
 public class GetCourseNamesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		Connection c = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String statement = null;
-		
+
+		String archived = request.getParameter("archived");
+		if (archived == null || !archived.equalsIgnoreCase("true")) {
+			archived = "false";
+		}
+
+		boolean archivedBoolean = Boolean.parseBoolean(archived);
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
-					"k1rven2gu");
-			statement = "SELECT coursename from users_courses where username = ?;";
+					"jdbc:mysql://localhost:3306/automaatnehindaja",
+					"ahindaja", "k1rven2gu");
+
+			statement = "SELECT courses.coursename, courses.active from courses "
+					+ "LEFT JOIN users_courses "
+					+ "ON courses.coursename=users_courses.coursename "
+					+ "WHERE users_courses.username = ? ";
+			System.out.println(archivedBoolean);
+			if (!archivedBoolean) {
+				statement = statement + " AND active = 1";
+			}
+			else {
+				statement = statement + " ORDER BY courses.active DESC";
+			}
 			stmt = c.prepareStatement(statement);
 			stmt.setString(1, request.getRemoteUser());
-			
+
 			rs = stmt.executeQuery();
-			
+
 			JSONObject json = new JSONObject();
 			
-			while (rs.next()){
+			while (rs.next()) {
 				json.append("coursenames", rs.getString(1));
+				json.append("active", rs.getBoolean(2));
 			}
-			
-			if (request.isUserInRole("admin")){
+
+			if (request.isUserInRole("admin")) {
 				json.put("role", "admin");
 			}
-			
+
 			c.close();
-			
+
 			response.setContentType("application/json");
 			response.getWriter().write(json.toString());
-			
+
 		} catch (SQLException | ClassNotFoundException | JSONException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
 	}
 
 }

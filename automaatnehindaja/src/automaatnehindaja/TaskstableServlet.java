@@ -37,7 +37,12 @@ public class TaskstableServlet extends HttpServlet {
 		ResultSet rs = null;
 		String statement;
 		String course = request.getParameter("course");
-		System.out.println(course);
+		String archived = request.getParameter("archived");
+		if (archived == null || !archived.equalsIgnoreCase("true")) {
+			archived = "false";
+		}
+		
+		boolean archivedBoolean = Boolean.parseBoolean(archived);
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -47,23 +52,31 @@ public class TaskstableServlet extends HttpServlet {
 
 			if (request.isUserInRole("tudeng")) {
 				statement = "SELECT "
-						+ "tasks.id, tasks.name, tasks.deadline, attempt.result "
+						+ "tasks.id, tasks.name, tasks.deadline, attempt.result, tasks.active"
 						+ "FROM tasks " 
 						+ "LEFT OUTER JOIN "
 						+ "attempt on tasks.id = attempt.task " + "AND "
 						+ "attempt.username = ? "
-						+ "WHERE tasks.coursename = ?;";
+						+ "WHERE tasks.coursename = ?";
+				
+				if (!archivedBoolean) {
+					statement = statement + " AND tasks.active = 1";
+				}
+				
 				stmt = c.prepareStatement(statement);
 				stmt.setString(2, course);
 				stmt.setString(1, request.getUserPrincipal().getName());
 			} else if (request.isUserInRole("admin") || request.isUserInRole("responsible")) {
 				statement = "SELECT tasks.id, tasks.name, tasks.deadline, count(attempt.task) AS attempts, "
 						+ "(SELECT count(*) FROM attempt where attempt.task = tasks.id AND "
-						+ "attempt.result = 'OK') AS successful "
+						+ "attempt.result = 'OK') AS successful, tasks.active "
 						+ "FROM tasks " + "LEFT JOIN attempt "
 						+ "ON tasks.id = attempt.task " 
-						+ "WHERE tasks.coursename = ? "
-						+ "GROUP BY tasks.id;";
+						+ "WHERE tasks.coursename = ?";
+				if (!archivedBoolean) {
+					statement = statement + " AND tasks.active = 1";
+				}		
+				statement = statement + " GROUP BY tasks.id;";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, course);
 			} else {
@@ -88,6 +101,7 @@ public class TaskstableServlet extends HttpServlet {
 							tulemus = "Esitamata";
 						}
 						json.append("result", tulemus);
+						json.append("active", rs.getBoolean(5));
 					}
 				} catch (JSONException e) {
 					logger.debug("JSONEXCEPTION", e);
@@ -103,6 +117,7 @@ public class TaskstableServlet extends HttpServlet {
 						json.append("deadline", rs.getDate(3).toString());
 						json.append("resultCount", rs.getInt(4));
 						json.append("successCount", rs.getInt(5));
+						json.append("active", rs.getBoolean(6));
 					}
 				} catch (JSONException e) {
 					logger.debug("JSONEXCEPTION", e);

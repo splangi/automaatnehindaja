@@ -10,38 +10,52 @@ function changeCourse(){
 }
 
 function fillUpTasks(course){
-	console.log("fillUpTasks: " + course);
-	jQuery.getJSON("Taskstable?course=" +course, function(data) {
+	var archived = false;
+	if ($("#archived").is(":checked")){
+		archived = true;
+	}
+	jQuery.getJSON("Taskstable?course=" +course + "&archived=" + archived, function(data) {
 		$("#tasksViewLoader").css("display", "none");
 		if (data.role == "tudeng"){
-			tableCreate(data.id, data.name, data.deadline, data.result);
+			tableCreate(data.id, data.name, data.deadline, data.result, data.active);
 		}
 		else if (data.role == "admin" || data.role == "responsible"){
 			if (window.location.hash == "#tasksview"){
-				tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount);
+				tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount, data.active);
 			}
 			else if (window.location.hash == "#changeTask"){
-				tableCreate3(data.id, data.name, data.deadline);
+				tableCreate3(data.id, data.name, data.deadline, data.active);
 			}
 		}
 	});	
 }
 
 function getCourses(){
-	jQuery.getJSON("getcoursenames", function(data){
-		console.log("getCourses: " + data);
+	var archived = false;
+	if ($("#archived").is(":checked")){
+		archived = true;
+	}
+	jQuery.getJSON("getcoursenames?archived=" + archived , function(data){
 		var courses = data.coursenames;
+		//TODO select the one which was lastly selected
 		if (courses.length > 0){
 			fillUpTasks(courses[0]);
 		}
+		console.log(data.active[0]);
+		$('#courses option').remove();
 		for (var i = 0; i<courses.length; i++){
 			var course = courses[i];
-			$('#courses').append($("<option></option>").attr("value",course).text(course));
+			if (data.active[i] === true){
+				$('#courses').append($("<option></option>").attr("value",course).text(course));
+			}
+			else {
+				$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
+			}
 		};
 	});
 };
 
-function tableCreate(idList, nameList, deadlineList, resultList){
+function tableCreate(idList, nameList, deadlineList, resultList, archiveList){
 	var tableDiv = document.getElementById("tableDiv");
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
@@ -58,7 +72,12 @@ function tableCreate(idList, nameList, deadlineList, resultList){
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
-		cell.innerHTML = '<a href="#taskview.html?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		if (archiveList[i] === true ){
+			cell.innerHTML = '<a href="#taskview.html?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		}
+		else{
+			cell.innerHTML = '<a href="#taskview.html?id=' + idList[i] + '">' + nameList[i] + " (arhiveeritud)" + "</a>";
+		}
 		row.appendChild(cell);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultList[i]).appendTo(row);
@@ -74,7 +93,7 @@ function tableCreate(idList, nameList, deadlineList, resultList){
 	});
 }
 
-function tableCreate2(idList, nameList, deadlineList, resultCount, successCount){
+function tableCreate2(idList, nameList, deadlineList, resultCount, successCount, archiveList){
 	var tableDiv = document.getElementById("tableDiv");
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
@@ -92,7 +111,12 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
-		cell.innerHTML = '<a href = "#taskview?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		if (archiveList[i] === true ){
+			cell.innerHTML = '<a href="#taskview.html?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		}
+		else{
+			cell.innerHTML = '<a href="#taskview.html?id=' + idList[i] + '">' + nameList[i] + " (arhiveeritud)" + "</a>";
+		}
 		row.appendChild(cell);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultCount[i]).appendTo(row);
@@ -109,7 +133,7 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 	});
 }
 
-function tableCreate3(idList, nameList, deadlineList){
+function tableCreate3(idList, nameList, deadlineList, archiveList){
 	var tableDiv = document.getElementById("tableDiv");
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
@@ -125,7 +149,12 @@ function tableCreate3(idList, nameList, deadlineList){
 	for (var i = 0; i < nameList.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
-		cell.innerHTML = '<a href = "#changeTaskView?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		if (archiveList[i] === true ){
+			cell.innerHTML = '<a href="#changeTaskView.html?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		}
+		else{
+			cell.innerHTML = '<a href="#changeTaskView.html?id=' + idList[i] + '">' + nameList[i] + " (arhiveeritud)" + "</a>";
+		}
 		row.appendChild(cell);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		body.appendChild(row);
