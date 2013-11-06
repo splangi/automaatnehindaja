@@ -10,6 +10,9 @@
 		background: #eee;	
 		font-family:sans-serif;
 	}
+	@font-face { font-family: menuFont; src: url('/automaatnehindaja/font/menuFont.ttf');}
+	
+	
 
 	#LogInWindow{
 		z-index: 1;
@@ -18,7 +21,8 @@
 		background-color: white;
 		text-align: center;
 		position: fixed;
-		
+		font-family: menuFont, sans-serif;
+		box-shadow: 3px 3px 3px #979797;
 	    top:50%;
 	    left: 50%;
 		margin-left: -200px;
@@ -26,15 +30,40 @@
 		
 		padding: 20px;
 		
-		border: solid #666 1px; 
-			padding: 10px; 
+
 	}
 	#lostPass {
-		font-size:x-small;
+		font-size:13px;
 		text-decoration:none;
 		position: absolute;
 		right: 10px;
 		bottom: 5px;
+	}
+.buttontest {
+
+	margin-top: 10px;
+	-moz-box-shadow:inset 0px 0px 50px -50px #ffffff;
+	-webkit-box-shadow:inset 0px 0px 50px -50px #ffffff;
+	box-shadow:inset 0px 0px 50px -50px #ffffff;
+	background-color:#ffffff;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	color: #979797;
+	font-family:menuFont;
+	font-size:16px;
+	font-weight:normal;
+	font-style:normal;
+	height:23px;
+	line-height:23px;
+	width:145px;
+	text-decoration:none;
+	text-align:center;
+}.buttontest:hover {
+	background-color:#EFEFEF;
+	color: #FD3E2C;
+}.buttontest:active {
+	position:relative;
+	top:3px;
 	}
 	
 
@@ -47,13 +76,14 @@
 <body>
 
 	<div id="LogInWindow" align="center">
-		<p>Tere tulemast automaatse programeerimisülesannete kontrollija rakendusse</p>
+		<p>Tere tulemast automaatse hindaja rakendusse</p>
 		
 		<form id="login" method="post" action="j_security_check">
 			<p>E-mail: <br> <input type="text" name="j_username" autofocus="autofocus"> </p>
 			<p>Salasõna: <br> <input type="password" name="password"> </p>
 			<input type="password" name="j_password" style="display: none;">
-			<input type="submit" value="Sisene">
+			<input type="submit" value="Sisene" class=buttontest>
+		
 		</form>
 		<a href="lost_pass.html" id="lostPass">Parool ununes?</a>
 	</div>

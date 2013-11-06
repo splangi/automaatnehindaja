@@ -5,6 +5,7 @@
 <title>Parool ununes</title>
 
 <style type="text/css">
+@font-face { font-family: menuFont; src: url('/automaatnehindaja/font/menuFont.ttf');}
 
 	html{
 		background: #eee;	
@@ -18,17 +19,44 @@
 		background-color: white;
 		text-align: center;
 		position: fixed;
-		
+		font-family:menuFont;
 	    top:50%;
 	    left: 50%;
 		margin-left: -200px;
 		margin-top: -110px;
-		
+		box-shadow: 3px 3px 3px #979797;
 		padding: 20px;
-		
-		border: solid #666 1px; 
-			padding: 10px; 
+		 
+		padding: 10px; 
 	}
+	
+	.buttontest {
+
+	margin-top: 10px;
+	-moz-box-shadow:inset 0px 0px 50px -50px #ffffff;
+	-webkit-box-shadow:inset 0px 0px 50px -50px #ffffff;
+	box-shadow:inset 0px 0px 50px -50px #ffffff;
+	background-color:#ffffff;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	color: #979797;
+	font-family:menuFont;
+	font-size:16px;
+	font-weight:normal;
+	font-style:normal;
+	height:23px;
+	line-height:23px;
+	width:130px;
+	text-decoration:none;
+	text-align:center;
+}.buttontest:hover {
+	background-color:#EFEFEF;
+	color: #FD3E2C;
+}.buttontest:active {
+	position:relative;
+	top:3px;
+	}
+	
 
 </style>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -41,7 +69,7 @@
 		<p>Täitke allolev lahter ning Teile saadetakse e-mail uue parooli saamise juhistega</p>
 		<form id="resetPass" method="post" action="resetpass">
 			<p>E-mail: <br> <input type="text" name="mail" autofocus="autofocus"> </p>
-			<input type="submit" value="Saada">
+			<input type="submit" value="Saada" class=buttontest>
 			<p id="message"></p>
 		</form>
 	</div>
