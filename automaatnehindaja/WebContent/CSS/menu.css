@@ -1,11 +1,12 @@
 @charset 'UTF-8';
 /* Base Styles */
 
-@font-face { font-family: headerFont; src: url('/automaatnehindaja/font/headerFont.ttf'); }
+@font-face { font-family: headerFont; src: url('/automaatnehindaja/font/headerFont.ttf');}
+@font-face { font-family: menuFont; src: url('/automaatnehindaja/font/menuFont.ttf');}
 
 
 html{
-	background-color: #eee;
+	background-color: #EFEFEF;
 }
 
 #header{
@@ -13,14 +14,14 @@ html{
 	position: relative;
 	background-color: white;
 	max-width: 1000px;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	margin-left:auto;
 	margin-right:auto;
-	box-shadow: 5px 5px 3px #666;
-	background-color: white;
-	color: red;
-	font-size: 50px;
+	box-shadow: 3px 3px 3px #979797;
+	background-color: #192727;
+	color: #FD3E2C;
+	font-size: 45px;
 	font-weight:bold;
 	font-family: headerFont, sans-serif;
 	text-align: center;
@@ -30,6 +31,9 @@ html{
 #content{
 	padding:20px;
 	margin-left: 200px;
+	font-family: menuFont, sans-serif;
+	font-size: 16px;
+	
 	
 }
 
@@ -44,8 +48,8 @@ html{
   font-weight: normal;
   text-decoration: none;
   line-height: 1;
-  font-family: sans-serif;
-  font-size: 14px;
+  font-family: menuFont, sans-serif;
+  font-size: 16px;
   position: relative;
 }
 
@@ -61,17 +65,16 @@ html{
   border-bottom: 1px solid #ccc;
 }
 #cssmenu > ul > li > a {
-  font-size: 13px;
+  font-size: 16px;
   display: block;
   color: #000;
-  font-weight:bold;
 }
 #cssmenu > ul > li > a:hover {
   text-decoration: none;
 }
 
 #cssmenu > ul > li.active > a {
-  background: #FF4D4D;
+  background: #FD3E2C;
   color: white;
 }
 #cssmenu > ul > li.has-sub > a:after {
