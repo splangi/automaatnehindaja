@@ -75,6 +75,18 @@ function load(page){
 		
 		$('a[href$="#tasksview"]').trigger("click");
 	}
+	else if (page == "#changeTask"){
+		$("#content").load("html/tasksview.html", function(){
+			$.cachedScript("Scripts/tasksview.js");
+		});
+		
+		$('a[href$="#changeTask"]').trigger("click");
+	}
+	else if (page.indexOf("#changeTaskView") != -1){
+		$("#content").load("html/changeTask.html", function(){
+			$.cachedScript("Scripts/changetask.js");
+		});
+	}
 	else if (page == "#main"){
 		$("#content").load("html/main.html");
 		$('a[href$="#main"]').trigger("click");

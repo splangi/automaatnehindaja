@@ -1,4 +1,4 @@
-
+var id;
 var iopairs = 0;
 var buttoncount = 0;
 var courses = document.getElementById("courses");
@@ -19,16 +19,16 @@ function closeOverlay(){
 	$("#overlay").css("display", "none");
 }
 
-function addio(){
+function addio(input, output){
 	iopairs = iopairs + 1;
 	buttoncount = buttoncount + 1;
 	var iotable = document.getElementById("iotableBody");
 	var row = document.createElement("tr");
 	var cell = document.createElement("td");
-	cell.innerHTML='<textarea id = "input' + iopairs + '" rows="2" cols="38" style="overflow: auto; resize:none"></textarea>';
+	cell.innerHTML='<textarea id = "input' + iopairs + '" rows="2" cols="38" style="overflow: auto; resize:none">' +input + '</textarea>';
 	row.appendChild(cell);
 	cell = document.createElement("td");
-	cell.innerHTML='<textarea id = "output' + iopairs + '" rows="2" cols="38" style="overflow: auto; resize:none"></textarea>';
+	cell.innerHTML='<textarea id = "output' + iopairs + '" rows="2" cols="38" style="overflow: auto; resize:none">' + output + '</textarea>';
 	row.appendChild(cell);
 	cell = document.createElement("td");
 	cell.innerHTML='<button id = "button' + buttoncount + '" onclick = deleteRow(' + buttoncount + ') style="vertical-align: middle;"> - </button>';
@@ -62,7 +62,9 @@ function checkFields(){
 	}
 }
 
+
 function post(){
+	$("#loader").css("display", "block");
 	var inputs = {};
 	var outputs = {};
 	var textareas = $('#iotable textarea');
@@ -73,7 +75,7 @@ function post(){
 		i = i + 2;
 	}
 	var variables ={
-			course: courses.value,
+			id: id,
 			name: taskname.value,
 			description: description.value,
 			deadline: deadline.value,
@@ -81,35 +83,51 @@ function post(){
 			outputs:JSON.stringify(outputs)
 	};
 	console.log(variables);
-	var request = $.post("addTask", variables);
+	var request = $.post("changeTask", variables);
 	request.done(function(){
-		message.innerHTML = "Ülesande lisamine õnnestus!";
+		$("#loader").css("display", "none");
+		message.innerHTML = "Ülesande muutmine õnnestus!";
 	});
 	
 };
 
-function getCourses(){
-	jQuery.getJSON("getcoursenames", function(data){
-		var courses = data.coursenames;
-		for (var i = 0; i<courses.length; i++){
-			var course = courses[i];
-			$('#coursesCSV').append($("<option></option>").attr("value",course).text(course));
-			$('#courses').append($("<option></option>").attr("value",course).text(course));
-		};
+function getValues(){
+	jQuery.getJSON("changeTask?id=" + id, function(data){
+		document.getElementById("course").innerHTML = data.selectedcourse;
+		$.getScript("Scripts/zebra_datepicker.js", function(){
+			 $('#deadline').Zebra_DatePicker({direction: 1, format: "d-m-Y"});
+			 $("#deadline").val(data.deadline);
+		});
+		$("#input0").html(data.inputs[0]);
+		$("#output0").html(data.outputs[0]);
+		taskname.value = data.name;
+		description.value = data.description;
+		for (var i = 1; i < data.inputs.length; i++){
+			addio(data.inputs[i], data.outputs[i]);
+		}
 	});
 };
 
+function getUrlVars() {
+    var vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
 function init(){
-	getCourses();
-	$.getScript("Scripts/zebra_datepicker.js", function(){
-		 $('#deadline').Zebra_DatePicker({direction: 1, format: "d-m-Y"});
-	});
-	 courses = document.getElementById("courses");
-	 description = document.getElementById("desc");
-	 deadline = document.getElementById("deadline");
-	 taskname = document.getElementById("name");
-	 console.log(taskname.value);
-	 message = document.getElementById("message");
+	courses = document.getElementById("courses");
+	description = document.getElementById("desc");
+	deadline = document.getElementById("deadline");
+	taskname = document.getElementById("name");
+	message = document.getElementById("message");
+	id = getUrlVars()["id"];
+	if (id === undefined){
+		window.location = "error.html";
+	}
+	getValues();
+
 }
 
 init();

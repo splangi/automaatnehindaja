@@ -17,7 +17,12 @@ function fillUpTasks(course){
 			tableCreate(data.id, data.name, data.deadline, data.result);
 		}
 		else if (data.role == "admin" || data.role == "responsible"){
-			tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount);
+			if (window.location.hash == "#tasksview"){
+				tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount);
+			}
+			else if (window.location.hash == "#changeTask"){
+				tableCreate3(data.id, data.name, data.deadline);
+			}
 		}
 	});	
 }
@@ -92,6 +97,37 @@ function tableCreate2(idList, nameList, deadlineList, resultCount, successCount)
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultCount[i]).appendTo(row);
 		jQuery("<td />").text(successCount[i]).appendTo(row);
+		body.appendChild(row);
+	}
+	table.setAttribute("class", "tablesorter");
+	table.setAttribute("id", "tasksTable");
+	table.setAttribute("border", "1");
+	tableDiv.appendChild(table);
+	
+	$.getScript("Scripts/jquery.tablesorter.min.js", function() {
+		$("#tasksTable").tablesorter( { sortList: [[0,0]] } ); 
+	});
+}
+
+function tableCreate3(idList, nameList, deadlineList){
+	var tableDiv = document.getElementById("tableDiv");
+	tableDiv.innerHTML = "";
+	var table = document.createElement("table");
+	table.setId = "tasksTable";
+	var head = document.createElement("thead");
+	var row = document.createElement("tr");
+	jQuery("<th />").text("Ülesanne").appendTo(row);
+	jQuery("<th />").text("Tähtaeg").appendTo(row);
+	table.appendChild(head);
+	head.appendChild(row);
+	var body = document.createElement("tbody");
+	table.appendChild(body);
+	for (var i = 0; i < nameList.length; i++){
+		row = document.createElement("tr");
+		var cell = document.createElement("td");
+		cell.innerHTML = '<a href = "#changeTaskView?id=' + idList[i] + '">' + nameList[i] + "</a>";
+		row.appendChild(cell);
+		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		body.appendChild(row);
 	}
 	table.setAttribute("class", "tablesorter");

@@ -1,0 +1,54 @@
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<link href="CSS/default.css" rel="stylesheet" type="text/css" />
+<meta charset="UTF-8">
+<div>
+		<a href="javascript:openOverlay()" style="float:right;">Õpetus</a>
+		<div id="overlay" style="right:10px;">
+		<a href ="javascript:closeOverlay()" style="float: right;"><img alt="X" src="images/close.png" height="20px;"></a>
+		Et ülesannet lisada tuleb järgida järgnevat protseduuri: <br>
+		
+		<ol>
+			<li>Vali õppeaine kuhu soovite ülesannet lisada.</li>
+			<li>Kehtesta tähtaeg mis ajaks peavad tudengid ülesande esitama.</li>
+			<li>Kirjelda ülesannet HTML koodis (reavahetusi HTML koodiga ei pea märkima) ning võimalikult täpselt andes tudengitele teada, mis sisendid programm edastab ning mis väljundeid ta ootab.</li>
+			<li>Lisa sisendite kasti sisendid ning väljundite kasti väljudid. Erinevad sisendid eralda semikooloniga. Ära lisa mittevajalikke tühikuid ning lõppu semikoolinit!</li>
+			<li>Kui soovid tudengi programmi jooksutada mitu korda, siis lisa + nupu abil niipalju sisend-väljundpaare kui vaja.</li>
+		</ol>
+		</div>
+		<p class="field">
+			<span id="course">
+			</span>
+		</p>
+		<p class="field">
+			Tähtaeg<br> <input class="inputfields" id="deadline"
+				type="text">
+		</p>
+		<p class="field">
+			Ülesande nimi<br> <input class="inputfields" id="name" size="40" maxlength="40"
+				type="text">
+		</p>
+		<p class="field">
+			Ülesande kirjeldus<br> <textarea id = "desc" rows="10" cols="80" style="overflow:auto; resize:none;"></textarea>
+		</p>
+			<table id = "iotable">
+				<tbody id = "iotableBody">
+				<tr>
+					<td class = "field">Sisendid</td>
+					<td class = "field">Väljundid</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><textarea id = "input0" rows="2" cols="38" style="overflow: auto; resize:none"></textarea></td>
+					<td><textarea id = "output0" rows="2" cols="38" style="overflow: auto; resize:none"></textarea></td>
+					<td></td>
+				</tr>
+				</tbody>
+			</table>
+			
+			
+			
+			<button onclick="addio('','')"> + </button>
+			<button onclick="checkFields()"> Muuda ülesanne </button>
+			<img id = "loader" alt="loading..." src="images/ajax-loader.gif" style="display: none; float:left; width: 20px;">			
+			<span id = "message"></span>
+	</div>

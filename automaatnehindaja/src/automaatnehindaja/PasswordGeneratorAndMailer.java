@@ -5,7 +5,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.FutureTask;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
