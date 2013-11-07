@@ -22,6 +22,7 @@ $(document).ready(function() {
 					"<ul>" +
 						"<li><a href='#addTask'><span>Lisa ülesanne</span></a></li>" +
 						"<li><a href='#changeTask'><span>Muuda ülesanne</span></a></li>" +
+						"<li><a href='#closeAttempts'><span>Soorituste arhiveerimine</span></a></li>" +
 						"<li class='last'><a href='#closeTask'><span>Ülesannete arhiveerimine</span></a></li>" +
 					"</ul></li>";
 			$(ulesannetehaldus).insertAfter("#afterThis");

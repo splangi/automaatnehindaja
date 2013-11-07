@@ -47,7 +47,6 @@ public class GetCourseNamesServlet extends HttpServlet {
 					+ "LEFT JOIN users_courses "
 					+ "ON courses.coursename=users_courses.coursename "
 					+ "WHERE users_courses.username = ? ";
-			System.out.println(archivedBoolean);
 			if (!archivedBoolean) {
 				statement = statement + " AND active = 1";
 			}

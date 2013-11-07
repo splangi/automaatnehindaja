@@ -33,7 +33,7 @@ public class AddCourseServlet extends HttpServlet {
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
 						"ahindaja", "k1rven2gu");
 				logger.info("Inserting a new course by: " + request.getRemoteUser());
-				String statement = "INSERT INTO courses VALUES (?);";
+				String statement = "INSERT INTO courses (coursename) VALUES (?);";
 				PreparedStatement stmt = c.prepareStatement(statement);
 				stmt.setString(1, coursename);
 				stmt.executeUpdate();
