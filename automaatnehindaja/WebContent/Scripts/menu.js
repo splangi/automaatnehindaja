@@ -18,7 +18,7 @@ $(document).ready(function() {
 						"<li><a href='#addUsersCSV'><span>Automaatne lisamine</span></a></li>" +
 						"<li class = 'last'><a href='#addUserToCourse'><span>Lisa kasutaja kursusele</span></a></li>" +
 					"</ul></li>";
-			var ulesannetehaldus = "<li id = 'taskchoices' class='has-sub'><a href='#addTask'><span>Ülesannete haldus</span></a>" + 
+			var ulesannetehaldus = "<li id = 'taskchoices' class='has-sub'><a><span>Ülesannete haldus</span></a>" + 
 					"<ul>" +
 						"<li><a href='#addTask'><span>Lisa ülesanne</span></a></li>" +
 						"<li><a href='#changeTask'><span>Muuda ülesanne</span></a></li>" +
@@ -35,9 +35,9 @@ $(document).ready(function() {
 			$('#cssmenu li').removeClass('active');
 			$(this).closest('li').addClass('active');
 			var checkElement = $(this).next();
-			if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
-				$(this).closest('li').removeClass('active');
-				checkElement.slideUp('normal');
+			console.log($(this).next());
+			if (!$(this).next().is("ul")){
+				$('#cssmenu ul ul:visible').slideUp('normal');
 			}
 			if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
 				$('#cssmenu ul ul:visible').slideUp('normal');
@@ -80,13 +80,13 @@ function load(page){
 		$("#content").load("html/tasksview.html", function(){
 			$.cachedScript("Scripts/tasksview.js");
 		});
-		
-		$('a[href$="#changeTask"]').trigger("click");
+		$("#taskchoices a").trigger("click");
 	}
 	else if (page.indexOf("#changeTaskView") != -1){
 		$("#content").load("html/changeTask.html", function(){
 			$.cachedScript("Scripts/changetask.js");
 		});
+		$("#taskchoices a").trigger("click");
 	}
 	else if (page == "#main"){
 		$("#content").load("html/main.html");
@@ -94,14 +94,12 @@ function load(page){
 	}
 	else if (page == "#changepass"){
 		$("#content").load("html/change_pass.html");
-		//$.getScript("Scripts/changepass.js");
 		$('a[href$="#changepass"]').trigger("click");
 	}
 	else if (page == "#results"){
 		$("#content").load("html/results.html", function(){
 			$.cachedScript("Scripts/results.js");
 		});
-		
 		$('a[href$="#results"]').trigger("click");
 	}
 	else if (page == "#addUserManually"){
@@ -109,45 +107,45 @@ function load(page){
 			$.cachedScript("Scripts/adduser.js");
 		});
 		
-		$('#userchoice').trigger("click");		
+		$('#userchoices a').trigger("click");		
 	}
 	else if (page == "#addUsersCSV"){
 		$("#content").load("html/addusercsv.html", function(){
 			$.cachedScript("Scripts/adduser.js");
 		});
 		
-		$('#userchoice').trigger("click");
+		$('#userchoices a').trigger("click");
 	}
 	else if (page == "#addTask"){
 		$("#content").load("html/addTask.html", function(){
 			$.cachedScript( "Scripts/addtask.js" );
 		});
-		//$.getScript("Scripts/addtask.js");
-		$('#taskchoice').trigger("click");
+		$('#taskchoices a').trigger("click");
 	}
 	else if (page == "#addCourse"){
 		$("#content").load("html/addCourse.html", function(){
 			$.cachedScript("Scripts/addCourse.js");
 		});
 		
-		$('#coursechoice').trigger("click");
+		$('#coursechoices a').trigger("click");
 	}
 	else if (page == "#logs"){
 		$("#content").load("html/serverlogs.html", function(){
 			$.cachedScript("Scripts/serverlogs.js");
 		});
-		$('#logs').trigger("click");
+		$('#logs a').trigger("click");
 	}
 	else if (page == "#addUserToCourse"){
 		$("#content").load("html/addusertocourse.html", function(){
 			$.cachedScript("Scripts/addusertocourse.js");
 		});
-		$('#addusertocourse').trigger("click");
+		$("#userchoices a").trigger("click");
 	}
 	else if (page.indexOf("#taskview") != -1){
 		$("#content").load("html/taskview.html", function(){
 			$.cachedScript( "Scripts/taskview.js" );
 		});
+		$('a[href$="#taskview"]').trigger("click");
 	}
 }
 

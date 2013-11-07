@@ -71,7 +71,7 @@ public class ChangeTaskServlet extends HttpServlet {
 				}
 				json.append("inputs", input.substring(0, input.length()-1));
 				stmt.close();
-				statement = "SELECT outer_seq, input FROM tasks_output WHERE task_id = ? "
+				statement = "SELECT outer_seq, output FROM tasks_output WHERE task_id = ? "
 						+ "ORDER BY outer_seq, inner_seq";
 				stmt = c.prepareStatement(statement);
 				stmt.setInt(1, id);
