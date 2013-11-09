@@ -1,0 +1,26 @@
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<link href="CSS/default.css" rel="stylesheet" type="text/css" />
+<meta charset="UTF-8">
+<div>
+	<a href="javascript:openOverlay()" style="float: right;">Abi</a>
+	<div id="overlay" style="right: 10px;">
+		<a href="javascript:closeOverlay()" style="float: right;"><img
+			alt="X" src="images/close.png" height="20px;"></a>
+
+		<p>Antud moodul aitab teil arhiveerida ülesande, mida te enam
+			sellel kursusel kasutada ei soovi. Kursuse sulgemisel arhiveeritakse
+			ka tudengite sooritused.</p>
+	</div>
+	<p class="field">
+		Õppeaine<br> <select id="courses" onchange="getTasks()">
+			<option></option>
+		</select>
+	</p>
+	<p class="field">
+		Ülesanne<br> <select id="taskname">
+		</select>
+	</p>
+	<button onclick="post()">Arhiveeri ülesanne</button>
+
+	<span id="info"></span>
+</div>

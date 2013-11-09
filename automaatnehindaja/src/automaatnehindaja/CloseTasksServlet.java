@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -16,56 +15,50 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-
-@WebServlet("/addCourse")
-public class AddCourseServlet extends HttpServlet {
+/**
+ * Servlet implementation class CloseAttemptsServlet
+ */
+@WebServlet("/closeTasks")
+public class CloseTasksServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(AddTaskServlet.class);
-  
+	private static Logger logger = Logger.getLogger(CloseTasksServlet.class);
+    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String coursename = request.getParameter("coursename");
+		String taskid = request.getParameter("taskid");
 		PrintWriter pw = response.getWriter();
 		response.setContentType("text/plain");
-		if (request.isUserInRole("admin")){
+		if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection c = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
 						"ahindaja", "k1rven2gu");
-				logger.info("Inserting a new course by: " + request.getRemoteUser());
-				String statement = "INSERT INTO courses (coursename) VALUES (?);";
+				logger.info("Closing task - "  + taskid + " , request by: " + request.getRemoteUser());
+				String statement = "UPDATE attempt SET active = FALSE WHERE task = ?;";
 				PreparedStatement stmt = c.prepareStatement(statement);
-				stmt.setString(1, coursename);
+				stmt.setString(1, taskid);
 				stmt.executeUpdate();
 				stmt.close();
-				statement = "SELECT username FROM users_roles WHERE rolename = 'admin';";
+				statement = "UPDATE tasks SET active = FALSE WHERE id = ?;";
 				stmt = c.prepareStatement(statement);
-				ResultSet rs = stmt.executeQuery();
-				statement = "INSERT INTO users_courses VALUES (?,?);";
-				PreparedStatement stmt2 = c.prepareStatement(statement);
-				while(rs.next()){
-					stmt2.setString(1, rs.getString(1));
-					stmt2.setString(2, coursename);
-					stmt2.addBatch();
-				}
-				stmt2.executeBatch();
+				stmt.setString(1, taskid);
+				stmt.executeUpdate();
 				stmt.close();
-				stmt2.close();
 				c.close();
-				logger.info("Success! added course " + coursename + ".");
-				pw.write("Kursuse lisamine õnnestus!");
+				logger.info("Success! closed tasks - " + taskid +".");
+				pw.write("Ülesanne on arhiveeritud");
 			} catch (ClassNotFoundException e) {
 				logger.error("ClassNotFoundException", e);
-				e.printStackTrace();
+				pw.write("Midagi läks valesti, võtke ühendust administraatoriga.");
 			} catch (SQLException e) {
 				logger.error("SQLException", e);
-				pw.write("Kursuse lisamine ebaõnnestus, tõenäoliselt on antud nimega kursus juba olemas!");
-				e.printStackTrace();
+				pw.write("Midagi läks valesti, võtke ühendust administraatoriga.");
 			}
 			
 		}
 		else {
-			pw.write("not authorized!");
+			logger.warn("Unauthorized access, request by: " + request.getRemoteUser());
+			pw.write("Teil pole volitusi seda toimingut teha");
 		}
 	}
 

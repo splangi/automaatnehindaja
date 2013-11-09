@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	$.get("getRole", function(data){
-		console.log(data);
 		if (data == "admin"){
 			var logid = "<li><a href='#logs'><span>Logid</span></a></li>";
 			var kursusehaldus = "<li id = 'coursechoices' class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>" +
@@ -23,7 +22,7 @@ $(document).ready(function() {
 						"<li><a href='#addTask'><span>Lisa ülesanne</span></a></li>" +
 						"<li><a href='#changeTask'><span>Muuda ülesanne</span></a></li>" +
 						"<li><a href='#closeAttempts'><span>Soorituste arhiveerimine</span></a></li>" +
-						"<li class='last'><a href='#closeTask'><span>Ülesannete arhiveerimine</span></a></li>" +
+						"<li class='last'><a href='#closeTasks'><span>Ülesannete arhiveerimine</span></a></li>" +
 					"</ul></li>";
 			$(ulesannetehaldus).insertAfter("#afterThis");
 			$(kasutajahaldus).insertAfter("#afterThis");
@@ -35,7 +34,6 @@ $(document).ready(function() {
 			$('#cssmenu li').removeClass('active');
 			$(this).closest('li').addClass('active');
 			var checkElement = $(this).next();
-			console.log($(this).next());
 			if (!$(this).next().is("ul")){
 				$('#cssmenu ul ul:visible').slideUp('normal');
 			}
@@ -64,9 +62,17 @@ $(document).ready(function() {
 	
 });
 
-function changeActive(){
-	
-}
+jQuery.cachedScript = function( url, options ) {
+	 
+	  // Allow user to set any option except for dataType, cache, and url
+	  options = $.extend( options || {}, {
+	    dataType: "script",
+	    cache: true,
+	    url: url
+	  });
+	 
+	  return jQuery.ajax( options );
+	};
 
 function load(page){
 	if (page.indexOf("#tasksview") != -1){
@@ -122,6 +128,18 @@ function load(page){
 		});
 		$('#taskchoices a').trigger("click");
 	}
+	else if (page == "#closeAttempts"){
+		$("#content").load("html/closeAttempts.html", function(){
+			$.cachedScript( "Scripts/closeAttempts.js" );
+		});
+		$('#taskchoices a').trigger("click");
+	}
+	else if (page == "#closeTasks"){
+		$("#content").load("html/closeTasks.html", function(){
+			$.cachedScript( "Scripts/closeTasks.js" );
+		});
+		$('#taskchoices a').trigger("click");
+	}
 	else if (page == "#addCourse"){
 		$("#content").load("html/addCourse.html", function(){
 			$.cachedScript("Scripts/addCourse.js");
@@ -150,14 +168,4 @@ function load(page){
 }
 
 
-jQuery.cachedScript = function( url, options ) {
-	 
-	  // Allow user to set any option except for dataType, cache, and url
-	  options = $.extend( options || {}, {
-	    dataType: "script",
-	    cache: true,
-	    url: url
-	  });
-	 
-	  return jQuery.ajax( options );
-	};
+

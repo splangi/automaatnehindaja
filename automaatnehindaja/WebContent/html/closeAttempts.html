@@ -1,0 +1,29 @@
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<link href="CSS/default.css" rel="stylesheet" type="text/css" />
+<meta charset="UTF-8">
+<div>
+	<a href="javascript:openOverlay()" style="float: right;">Abi</a>
+	<div id="overlay" style="right: 10px;">
+		<a href="javascript:closeOverlay()" style="float: right;"><img
+			alt="X" src="images/close.png" height="20px;"></a>
+
+		<p>Antud moodul aitab teil arhiveerida õpilaste sooritused antud
+			ülesandel. Antud tegevus on eelkõige mõeldud sellejaoks, kui te
+			soovite sama kursust kasutada ka järgneval õppeaastal samade
+			ülesannetega. Antud tegevust ei saa tagasi võtta läbi veebilehe. Kui
+			te soovite õpilaste sooritusi arhiivist välja võtta, võtke ühendust
+			administraatoriga</p>
+	</div>
+	<p class="field">
+		Õppeaine<br> <select id="courses" onchange="getTasks()">
+			<option></option>
+		</select>
+	</p>
+	<p class="field">
+		Ülesanne<br> <select id="taskname">
+		</select>
+	</p>
+	<button onclick="post()">Arhiveeri tulemused</button>
+
+	<span id="info"></span>
+</div>
