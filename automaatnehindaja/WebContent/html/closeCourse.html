@@ -1,0 +1,22 @@
+<link href="CSS/Style.css" rel="stylesheet" type="text/css" />
+<link href="CSS/default.css" rel="stylesheet" type="text/css" />
+<meta charset="UTF-8">
+<div>
+	<a href="javascript:openOverlay()" style="float: right;">Abi</a>
+	<div id="overlay" style="right: 10px;">
+		<a href="javascript:closeOverlay()" style="float: right;"><img
+			alt="X" src="images/close.png" height="20px;"></a>
+
+		<p>Antud moodul aitab teil arhiveerida kursuse, mida te enam
+			kasutada ei soovi. Kursuse sulgemisel arhiveeritakse
+			ka kursuse ülesanded ning tudengite sooritused.</p>
+	</div>
+	<p class="field">
+		Õppeaine<br> <select id="courses">
+			<option></option>
+		</select>
+	</p>
+	<button onclick="post()">Arhiveeri Kursus</button>
+
+	<span id="info"></span>
+</div>
