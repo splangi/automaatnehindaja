@@ -52,7 +52,7 @@ public class TaskstableServlet extends HttpServlet {
 
 			if (request.isUserInRole("tudeng")) {
 				statement = "SELECT "
-						+ "tasks.id, tasks.name, tasks.deadline, attempt.result, tasks.active"
+						+ "tasks.id, tasks.name, tasks.deadline, attempt.result, tasks.active "
 						+ "FROM tasks " 
 						+ "LEFT OUTER JOIN "
 						+ "attempt on tasks.id = attempt.task " + "AND "

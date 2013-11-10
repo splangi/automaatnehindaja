@@ -1,12 +1,36 @@
 
 	
-function init(){
-	jQuery.getJSON("resulttable", function(data) {
+function changeCourse(){
+	var course = $("#courses option:selected").val();
+	var archived = $("#archived").is(":checked");
+	jQuery.getJSON("resulttable?course=" + course + "&archived=" + archived, function(data) {
 		$("#resultsLoader").css("display", "none");
 		tableCreate(data.fullname, data.taskname, data.time, data.result, data.language, data.id, data.course);
 	});	
-	
 };
+
+function getCourses(){
+	var archived = $("#archived").is(":checked");
+	jQuery.getJSON("getcoursenames?archived=" + archived , function(data){
+		var courses = data.coursenames;
+		//TODO select the one which was lastly selected
+		$('#courses option').remove();
+		for (var i = 0; i<courses.length; i++){
+			var course = courses[i];
+			if (data.active[i] === true){
+				$('#courses').append($("<option></option>").attr("value",course).text(course));
+			}
+			else {
+				$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
+			}
+		};
+		changeCourse();
+	});
+};
+
+function init(){
+	getCourses();
+}
 
 function tableCreate(nameList, tasknameList, deadlineList, resultList, languageList, idList, courseList){
 	var tableDiv = document.getElementById("attempts");
@@ -17,7 +41,6 @@ function tableCreate(nameList, tasknameList, deadlineList, resultList, languageL
 	var row = document.createElement("tr");
 	jQuery("<th />").text("Nimi").appendTo(row);
 	jQuery("<th />").text("Ülesanne").appendTo(row);
-	jQuery("<th />").text("Kursus").appendTo(row);
 	jQuery("<th />").text("Tähtaeg").appendTo(row);
 	jQuery("<th />").text("Tulemus").appendTo(row);
 	jQuery("<th />").text("Programeerimiskeel").appendTo(row);
@@ -31,7 +54,6 @@ function tableCreate(nameList, tasknameList, deadlineList, resultList, languageL
 		var cell = document.createElement("td");
 		cell.innerHTML = "<a href = #taskview.html?id="+ idList[i] + ">" + tasknameList[i] + "</a>";
 		row.appendChild(cell);
-		jQuery("<td />").text(courseList[i]).appendTo(row);
 		jQuery("<td />").text(deadlineList[i]).appendTo(row);
 		jQuery("<td />").text(resultList[i]).appendTo(row);
 		jQuery("<td />").text(languageList[i]).appendTo(row);

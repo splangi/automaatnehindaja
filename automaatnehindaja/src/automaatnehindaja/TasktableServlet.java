@@ -31,6 +31,7 @@ public class TasktableServlet extends HttpServlet {
 		ResultSet rs = null;
 		String username = request.getUserPrincipal().getName();
 		String taskid = request.getParameter("id");
+		boolean archived = Boolean.parseBoolean(request.getParameter("archived"));
 
 		try {
 			
@@ -44,7 +45,10 @@ public class TasktableServlet extends HttpServlet {
 						+ "FROM attempt "
 						+ "INNER JOIN users "
 						+ "ON users.username=attempt.username WHERE attempt.username = ? "
-						+ "and attempt.task = ?;";
+						+ "and attempt.task = ?";
+				if (!archived){
+					statement = statement + " and active = TRUE";
+				}
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, username);
 				stmt.setString(2, taskid);
@@ -54,7 +58,10 @@ public class TasktableServlet extends HttpServlet {
 						+ "FROM attempt "
 						+ "INNER JOIN users "
 						+ "ON users.username=attempt.username WHERE "
-						+ "attempt.task = ?;";
+						+ "attempt.task = ?";
+				if (!archived){
+					statement = statement + " and active = TRUE";
+				}
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, taskid);
 			}

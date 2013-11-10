@@ -1,5 +1,7 @@
+var id;
+
 function init(){
-	var id = getUrlVars()["id"];
+	id = getUrlVars()["id"];
 	if (id === undefined){
 		window.location = "error.html";
 	}
@@ -13,11 +15,7 @@ function init(){
 			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline.substring(0,16) + "</h4>";
 			 document.getElementById("description").innerHTML = data.description.replace(/\n/g, "<br />");
 		});	
-		jQuery.getJSON("tasktable?id=" + id, function(data) {
-			tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId);
-			document.getElementById("taskViewLoader").display = "none";
-			
-	});
+		fillUpTaskTable();
 	}
 	var result = getUrlVars()["result"];
 	if (result !== undefined){
@@ -31,6 +29,13 @@ function init(){
 			$("#resultToolarge").css("display", "block");
 		}
 	}
+}
+
+function fillUpTaskTable(){
+	jQuery.getJSON("tasktable?id=" + id + "&archived="+$("#archived").is(":checked"), function(data) {
+		tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId);
+		document.getElementById("taskViewLoader").display = "none";
+});
 }
 
 
