@@ -86,14 +86,6 @@ function manualsubmit(){
 	else{
 		uncolor(roleselection);
 	}
-	if (courseselection.selectedIndex == 0){
-		color(courseselection);
-		warningtext.innerHTML = "  Palun valige õppeaine";
-		validSubmission = false;
-	}
-	else{
-		uncolor(courseselection);
-	}	
 	if (validSubmission){
 		warningtext.innerHTML = "";
 		unhide("loader");
