@@ -162,9 +162,9 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
                 databaseUpdated = True
             return
         queryForAttemptOutput = ("DELETE FROM attempt_output where attempt_id=%s AND seq=%s")
-        cursor.execute(queryForAttemptOutput,(attemptId, i+1))
+        cursor.execute(queryForAttemptOutput,(attemptId, i))
         queryForAttemptOutput = ("INSERT INTO attempt_output (attempt_id, seq, output) VALUES (%s, %s, %s)")
-        cursor.execute(queryForAttemptOutput,(attemptId, i+1, applicationOutput))
+        cursor.execute(queryForAttemptOutput,(attemptId, i, applicationOutput))
         
         if (deltaTime.seconds >= ctimeout):
             if (not databaseUpdated):
