@@ -58,9 +58,8 @@ public class AddCourseServlet extends HttpServlet {
 				logger.error("ClassNotFoundException", e);
 				e.printStackTrace();
 			} catch (SQLException e) {
-				logger.error("SQLException", e);
+				logger.error("SQLException, probably dublicate entry");
 				pw.write("Kursuse lisamine ebaõnnestus, tõenäoliselt on antud nimega kursus juba olemas!");
-				e.printStackTrace();
 			}
 			
 		}

@@ -33,13 +33,13 @@ function init(){
 
 function fillUpTaskTable(){
 	jQuery.getJSON("tasktable?id=" + id + "&archived="+$("#archived").is(":checked"), function(data) {
-		tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId);
+		tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId, data.role);
 		document.getElementById("taskViewLoader").display = "none";
 });
 }
 
 
-function tableCreate(nameList, timeList, resultList, languageList, attemptIdList){
+function tableCreate(nameList, timeList, resultList, languageList, attemptIdList, role){
 	var tableDiv = document.getElementById("attempts");
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
@@ -50,6 +50,9 @@ function tableCreate(nameList, timeList, resultList, languageList, attemptIdList
 	jQuery("<th />").text("Esitamise aeg").appendTo(row);
 	jQuery("<th />").text("Tulemus").appendTo(row);
 	jQuery("<th />").text("Lähtekood").appendTo(row);
+	if (role === "admin"){
+		jQuery("<th />").text("Väljundid").appendTo(row);
+	}
 	table.appendChild(head);
 	head.appendChild(row);
 	var body = document.createElement("tbody");
@@ -62,9 +65,17 @@ function tableCreate(nameList, timeList, resultList, languageList, attemptIdList
 		cell = document.createElement("td");
 		link = document.createElement("a");
 		link.setAttribute("href", "viewfile?id=" + attemptIdList[i]);
-		link.innerHTML = "Python";
+		link.innerHTML = languageList[i];
 		cell.appendChild(link);
 		row.appendChild(cell);
+		if (role === "admin"){
+			cell = document.createElement("td");
+			link = document.createElement("a");
+			link.setAttribute("href", "viewoutput?id=" + attemptIdList[i]);
+			link.innerHTML = "Vaata";
+			cell.appendChild(link);
+			row.appendChild(cell);
+		}
 		body.appendChild(row);
 	}
 	table.setAttribute("class", "tablesorter");

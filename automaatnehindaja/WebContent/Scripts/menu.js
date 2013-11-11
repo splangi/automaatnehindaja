@@ -62,35 +62,27 @@ $(document).ready(function() {
 	
 });
 
-jQuery.cachedScript = function( url, options ) {
-	 
-	  // Allow user to set any option except for dataType, cache, and url
-	  options = $.extend( options || {}, {
-	    dataType: "script",
-	    cache: true,
-	    url: url
-	  });
-	 
-	  return jQuery.ajax( options );
-	};
+$.ajaxSetup({
+	  cache: true
+	});
 
 function load(page){
 	if (page.indexOf("#tasksview") != -1){
 		$("#content").load("html/tasksview.html", function(){
-			$.cachedScript("Scripts/tasksview.js");
+			$.getScript("Scripts/tasksview.js");
 		});
 		
 		$('a[href$="#tasksview"]').trigger("click");
 	}
 	else if (page == "#changeTask"){
 		$("#content").load("html/tasksview.html", function(){
-			$.cachedScript("Scripts/tasksview.js");
+			$.getScript("Scripts/tasksview.js");
 		});
 		$("#taskchoices a").trigger("click");
 	}
 	else if (page.indexOf("#changeTaskView") != -1){
 		$("#content").load("html/changeTask.html", function(){
-			$.cachedScript("Scripts/changetask.js");
+			$.getScript("Scripts/changetask.js");
 		});
 		$("#taskchoices a").trigger("click");
 	}
@@ -104,70 +96,70 @@ function load(page){
 	}
 	else if (page == "#results"){
 		$("#content").load("html/results.html", function(){
-			$.cachedScript("Scripts/results.js");
+			$.getScript("Scripts/results.js");
 		});
 		$('a[href$="#results"]').trigger("click");
 	}
 	else if (page == "#addUserManually"){
 		$("#content").load("html/addusermanually.html", function(){
-			$.cachedScript("Scripts/adduser.js");
+			$.getScript("Scripts/adduser.js");
 		});
 		
 		$('#userchoices a').trigger("click");		
 	}
 	else if (page == "#addUsersCSV"){
 		$("#content").load("html/addusercsv.html", function(){
-			$.cachedScript("Scripts/adduser.js");
+			$.getScript("Scripts/adduser.js");
 		});
 		
 		$('#userchoices a').trigger("click");
 	}
 	else if (page == "#addTask"){
 		$("#content").load("html/addTask.html", function(){
-			$.cachedScript( "Scripts/addtask.js" );
+			$.getScript( "Scripts/addtask.js" );
 		});
 		$('#taskchoices a').trigger("click");
 	}
 	else if (page == "#closeAttempts"){
 		$("#content").load("html/closeAttempts.html", function(){
-			$.cachedScript( "Scripts/closeAttempts.js" );
+			$.getScript( "Scripts/closeAttempts.js" );
 		});
 		$('#taskchoices a').trigger("click");
 	}
 	else if (page == "#closeTasks"){
 		$("#content").load("html/closeTasks.html", function(){
-			$.cachedScript( "Scripts/closeTasks.js" );
+			$.getScript( "Scripts/closeTasks.js" );
 		});
 		$('#taskchoices a').trigger("click");
 	}
 	else if (page == "#addCourse"){
 		$("#content").load("html/addCourse.html", function(){
-			$.cachedScript("Scripts/addCourse.js");
+			$.getScript("Scripts/addCourse.js");
 		});
 		
 		$('#coursechoices a').trigger("click");
 	}
 	else if (page == "#logs"){
 		$("#content").load("html/serverlogs.html", function(){
-			$.cachedScript("Scripts/serverlogs.js");
+			$.getScript("Scripts/serverlogs.js");
 		});
 		$('#logs a').trigger("click");
 	}
 	else if (page == "#addUserToCourse"){
 		$("#content").load("html/addusertocourse.html", function(){
-			$.cachedScript("Scripts/addusertocourse.js");
+			$.getScript("Scripts/addusertocourse.js");
 		});
 		$("#userchoices a").trigger("click");
 	}
 	else if (page == "#closeCourse"){
 		$("#content").load("html/closeCourse.html", function(){
-			$.cachedScript("Scripts/closeCourse.js");
+			$.getScript("Scripts/closeCourse.js");
 		});
 		$("#coursechoices a").trigger("click");
 	}
 	else if (page.indexOf("#taskview") != -1){
 		$("#content").load("html/taskview.html", function(){
-			$.cachedScript( "Scripts/taskview.js" );
+			$.getScript( "Scripts/taskview.js" );
 		});
 		$('a[href$="#taskview"]').trigger("click");
 	}
