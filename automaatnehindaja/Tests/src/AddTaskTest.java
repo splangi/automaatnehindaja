@@ -40,7 +40,15 @@ public class AddTaskTest {
     pass.sendKeys("passwd");
     pass.submit();
     
-    driver.findElement(By.cssSelector("a[href='#addTask']")).click();
+    (new WebDriverWait(driver, 10))
+    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("#taskchoices > a > span")))
+    .click();
+    
+    Thread.sleep(1000);
+    
+    (new WebDriverWait(driver, 10))
+    .until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='#addTask']")))
+    .click();
     
     (new WebDriverWait(driver, 10))
     .until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.has-sub.active > ul > li.odd > a > span")))
@@ -71,11 +79,14 @@ public class AddTaskTest {
     driver.findElement(By.id("output1")).sendKeys("test2");
     Thread.sleep(1000);
     driver.findElement(By.xpath("//button[@onclick='checkFields()']")).click();
+	
+	Thread.sleep(3000);
     
     (new WebDriverWait(driver, 10)).
 	until(ExpectedConditions.textToBePresentInElement(By.id("message"), "Ülesande lisamine õnnestus!"));
     
     driver.findElement(By.cssSelector("a[href='#tasksview']")).click();
+    //driver.findElement(By.linkText("Ülesanded")).click();
     
     (new WebDriverWait(driver, 10)).
 	until(ExpectedConditions.presenceOfElementLocated(By.linkText("test")));
