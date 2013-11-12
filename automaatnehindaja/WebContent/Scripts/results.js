@@ -67,6 +67,30 @@ function tableCreate(nameList, tasknameList, deadlineList, resultList, languageL
 	$.getScript("Scripts/jquery.tablesorter.min.js", function() {
 		$("#attemptTable").tablesorter( { sortList: [[0,0]] } ); 
 	});
+
+	search();
+}
+
+function search() {
+	$("#kwd_search").keyup(function(){
+		if( $(this).val() != "") {
+			$("#attemptTable tbody>tr").hide();
+			$("#attemptTable td:contains-ci('" + $(this).val() + "')").parent("tr").show();
+			//$("table#attemptTable tbody td:nth-child(1):contains-ci('" + $(this).val() + "')").parent("tr").show();
+		}
+		else {
+			$("#attemptTable tbody>tr").show();
+		}
+	});
+
+	// jQuery expression for case-insensitive filter
+	$.extend($.expr[":"], 
+	{
+	    "contains-ci": function(elem, i, match, array) 
+		{
+			return (elem.textContent || elem.innerText || $(elem).text() || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+		}
+	});
 }
 
 init();
