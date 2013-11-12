@@ -5,7 +5,7 @@ function init(){
 	getCourses();
 }
 
-function changeCourse(){
+function change(){
 	window.location.hash = "#tasksview?course=" + $("#courses :selected").val() +"&archived="+$("#archived").is(":checked");
 }
 

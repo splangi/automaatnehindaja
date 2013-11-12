@@ -10,6 +10,7 @@ function changeCourse(){
 };
 
 function getCourses(){
+	var currentSelected = $("#courses :selected").text();
 	var archived = $("#archived").is(":checked");
 	jQuery.getJSON("getcoursenames?archived=" + archived , function(data){
 		var courses = data.coursenames;
@@ -24,6 +25,9 @@ function getCourses(){
 				$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
 			}
 		};
+		console.log("1");
+		$("#courses option:contains(" + currentSelected + ")").prop("selected", true);
+		console.log("2");
 		changeCourse();
 	});
 };
