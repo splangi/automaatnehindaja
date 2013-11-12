@@ -38,7 +38,7 @@ function init(){
 	}
 }
 
-function fillUpTaskTable(active){
+function fillUpTaskTable(){
 	jQuery.getJSON("tasktable?id=" + id + "&archived="+$("#archived").is(":checked"), function(data) {
 		tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId, data.role, data.late);
 		document.getElementById("taskViewLoader").display = "none";
