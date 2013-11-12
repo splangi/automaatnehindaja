@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,10 +43,10 @@ public class TasktableServlet extends HttpServlet {
 					"ahindaja", "k1rven2gu");
 			String statement;
 			if (request.isUserInRole("tudeng")) {
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id "
+				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id, tasks.deadline "
 						+ "FROM attempt "
-						+ "INNER JOIN users "
-						+ "ON users.username=attempt.username WHERE attempt.username = ? "
+						+ "INNER JOIN users ON users.username=attempt.username WHERE attempt.username = ? "
+						+ "INNER JOIN tasks ON tasks.id = attempt.task "
 						+ "and attempt.task = ?";
 				if (!archived) {
 					statement = statement + " and active = TRUE";
@@ -54,11 +55,11 @@ public class TasktableServlet extends HttpServlet {
 				stmt.setString(1, username);
 				stmt.setString(2, taskid);
 			} else if (request.isUserInRole("admin")) {
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id "
+				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id, tasks.deadline "
 						+ "FROM attempt "
-						+ "INNER JOIN users "
-						+ "ON users.username=attempt.username WHERE "
-						+ "attempt.task = ?";
+						+ "INNER JOIN users ON users.username=attempt.username "
+						+ "INNER JOIN tasks ON tasks.id = attempt.task "
+						+ "WHERE attempt.task = ?";
 				if (!archived) {
 					statement = statement + " and active = TRUE";
 				}
@@ -83,9 +84,21 @@ public class TasktableServlet extends HttpServlet {
 
 					json.append("fullname", rs.getString(1));
 					json.append("result", rs.getString(3));
-					json.append("time", rs.getDate(2).toString());
+					
+					Date time = rs.getDate(2);
+					json.append("time", time.toString());
+					
 					json.append("language", rs.getString(4));
 					json.append("attemptId", rs.getInt(5));
+					
+					Date deadline = rs.getDate(6);
+					
+					if (time.after(deadline)) {
+						json.append("late", "true");
+					}
+					else {
+						json.append("late", "false");
+					}
 				}
 			} catch (JSONException e) {
 				response.sendRedirect("/automaatnehindaja/error.html");

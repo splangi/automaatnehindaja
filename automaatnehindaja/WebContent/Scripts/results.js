@@ -5,11 +5,12 @@ function changeCourse(){
 	var archived = $("#archived").is(":checked");
 	jQuery.getJSON("resulttable?course=" + course + "&archived=" + archived, function(data) {
 		$("#resultsLoader").css("display", "none");
-		tableCreate(data.fullname, data.taskname, data.time, data.result, data.language, data.id, data.course);
+		tableCreate(data.fullname, data.taskname, data.time, data.result, data.language, data.id, data.course, data.late);
 	});	
 };
 
 function getCourses(){
+	var currentSelected = $("#courses :selected").text();
 	var archived = $("#archived").is(":checked");
 	jQuery.getJSON("getcoursenames?archived=" + archived , function(data){
 		var courses = data.coursenames;
@@ -24,6 +25,9 @@ function getCourses(){
 				$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
 			}
 		};
+		console.log("1");
+		$("#courses option:contains(" + currentSelected + ")").prop("selected", true);
+		console.log("2");
 		changeCourse();
 	});
 };
@@ -32,7 +36,7 @@ function init(){
 	getCourses();
 }
 
-function tableCreate(nameList, tasknameList, deadlineList, resultList, languageList, idList, courseList){
+function tableCreate(nameList, tasknameList, timeList, resultList, languageList, idList, courseList, lateList){
 	var tableDiv = document.getElementById("attempts");
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
@@ -41,7 +45,7 @@ function tableCreate(nameList, tasknameList, deadlineList, resultList, languageL
 	var row = document.createElement("tr");
 	jQuery("<th />").text("Nimi").appendTo(row);
 	jQuery("<th />").text("Ülesanne").appendTo(row);
-	jQuery("<th />").text("Tähtaeg").appendTo(row);
+	jQuery("<th />").text("Esitatud").appendTo(row);
 	jQuery("<th />").text("Tulemus").appendTo(row);
 	jQuery("<th />").text("Programeerimiskeel").appendTo(row);
 	table.appendChild(head);
@@ -54,9 +58,13 @@ function tableCreate(nameList, tasknameList, deadlineList, resultList, languageL
 		var cell = document.createElement("td");
 		cell.innerHTML = "<a href = #taskview.html?id="+ idList[i] + ">" + tasknameList[i] + "</a>";
 		row.appendChild(cell);
-		jQuery("<td />").text(deadlineList[i]).appendTo(row);
+		jQuery("<td />").text(timeList[i]).appendTo(row);
 		jQuery("<td />").text(resultList[i]).appendTo(row);
 		jQuery("<td />").text(languageList[i]).appendTo(row);
+		
+		if (lateList[i] === "true")
+			row.setAttribute("class", "lateRow");
+		
 		body.appendChild(row);
 	}
 	table.setAttribute("class", "tablesorter");

@@ -6,6 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +42,8 @@ public class ResultTableServlet extends HttpServlet {
 					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
 					"k1rven2gu");
 			if (request.isUserInRole("tudeng")){
-				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id, attempt.active "
+				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, "
+						+ "attempt.language, tasks.id, attempt.active, tasks.deadline "
 						+ "FROM attempt "
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
 						+ "INNER JOIN users on attempt.username = users.username "
@@ -52,7 +56,8 @@ public class ResultTableServlet extends HttpServlet {
 				stmt.setString(2, course);
 			}
 			else if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
-				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, attempt.language, tasks.id, attempt.active "
+				statement = "SELECT users.fullname, tasks.name, attempt.time, attempt.result, "
+						+ "attempt.language, tasks.id, attempt.active, tasks.deadline "
 						+ "FROM attempt "
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
 						+ "INNER JOIN users on attempt.username = users.username and tasks.coursename = ?";
@@ -68,16 +73,28 @@ public class ResultTableServlet extends HttpServlet {
 			response.setContentType("application/json");
 
 			JSONObject json = new JSONObject();
+			//SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 			while (rs.next()) {
 				try {
 					json.append("fullname", rs.getString(1));
 					json.append("taskname", rs.getString(2));
-					json.append("time", rs.getDate(3).toString());
+					
+					//Timestamp time = rs.getTimestamp(3);
+					Date time = rs.getDate(3);
+					json.append("time", time.toString());
+					
 					json.append("result", rs.getString(4));
 					json.append("language", rs.getString(5));
 					json.append("id", rs.getString(6));
 					json.append("active", rs.getString(7));
+					
+					//Timestamp deadline = rs.getTimestamp(8);
+					Date deadline = rs.getDate(8);
+					
+					if (time.after(deadline)) json.append("late", "true");
+					else json.append("late", "false");
+					
 				} catch (JSONException e) {
 					response.sendRedirect("/automaatnehindaja/error.html");
 				}

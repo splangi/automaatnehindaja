@@ -33,13 +33,13 @@ function init(){
 
 function fillUpTaskTable(){
 	jQuery.getJSON("tasktable?id=" + id + "&archived="+$("#archived").is(":checked"), function(data) {
-		tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId, data.role);
+		tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId, data.role, data.late);
 		document.getElementById("taskViewLoader").display = "none";
 });
 }
 
 
-function tableCreate(nameList, timeList, resultList, languageList, attemptIdList, role){
+function tableCreate(nameList, timeList, resultList, languageList, attemptIdList, role, lateList){
 	var tableDiv = document.getElementById("attempts");
 	tableDiv.innerHTML = "";
 	var table = document.createElement("table");
@@ -76,6 +76,10 @@ function tableCreate(nameList, timeList, resultList, languageList, attemptIdList
 			cell.appendChild(link);
 			row.appendChild(cell);
 		}
+		
+		if (lateList[i] === "true")
+			row.setAttribute("class", "lateRow");
+		
 		body.appendChild(row);
 	}
 	table.setAttribute("class", "tablesorter");
