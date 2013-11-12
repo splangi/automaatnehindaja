@@ -30,8 +30,8 @@ public class TaskstableServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		Connection c = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;

@@ -1,29 +1,26 @@
-
-
-function init(){
+function init(){	
+	if (getUrlVars()["archived"] === "true"){
+		$("#archived").attr("checked", true);
+	}
 	getCourses();
-	
 }
 
 function changeCourse(){
-	fillUpTasks($("#courses option:selected").val());
+	window.location.hash = "#tasksview?course=" + $("#courses :selected").val() +"&archived="+$("#archived").is(":checked");
 }
 
 function fillUpTasks(course){
-	var archived = false;
-	if ($("#archived").is(":checked")){
-		archived = true;
-	}
-	jQuery.getJSON("Taskstable?course=" +course + "&archived=" + archived, function(data) {
+	archived = $("#archived").is(":checked");
+	jQuery.getJSON("Taskstable", {course: course, archived: archived}, function(data) {
 		$("#tasksViewLoader").css("display", "none");
 		if (data.role == "tudeng"){
 			tableCreate(data.id, data.name, data.deadline, data.result, data.active);
 		}
 		else if (data.role == "admin" || data.role == "responsible"){
-			if (window.location.hash == "#tasksview"){
+			if (window.location.hash.indexOf("#tasksview")>-1){
 				tableCreate2(data.id, data.name, data.deadline, data.resultCount, data.successCount, data.active);
 			}
-			else if (window.location.hash == "#changeTask"){
+			else if (window.location.hash.indexOf("#changeTask")>-1){
 				tableCreate3(data.id, data.name, data.deadline, data.active);
 			}
 		}
@@ -31,17 +28,15 @@ function fillUpTasks(course){
 }
 
 function getCourses(){
-	var archived = false;
-	if ($("#archived").is(":checked")){
-		archived = true;
-	}
-	jQuery.getJSON("getcoursenames?archived=" + archived , function(data){
+	jQuery.getJSON("getcoursenames?archived=" + $("#archived").is(":checked") , function(data){
 		var courses = data.coursenames;
 		//TODO select the one which was lastly selected
-		if (courses.length > 0){
+		if ($.inArray(getUrlVars()["course"], courses)>-1){
+			fillUpTasks(courses[$.inArray(getUrlVars()["course"], courses)]);
+		}
+		else if (courses.length > 0){
 			fillUpTasks(courses[0]);
 		}
-		console.log(data.active[0]);
 		$('#courses option').remove();
 		for (var i = 0; i<courses.length; i++){
 			var course = courses[i];
@@ -52,6 +47,9 @@ function getCourses(){
 				$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
 			}
 		};
+		if (getUrlVars()["course"] !== undefined){
+			$('#courses option:eq('+ $.inArray(getUrlVars()["course"], courses) + ')').prop('selected', true);
+		}
 	});
 };
 
@@ -167,6 +165,14 @@ function tableCreate3(idList, nameList, deadlineList, archiveList){
 	$.getScript("Scripts/jquery.tablesorter.min.js", function() {
 		$("#tasksTable").tablesorter( { sortList: [[0,0]] } ); 
 	});
+}
+
+function getUrlVars() {
+    var vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
 }
 
 init();
