@@ -45,11 +45,12 @@ public class TasktableServlet extends HttpServlet {
 			if (request.isUserInRole("tudeng")) {
 				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id, tasks.deadline "
 						+ "FROM attempt "
-						+ "INNER JOIN users ON users.username=attempt.username WHERE attempt.username = ? "
+						+ "INNER JOIN users ON users.username=attempt.username  "
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
+						+ "WHERE attempt.username = ? "
 						+ "and attempt.task = ?";
 				if (!archived) {
-					statement = statement + " and active = TRUE";
+					statement = statement + " and attempt.active = TRUE";
 				}
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, username);
@@ -61,7 +62,7 @@ public class TasktableServlet extends HttpServlet {
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
 						+ "WHERE attempt.task = ?";
 				if (!archived) {
-					statement = statement + " and active = TRUE";
+					statement = statement + " and attempt.active = TRUE";
 				}
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, taskid);
@@ -107,8 +108,10 @@ public class TasktableServlet extends HttpServlet {
 			c.close();
 			response.getWriter().write(json.toString());
 		} catch (SQLException e) {
+			e.printStackTrace();
 			response.sendRedirect("/automaatnehindaja/error.html");
 		} catch (ClassNotFoundException f) {
+			f.printStackTrace();
 			response.sendRedirect("/automaatnehindaja/error.html");
 		}
 
