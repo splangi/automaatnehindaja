@@ -32,7 +32,7 @@ public class TaskServlet extends HttpServlet {
 			  c =DriverManager.getConnection 
 			  ("jdbc:mysql://localhost:3306/automaatnehindaja","ahindaja","k1rven2gu");
 			  
-			String statement = "select name, description, deadline from tasks where id = ?;";
+			String statement = "select name, description, deadline, active from tasks where id = ?;";
 			stmt = c.prepareStatement(statement);
 			stmt.setInt(1, Integer.parseInt(id));
 			
@@ -47,6 +47,7 @@ public class TaskServlet extends HttpServlet {
 					json.put("name", rs.getString(1));
 					json.put("description", rs.getString(2));
 					json.put("deadline", rs.getTimestamp(3).toString());
+					json.put("active", rs.getString(4));
 				}
 			}
 			

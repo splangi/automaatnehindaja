@@ -44,8 +44,8 @@ public class AddUserToCourse extends HttpServlet {
 				stmt.executeUpdate();
 				stmt.close();
 				c.close();
-				pw.write("User aading to course succeeded!");
-				logger.info("User aading to couse succeeded!");
+				pw.write("Kasutaja lisamine õnnestus!");
+				logger.info("User adding to couse succeeded!");
 			} catch (ClassNotFoundException e) {
 				logger.error(
 						"User aading to course failed, ClassNotFoundException",

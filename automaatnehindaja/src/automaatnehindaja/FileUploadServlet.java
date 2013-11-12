@@ -77,11 +77,27 @@ public class FileUploadServlet extends HttpServlet {
 				c = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
 						"ahindaja", "k1rven2gu");
-				String statement = "select username from attempt where username = ? and task = ?";
+				
+				String statement = "SELECT active FROM tasks WHERE id = ?";
+				stmt = c.prepareStatement(statement);
+				stmt.setInt(1, taskid);
+				ResultSet rs = stmt.executeQuery();
+				
+				if (rs.next()){
+					boolean active = rs.getBoolean(1);
+					if (!active) {
+						logger.info("Upload failed! Task is archived.");
+						response.sendRedirect("/automaatnehindaja/error.html");
+						return;
+					}
+				}
+				
+				
+				statement = "select username from attempt where username = ? and task = ?";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, request.getRemoteUser());
 				stmt.setInt(2, taskid);
-				ResultSet rs = stmt.executeQuery();
+				rs = stmt.executeQuery();
 				if (rs.next()){
 					stmt.close();
 					statement = "UPDATE attempt SET time = ?, source_code= ?, language = ?, result = ? WHERE username = ? and task = ?;";

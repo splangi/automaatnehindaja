@@ -43,7 +43,8 @@ public class TasktableServlet extends HttpServlet {
 					"ahindaja", "k1rven2gu");
 			String statement;
 			if (request.isUserInRole("tudeng")) {
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id, tasks.deadline "
+				statement = "select users.fullname, attempt.time, attempt.result, "
+						+ "attempt.language, attempt.id, tasks.deadline "
 						+ "FROM attempt "
 						+ "INNER JOIN users ON users.username=attempt.username  "
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
@@ -56,7 +57,8 @@ public class TasktableServlet extends HttpServlet {
 				stmt.setString(1, username);
 				stmt.setString(2, taskid);
 			} else if (request.isUserInRole("admin")) {
-				statement = "select users.fullname, attempt.time, attempt.result, attempt.language, attempt.id, tasks.deadline "
+				statement = "select users.fullname, attempt.time, attempt.result, "
+						+ "attempt.language, attempt.id, tasks.deadline "
 						+ "FROM attempt "
 						+ "INNER JOIN users ON users.username=attempt.username "
 						+ "INNER JOIN tasks ON tasks.id = attempt.task "
@@ -94,12 +96,8 @@ public class TasktableServlet extends HttpServlet {
 					
 					Date deadline = rs.getDate(6);
 					
-					if (time.after(deadline)) {
-						json.append("late", "true");
-					}
-					else {
-						json.append("late", "false");
-					}
+					if (time.after(deadline)) json.append("late", "true");
+					else json.append("late", "false");
 				}
 			} catch (JSONException e) {
 				response.sendRedirect("/automaatnehindaja/error.html");

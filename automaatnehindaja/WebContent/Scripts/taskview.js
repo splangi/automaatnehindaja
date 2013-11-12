@@ -14,6 +14,13 @@ function init(){
 			 document.getElementById("title").innerHTML = "<h1>" + data.name + "</h1>";
 			 document.getElementById("deadline").innerHTML = "<h4>Tähtaeg: " + data.deadline.substring(0,16) + "</h4>";
 			 document.getElementById("description").innerHTML = data.description.replace(/\n/g, "<br />");
+			 
+			 console.log("active: " + data.active);
+			 if (data.active === "1") {
+					$("#fileinput").css("display","block");
+			 }
+			 else
+				 $("#fileinput").css("display","none");
 		});	
 		fillUpTaskTable();
 	}
@@ -31,7 +38,7 @@ function init(){
 	}
 }
 
-function fillUpTaskTable(){
+function fillUpTaskTable(active){
 	jQuery.getJSON("tasktable?id=" + id + "&archived="+$("#archived").is(":checked"), function(data) {
 		tableCreate(data.fullname, data.time, data.result, data.language, data.attemptId, data.role, data.late);
 		document.getElementById("taskViewLoader").display = "none";
