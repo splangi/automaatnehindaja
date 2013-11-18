@@ -6,7 +6,14 @@ function init(){
 }
 
 function change(){
-	window.location.hash = "#tasksview?course=" + $("#courses :selected").val() +"&archived="+$("#archived").is(":checked");
+	var prefix = "";
+	if (window.location.hash.indexOf("#tasksview")>-1){
+		prefix = "#tasksview";
+	}
+	else if (window.location.hash.indexOf("#changeTask")>-1){
+		prefix = "#changeTask";
+	}
+	window.location.hash = prefix + "?course=" + $("#courses :selected").val() +"&archived="+$("#archived").is(":checked");
 }
 
 function fillUpTasks(course){

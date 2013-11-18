@@ -74,15 +74,15 @@ function load(page){
 		
 		$('a[href$="#tasksview"]').trigger("click");
 	}
-	else if (page == "#changeTask"){
-		$("#content").load("html/tasksview.html", function(){
-			$.getScript("Scripts/tasksview.js");
-		});
-		$("#taskchoices a").trigger("click");
-	}
 	else if (page.indexOf("#changeTaskView") != -1){
 		$("#content").load("html/changeTask.html", function(){
 			$.getScript("Scripts/changetask.js");
+		});
+		$("#taskchoices a").trigger("click");
+	}
+	else if (page.indexOf("#changeTask")>-1){
+		$("#content").load("html/tasksview.html", function(){
+			$.getScript("Scripts/tasksview.js");
 		});
 		$("#taskchoices a").trigger("click");
 	}
