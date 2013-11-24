@@ -33,8 +33,14 @@ public class GetAllUsers extends HttpServlet {
 					|| request.isUserInRole("responsible")) {
 				Class.forName("com.mysql.jdbc.Driver");
 				c = new SqlConnectionService().getConnection();
-				statement = "SELECT username from users;";
+				
+				statement = "SELECT users.username from users "
+							+"LEFT JOIN users_roles "
+							+"ON users.username=users_roles.username "
+							+"WHERE users_roles.rolename != ?;";
+				
 				stmt = c.prepareStatement(statement);
+				stmt.setString(1, "admin");
 
 				rs = stmt.executeQuery();
 

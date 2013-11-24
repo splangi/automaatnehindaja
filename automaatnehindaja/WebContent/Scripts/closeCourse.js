@@ -24,11 +24,23 @@ function post(){
 	var coursename = document.getElementById("courses");
 	var taskname = document.getElementById("taskname");
 	if (($('#courses>option:selected').text() != "")){
-		var post = $.post("closeCourse", {coursename: coursename.value}, function(data){
-			info.innerHTML = data;
-			coursename.value = "";
-		});
 		
+		alertify.set({ labels: {
+		    ok     : "Jah",
+		    cancel : "Ei"
+		} })
+		
+		alertify.confirm("Hoiatus, See on tagasipöördumatu toiming! Kas olete kindel et soovite seda teha? ", function (e) {
+		    if (e) {
+		        console.log("clicked OK");
+		    	var post = $.post("closeCourse", {coursename: coursename.value}, function(data){
+					info.innerHTML = data;
+					coursename.value = "";
+				});
+		    } else {
+		       console.log("clicked cancel");
+		    }
+		});
 	}
 	else{
 		info.innerHTML = "Kursus valimata";

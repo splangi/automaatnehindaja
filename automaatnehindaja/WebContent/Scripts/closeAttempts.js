@@ -35,12 +35,26 @@ function post(){
 	var coursename = document.getElementById("courses");
 	var taskname = document.getElementById("taskname");
 	if (($('#courses>option:selected').text() != "") && ($('#taskname>option:selected').text() != "")){
-		var post = $.post("closeAttempts", {coursename: coursename.value, taskid: taskname.value}, function(data){
-			info.innerHTML = data;
-			coursename.value = "";
-			taskname.value = "";
-		});
 		
+		alertify.set({ labels: {
+		    ok     : "Jah",
+		    cancel : "Ei"
+		} });
+		
+		alertify.confirm("Hoiatus, See on tagasipöördumatu toiming! Kas olete kindel et soovite seda teha? ", function (e) {
+		    if (e) {
+		        // user clicked "ok"
+		    	console.log("clicked OK");
+		    	var post = $.post("closeAttempts", {coursename: coursename.value, taskid: taskname.value}, function(data){
+					info.innerHTML = data;
+					coursename.value = "";
+					taskname.value = "";
+				});
+		    } else {
+		        // user clicked "cancel"
+		    	console.log("clicked cancel");
+		    }
+		});
 	}
 	else{
 		info.innerHTML = "Kursuse või ülesande nimi valimata!";
