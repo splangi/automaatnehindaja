@@ -78,6 +78,12 @@
       <fileset dir="${web.home}"/>
     </copy>
 
+    <mkdir  dir="${build.home}/config"/>
+	 <copy todir="${build.home}/config">
+      <fileset dir="${base}/config"/>
+    </copy>
+    
+    
     <!-- Copy external dependencies as required -->
     <mkdir  dir="${build.home}/WEB-INF/lib"/>
 	 <copy todir="${build.home}/WEB-INF/lib">

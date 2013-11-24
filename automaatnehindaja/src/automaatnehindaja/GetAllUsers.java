@@ -2,7 +2,6 @@ package automaatnehindaja;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,9 +32,7 @@ public class GetAllUsers extends HttpServlet {
 			if (request.isUserInRole("admin")
 					|| request.isUserInRole("responsible")) {
 				Class.forName("com.mysql.jdbc.Driver");
-				c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
+				c = new SqlConnectionService().getConnection();
 				statement = "SELECT username from users;";
 				stmt = c.prepareStatement(statement);
 

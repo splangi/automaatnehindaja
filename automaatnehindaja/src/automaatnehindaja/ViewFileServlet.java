@@ -3,7 +3,6 @@ package automaatnehindaja;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,9 +27,7 @@ public class ViewFileServlet extends HttpServlet {
 		try {
 			
 			Class.forName("com.mysql.jdbc.Driver");
-			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
-					"k1rven2gu");
+			c = new SqlConnectionService().getConnection();
 			if (request.isUserInRole("tudeng")){
 				String statement = "SELECT source_code FROM attempt WHERE attempt.id = ? AND attempt.username = ?";
 				stmt = c.prepareStatement(statement);

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,9 +29,7 @@ public class FileDownloadServlet extends HttpServlet {
 		try {
 			
 			Class.forName("com.mysql.jdbc.Driver");
-			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
-					"k1rven2gu");
+			c = new SqlConnectionService().getConnection();
 			if (request.isUserInRole("tudeng")){
 				String statement = "SELECT username, language, tasks.name, source_code FROM attempt INNER JOIN tasks ON tasks.id = attempt.task WHERE attempt.id = ? AND attempt.username = ?";
 				stmt = c.prepareStatement(statement);

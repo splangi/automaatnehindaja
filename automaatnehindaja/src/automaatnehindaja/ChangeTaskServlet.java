@@ -36,9 +36,7 @@ public class ChangeTaskServlet extends HttpServlet {
 		if (request.isUserInRole("admin")||request.isUserInRole("responsible")){
 			try{
 				Class.forName("com.mysql.jdbc.Driver");
-				c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
+				c = new SqlConnectionService().getConnection();
 				statement = "SELECT coursename, name, description, DATE_FORMAT(deadline, '%d-%l-%Y') AS deadline FROM tasks"
 						+ " WHERE id = ?;";
 				stmt = c.prepareStatement(statement);

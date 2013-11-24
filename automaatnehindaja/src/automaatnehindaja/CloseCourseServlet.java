@@ -3,7 +3,6 @@ package automaatnehindaja;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,9 +30,7 @@ public class CloseCourseServlet extends HttpServlet {
 		if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				Connection c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
+				Connection c = new SqlConnectionService().getConnection();
 				logger.info("Closing course - "  + course + " , request by: " + request.getRemoteUser());
 				String statement = "UPDATE courses SET active = FALSE WHERE coursename = ?;";
 				PreparedStatement stmt = c.prepareStatement(statement);
