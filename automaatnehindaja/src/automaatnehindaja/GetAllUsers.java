@@ -36,8 +36,14 @@ public class GetAllUsers extends HttpServlet {
 				c = DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306/automaatnehindaja",
 						"ahindaja", "k1rven2gu");
-				statement = "SELECT username from users;";
+				
+				statement = "SELECT users.username from users "
+							+"LEFT JOIN users_roles "
+							+"ON users.username=users_roles.username "
+							+"WHERE users_roles.rolename != ?;";
+				
 				stmt = c.prepareStatement(statement);
+				stmt.setString(1, "admin");
 
 				rs = stmt.executeQuery();
 

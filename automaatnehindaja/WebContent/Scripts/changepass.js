@@ -16,12 +16,20 @@ $("#changePassForm").submit(function() {
 		$.post( "ChangePassServlet", { oldPass : oldPassHash, newPass : newPassHash }, function( data ) { 
 			if (data === "success") {
 				$("#message").text("Salasõna muudetud!").css("color", "green");
+				clear();
 			}
 			else if (data === "wrongPass") {
 				$("#message").text("Vale salasõna!");
+				clear();
 			};
 		});
 	}
 	
 	event.preventDefault();
 });
+
+function clear() {
+	$( "[name='oldPass']" ).val("");
+	$( "[name='newPass1']" ).val("");
+	$( "[name='newPass2']" ).val("");
+}

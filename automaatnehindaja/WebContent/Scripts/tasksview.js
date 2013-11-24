@@ -37,25 +37,31 @@ function fillUpTasks(course){
 function getCourses(){
 	jQuery.getJSON("getcoursenames?archived=" + $("#archived").is(":checked") , function(data){
 		var courses = data.coursenames;
-		//TODO select the one which was lastly selected
-		if ($.inArray(getUrlVars()["course"], courses)>-1){
-			fillUpTasks(courses[$.inArray(getUrlVars()["course"], courses)]);
+		
+		if (courses == null) {
+			$("#tasksViewLoader").css("display", "none");
 		}
-		else if (courses.length > 0){
-			fillUpTasks(courses[0]);
-		}
-		$('#courses option').remove();
-		for (var i = 0; i<courses.length; i++){
-			var course = courses[i];
-			if (data.active[i] === true){
-				$('#courses').append($("<option></option>").attr("value",course).text(course));
+		else {
+			//TODO select the one which was lastly selected
+			if ($.inArray(getUrlVars()["course"], courses)>-1){
+				fillUpTasks(courses[$.inArray(getUrlVars()["course"], courses)]);
 			}
-			else {
-				$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
+			else if (courses.length > 0){
+				fillUpTasks(courses[0]);
 			}
-		};
-		if (getUrlVars()["course"] !== undefined){
-			$('#courses option:eq('+ $.inArray(getUrlVars()["course"], courses) + ')').prop('selected', true);
+			$('#courses option').remove();
+			for (var i = 0; i<courses.length; i++){
+				var course = courses[i];
+				if (data.active[i] === true){
+					$('#courses').append($("<option></option>").attr("value",course).text(course));
+				}
+				else {
+					$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
+				}
+			};
+			if (getUrlVars()["course"] !== undefined){
+				$('#courses option:eq('+ $.inArray(getUrlVars()["course"], courses) + ')').prop('selected', true);
+			}
 		}
 	});
 };

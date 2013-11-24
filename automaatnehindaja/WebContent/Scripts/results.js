@@ -14,21 +14,27 @@ function getCourses(){
 	var archived = $("#archived").is(":checked");
 	jQuery.getJSON("getcoursenames?archived=" + archived , function(data){
 		var courses = data.coursenames;
-		//TODO select the one which was lastly selected
-		$('#courses option').remove();
-		for (var i = 0; i<courses.length; i++){
-			var course = courses[i];
-			if (data.active[i] === true){
-				$('#courses').append($("<option></option>").attr("value",course).text(course));
-			}
-			else {
-				$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
-			}
-		};
-		console.log("1");
-		$("#courses option:contains(" + currentSelected + ")").prop("selected", true);
-		console.log("2");
-		changeCourse();
+		
+		if (courses == null) {
+			$("#resultsLoader").css("display", "none");
+		}
+		else {
+			//TODO select the one which was lastly selected
+			$('#courses option').remove();
+			for (var i = 0; i<courses.length; i++){
+				var course = courses[i];
+				if (data.active[i] === true){
+					$('#courses').append($("<option></option>").attr("value",course).text(course));
+				}
+				else {
+					$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
+				}
+			};
+			console.log("1");
+			$("#courses option:contains(" + currentSelected + ")").prop("selected", true);
+			console.log("2");
+			changeCourse();
+		}
 	});
 };
 
