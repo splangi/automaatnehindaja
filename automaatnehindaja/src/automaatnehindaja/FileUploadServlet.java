@@ -97,7 +97,7 @@ public class FileUploadServlet extends HttpServlet {
 				rs = stmt.executeQuery();
 				if (rs.next()){
 					stmt.close();
-					statement = "UPDATE attempt SET time = ?, source_code= ?, language = ?, result = ? WHERE username = ? and task = ?;";
+					statement = "UPDATE attempt SET time = ?, source_code= ?, language = ?, result = ?, plagirismcheck = ? WHERE username = ? and task = ?;";
 					stmt = c.prepareStatement(statement);
 					stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 					stmt.setBinaryStream(2, fileitem.getInputStream());
@@ -105,6 +105,7 @@ public class FileUploadServlet extends HttpServlet {
 					stmt.setString(4, "kontrollimata");
 					stmt.setString(5, request.getRemoteUser());
 					stmt.setInt(6, taskid);
+					stmt.setString(7, "UNCHECKED");
 					stmt.executeUpdate();
 				}
 				else {
