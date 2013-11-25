@@ -1,9 +1,10 @@
 import MySQLdb as mdb
 from time import sleep
 from subprocess import Popen, STDOUT, PIPE
-import datetime
+import datetime, time
 import os
 import smtplib
+import traceback
 
 
 #Database
@@ -76,6 +77,7 @@ def checkForAttempts(cursor):
         courseName = line[8]
         queryForResultUpdate = ("UPDATE attempt SET result='Kontrollimisel' WHERE id=%s")
         cursor.execute(queryForResultUpdate,(attemptId))
+        logger(cursor, 'INFO', 'Start checking task. Attempt Id: ' + str(attemptId) + '. Username: ' + str(username) + '. Task Id: ' + str(task) +'.')
         return (attemptId, username, task, time, result, source_code, language, taskName, courseName)
 
 
@@ -137,6 +139,10 @@ def writeSourcecodeToFile(source_code):
 def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemptId, username, task, source_code, taskName, courseName):
     resultRight = True
     databaseUpdated = False
+
+    queryForAttemptOutput = ("DELETE FROM attempt_output where attempt_id=%s")
+    cursor.execute(queryForAttemptOutput,(attemptId))
+    
     for i in range(len(taskInputArray)):
         inputString = ''
         for j in range(len(taskInputArray[i])):
@@ -161,18 +167,19 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
         if ('Permission denied' in applicationOutput):
             sendEmail(courseName, taskName, username, applicationOutput, source_code, cursor)
         
-        if (len(applicationOutput)>coutputlen):
+        
+        if (len(applicationOutput)>int(coutputlen)):
             applicationOutput=''
             if (not databaseUpdated):
                 updateDatabase(cursor, attemptId, 'Timeout')
                 resultRight=False
                 databaseUpdated = True
             return
-        queryForAttemptOutput = ("DELETE FROM attempt_output where attempt_id=%s AND seq=%s")
-        cursor.execute(queryForAttemptOutput,(attemptId, i))
+
         queryForAttemptOutput = ("INSERT INTO attempt_output (attempt_id, seq, output) VALUES (%s, %s, %s)")
         cursor.execute(queryForAttemptOutput,(attemptId, i, applicationOutput))
-        if (deltaTime.seconds >= ctimeout):
+        
+        if (deltaTime.seconds >= int(ctimeout)):
             if (not databaseUpdated):
                 updateDatabase(cursor, attemptId, 'Timeout')
                 resultRight=False
@@ -202,38 +209,44 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
 def updateDatabase(cursor, attempId, result):
     queryForResultUpdate = ("UPDATE attempt SET result=%s WHERE id=%s AND result='Kontrollimisel'")
     cursor.execute(queryForResultUpdate,(result, attemptId))
+    logger(cursor, 'INFO','Finished cheking task. Attempt Id: ' + str(attemptId) + '. Result: ' + result + '.')
 
-def sendEmail(courseName, taskName, username, applicationOutput, source_code, cursor):
-    
+def sendEmail(courseName, taskName, username, applicationOutput, source_code, cursor):    
     m_user = 'automaatkontroll@gmail.com'
     m_pwd = 'k1rven2gu'
     m_from ='automaatkontroll@gmail.com'
     m_to = ['blackno@gmail.com']
-
     '''
     queryForResponsibleEmails = ("SELECT users_courses.username FROM users_courses INNER JOIN users_roles ON users_roles.username = users_courses.username WHERE users_courses.coursename = %s AND users_roles.rolename = 'responsible'")
     cursor.execute(queryForResponsibleEmails, (courseName))
     for (line) in cursor:
         m_to.append(line[0])
     '''
-    
     m_subject = 'Hoiatus'
     m_text = 'Kursus: ' + courseName + '\n\nUlesanne: ' + taskName + '\n\nKasutaja: ' + username + '\n\nValjund: \n' + applicationOutput +  '\n\nLahtekood: \n' + source_code
-
-
     m_message = """\From: %s\nTo: %s\nSubject: %s\n\n%s """ % (m_from, ', '.join(m_to), m_subject, m_text)
 
-    
     m_server = smtplib.SMTP('smtp.gmail.com', 587)
     m_server.ehlo()
     m_server.starttls()
     m_server.login(m_user, m_pwd)
     m_server.sendmail(m_from, m_to, m_message)
 
+def logger(cursor, level, message):
+    timeS = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    queryToUpdateLogs = ("INSERT INTO LOGS (DATED, LOGGER, LEVEL, MESSAGE) VALUES (%s, %s, %s, %s)")
+    cursor.execute(queryToUpdateLogs,(timeS, 'automaatnehindaja.testService',level, message))
+
 while (True):
-    cursor = connectToDatabase()
-    attemptId, username, task, time, result, source_code, language, taskName, courseName = checkForAttempts(cursor)
-    taskInputArray = getTasksInput(cursor, task)
-    taskOutputArray = getTasksExOutput(cursor, task)
-    writeSourcecodeToFile(source_code)
-    runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemptId, username, task, source_code, taskName, courseName)
+    try:
+        cursor = connectToDatabase()
+        attemptId, username, task, time, result, source_code, language, taskName, courseName = checkForAttempts(cursor)
+        taskInputArray = getTasksInput(cursor, task)
+        taskOutputArray = getTasksExOutput(cursor, task)
+        writeSourcecodeToFile(source_code)
+        runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemptId, username, task, source_code, taskName, courseName)
+        sleep(1)
+    except Exception, ex:
+        logger(cursor, 'ERROR',traceback.format_exc())
+        
+        
