@@ -3,7 +3,6 @@ package automaatnehindaja;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,10 +27,7 @@ public class AddCourseServlet extends HttpServlet {
 		response.setContentType("text/plain");
 		if (request.isUserInRole("admin")){
 			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				Connection c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
+				Connection c = new SqlConnectionService().getConnection();
 				logger.info("Inserting a new course by: " + request.getRemoteUser());
 				String statement = "INSERT INTO courses (coursename) VALUES (?);";
 				PreparedStatement stmt = c.prepareStatement(statement);
@@ -54,9 +50,6 @@ public class AddCourseServlet extends HttpServlet {
 				c.close();
 				logger.info("Success! added course " + coursename + ".");
 				pw.write("Kursuse lisamine õnnestus!");
-			} catch (ClassNotFoundException e) {
-				logger.error("ClassNotFoundException", e);
-				e.printStackTrace();
 			} catch (SQLException e) {
 				logger.error("SQLException, probably dublicate entry");
 				pw.write("Kursuse lisamine ebaõnnestus, tõenäoliselt on antud nimega kursus juba olemas!");

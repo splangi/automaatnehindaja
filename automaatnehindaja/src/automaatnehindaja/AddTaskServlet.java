@@ -2,7 +2,6 @@ package automaatnehindaja;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,9 +65,7 @@ public class AddTaskServlet extends HttpServlet {
 			try {
 
 				Class.forName("com.mysql.jdbc.Driver");
-				c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
+				c = new SqlConnectionService().getConnection();
 				logger.info("Inserting a new task by: " + request.getRemoteUser());
 				statement = "INSERT INTO tasks (name, description, deadline, coursename) VALUES (?,?,?,?);";
 				stmt = c.prepareStatement(statement,

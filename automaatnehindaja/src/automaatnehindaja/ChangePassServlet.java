@@ -2,7 +2,6 @@ package automaatnehindaja;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,9 +37,7 @@ public class ChangePassServlet extends HttpServlet {
 		logger.info("Change password initiated by: " + request.getRemoteUser());
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
-					"k1rven2gu");
+			c = new SqlConnectionService().getConnection();
 			
 			statement = "SELECT password FROM users WHERE username = ?;";
 			

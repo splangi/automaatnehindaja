@@ -2,7 +2,6 @@ package automaatnehindaja;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,10 +28,9 @@ public class TaskServlet extends HttpServlet {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			  c =DriverManager.getConnection 
-			  ("jdbc:mysql://localhost:3306/automaatnehindaja","ahindaja","k1rven2gu");
+			c = new SqlConnectionService().getConnection();
 			  
-			String statement = "select name, description, deadline from tasks where id = ?;";
+			String statement = "select name, description, deadline, active from tasks where id = ?;";
 			stmt = c.prepareStatement(statement);
 			stmt.setInt(1, Integer.parseInt(id));
 			
@@ -47,6 +45,7 @@ public class TaskServlet extends HttpServlet {
 					json.put("name", rs.getString(1));
 					json.put("description", rs.getString(2));
 					json.put("deadline", rs.getTimestamp(3).toString());
+					json.put("active", rs.getString(4));
 				}
 			}
 			

@@ -6,7 +6,7 @@
 <div id="description"></div>
 <label><input id = "archived" type="checkbox" onchange="fillUpTaskTable()">Näita arhiveeritud sooritusi</label>
 <div id="attempts"></div>
-<div id="fileinput">
+<div id="fileinput" hidden="true">
 	<p id="resultOk" hidden="true"
 		style="background: #CCFF99; display: none; padding:5px;">
 		Üleslaadimine õnnestus!</p>
@@ -20,7 +20,6 @@
 		<input type="file" name="file"> <select name="language">
 			<option value="Python 3">Python 3</option>
 			<option value="Python 2">Python 2.7</option>
-			<option value="java">Java</option>
 		</select>
 		<button>Saada hindamisele</button>
 	</form>

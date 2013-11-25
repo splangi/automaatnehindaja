@@ -3,7 +3,6 @@ package automaatnehindaja;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -34,9 +33,7 @@ public class AddUserToCourse extends HttpServlet {
 					+ coursename + ", request by: " + request.getRemoteUser());
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
+				c = new SqlConnectionService().getConnection();
 				String statement = "Insert into users_courses VALUES (?,?);";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, username);
@@ -44,8 +41,8 @@ public class AddUserToCourse extends HttpServlet {
 				stmt.executeUpdate();
 				stmt.close();
 				c.close();
-				pw.write("User aading to course succeeded!");
-				logger.info("User aading to couse succeeded!");
+				pw.write("Kasutaja lisamine õnnestus!");
+				logger.info("User adding to couse succeeded!");
 			} catch (ClassNotFoundException e) {
 				logger.error(
 						"User aading to course failed, ClassNotFoundException",

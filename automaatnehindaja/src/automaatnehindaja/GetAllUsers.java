@@ -2,7 +2,6 @@ package automaatnehindaja;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,11 +32,15 @@ public class GetAllUsers extends HttpServlet {
 			if (request.isUserInRole("admin")
 					|| request.isUserInRole("responsible")) {
 				Class.forName("com.mysql.jdbc.Driver");
-				c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
-				statement = "SELECT username from users;";
+				c = new SqlConnectionService().getConnection();
+				
+				statement = "SELECT users.username from users "
+							+"LEFT JOIN users_roles "
+							+"ON users.username=users_roles.username "
+							+"WHERE users_roles.rolename != ?;";
+				
 				stmt = c.prepareStatement(statement);
+				stmt.setString(1, "admin");
 
 				rs = stmt.executeQuery();
 

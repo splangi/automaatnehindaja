@@ -3,7 +3,6 @@ package automaatnehindaja;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,9 +31,7 @@ public class ViewOutputServlet extends HttpServlet {
 		try {
 			
 			Class.forName("com.mysql.jdbc.Driver");
-			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
-					"k1rven2gu");
+			c = new SqlConnectionService().getConnection();
 			if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
 				String statement = "SELECT tasks_input.input, tasks_output.output, attempt_output.output "
 						+ "FROM attempt  "

@@ -170,3 +170,7 @@ th.headerSortDown {
 #logTable {
 	font-size: small;
 }
+
+.lateRow {
+	color: red;
+}

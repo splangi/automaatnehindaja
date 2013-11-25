@@ -2,7 +2,6 @@ package automaatnehindaja;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +29,8 @@ public class TaskstableServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		Connection c = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -46,9 +45,7 @@ public class TaskstableServlet extends HttpServlet {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
-					"k1rven2gu");
+			c = new SqlConnectionService().getConnection();
 
 			if (request.isUserInRole("tudeng")) {
 				statement = "SELECT "

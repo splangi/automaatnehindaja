@@ -2,7 +2,6 @@ package automaatnehindaja;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +23,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 
-//TODO õppejõu conf
+
 @MultipartConfig(location = "tmp", fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024, maxRequestSize = 1024 * 1024 * 2)
 @WebServlet("/upload")
 public class FileUploadServlet extends HttpServlet {
@@ -74,21 +73,35 @@ public class FileUploadServlet extends HttpServlet {
 					return;
 				}
 				Class.forName("com.mysql.jdbc.Driver");
-				c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
-				String statement = "select username from attempt where username = ? and task = ?";
+				c = new SqlConnectionService().getConnection();
+				
+				String statement = "SELECT active FROM tasks WHERE id = ?";
+				stmt = c.prepareStatement(statement);
+				stmt.setInt(1, taskid);
+				ResultSet rs = stmt.executeQuery();
+				
+				if (rs.next()){
+					boolean active = rs.getBoolean(1);
+					if (!active) {
+						logger.info("Upload failed! Task is archived.");
+						response.sendRedirect("/automaatnehindaja/error.html");
+						return;
+					}
+				}
+				
+				
+				statement = "select username from attempt where username = ? and task = ?";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, request.getRemoteUser());
 				stmt.setInt(2, taskid);
-				ResultSet rs = stmt.executeQuery();
+				rs = stmt.executeQuery();
 				if (rs.next()){
 					stmt.close();
 					statement = "UPDATE attempt SET time = ?, source_code= ?, language = ?, result = ? WHERE username = ? and task = ?;";
 					stmt = c.prepareStatement(statement);
 					stmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
 					stmt.setBinaryStream(2, fileitem.getInputStream());
-					stmt.setString(3, language); // TODO support for other languages
+					stmt.setString(3, language); 
 					stmt.setString(4, "kontrollimata");
 					stmt.setString(5, request.getRemoteUser());
 					stmt.setInt(6, taskid);
@@ -102,7 +115,7 @@ public class FileUploadServlet extends HttpServlet {
 					stmt.setInt(2, taskid);
 					stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 					stmt.setBinaryStream(4, fileitem.getInputStream());
-					stmt.setString(5, language); // TODO support for other languages
+					stmt.setString(5, language); 
 					stmt.setString(6, "kontrollimata");
 					stmt.executeUpdate();
 				}				

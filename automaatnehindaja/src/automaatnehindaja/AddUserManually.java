@@ -3,7 +3,6 @@ package automaatnehindaja;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,9 +50,7 @@ public class AddUserManually extends HttpServlet {
 				String newPasswordHash = PasswordGeneratorAndMailer.sha1(newPassword);
 				
 				Class.forName("com.mysql.jdbc.Driver");
-				c = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/automaatnehindaja",
-						"ahindaja", "k1rven2gu");
+				c = new SqlConnectionService().getConnection();
 				String statement;
 					statement = "SELECT 1 FROM users WHERE username = ?";
 					stmt = c.prepareStatement(statement);

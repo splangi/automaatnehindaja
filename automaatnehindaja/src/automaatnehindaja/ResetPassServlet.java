@@ -56,9 +56,7 @@ public class ResetPassServlet extends HttpServlet {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja", "ahindaja",
-					"k1rven2gu");
+			c = new SqlConnectionService().getConnection();
 			
 			statement = "SELECT time, username FROM passreset WHERE guid=?;";
 			stmt = c.prepareStatement(statement);

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -99,9 +98,7 @@ public class AddUserCSV extends HttpServlet {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection c = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/automaatnehindaja",
-					"ahindaja", "k1rven2gu");
+			Connection c = new SqlConnectionService().getConnection();
 			File tempFile = File.createTempFile("temporary", "csv");
 			FileOutputStream out = new FileOutputStream(tempFile);
 			IOUtils.copy(stream, out);

@@ -178,7 +178,6 @@ def runStudentsAttempt(taskInputArray, taskOutputArray, language, cursor, attemp
 
         queryForAttemptOutput = ("INSERT INTO attempt_output (attempt_id, seq, output) VALUES (%s, %s, %s)")
         cursor.execute(queryForAttemptOutput,(attemptId, i, applicationOutput))
-        
         if (deltaTime.seconds >= int(ctimeout)):
             if (not databaseUpdated):
                 updateDatabase(cursor, attemptId, 'Timeout')
@@ -215,7 +214,7 @@ def sendEmail(courseName, taskName, username, applicationOutput, source_code, cu
     m_user = 'automaatkontroll@gmail.com'
     m_pwd = 'k1rven2gu'
     m_from ='automaatkontroll@gmail.com'
-    m_to = ['blackno@gmail.com']
+    m_to = ['blackn' + 'o@gmail.com']
     '''
     queryForResponsibleEmails = ("SELECT users_courses.username FROM users_courses INNER JOIN users_roles ON users_roles.username = users_courses.username WHERE users_courses.coursename = %s AND users_roles.rolename = 'responsible'")
     cursor.execute(queryForResponsibleEmails, (courseName))

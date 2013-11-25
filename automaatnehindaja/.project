@@ -33,4 +33,10 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>CONFIG</name>
+			<value>$%7BPROJECT_LOC%7D/config</value>
+		</variable>
+	</variableList>
 </projectDescription>
