@@ -103,9 +103,9 @@ public class FileUploadServlet extends HttpServlet {
 					stmt.setBinaryStream(2, fileitem.getInputStream());
 					stmt.setString(3, language); 
 					stmt.setString(4, "kontrollimata");
-					stmt.setString(5, request.getRemoteUser());
-					stmt.setInt(6, taskid);
-					stmt.setString(7, "UNCHECKED");
+					stmt.setString(5, "UNCHECKED");
+					stmt.setString(6, request.getRemoteUser());
+					stmt.setInt(7, taskid);
 					stmt.executeUpdate();
 				}
 				else {
