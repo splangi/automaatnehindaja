@@ -44,7 +44,6 @@ public class TaskstableServlet extends HttpServlet {
 		boolean archivedBoolean = Boolean.parseBoolean(archived);
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			c = new SqlConnectionService().getConnection();
 
 			if (request.isUserInRole("tudeng")) {
@@ -128,9 +127,7 @@ public class TaskstableServlet extends HttpServlet {
 			response.getWriter().write(json.toString());
 
 		} catch (SQLException e) {
-			logger.debug("SQLEXCEPTION", e);
-		} catch (ClassNotFoundException f) {
-			logger.debug("CLASSNOTFOUNDEXCEPTION", f);
+			logger.error("SQLEXCEPTION", e);
 		}
 
 	}

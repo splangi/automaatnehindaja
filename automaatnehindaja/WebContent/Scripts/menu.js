@@ -5,7 +5,8 @@ $(document).ready(function() {
 			var kursusehaldus = "<li id = 'coursechoices' class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>" +
 			"<ul>" + 
 			"<li><a href='#addCourse'><span>Lisa kursus</span></a></li>" + 
-			"<li class='last'><a href='#closeCourse'><span>Kursuse sulgemine</span></a></li>" +
+			"<li><a href='#closeCourse'><span>Kursuse sulgemine</span></a></li>" +
+			"<li class='last'><a href='#studentsView'><span>Õpilased kursusel</span></a></li>" +
 		"</ul></li>";
 			$(logid).insertAfter("#afterThis");
 			$(kursusehaldus).insertAfter("#afterThis");
@@ -113,6 +114,13 @@ function load(page){
 		});
 		
 		$('#userchoices a').trigger("click");
+	}
+	else if (page.indexOf("#studentsView")>-1){
+		$("#content").load("html/studentsview.html", function(){
+			$.getScript("Scripts/studentsView.js");
+		});
+		
+		$('#coursechoices a').trigger("click");
 	}
 	else if (page == "#addTask"){
 		$("#content").load("html/addTask.html", function(){
