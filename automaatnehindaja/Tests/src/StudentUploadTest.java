@@ -36,11 +36,19 @@ public class StudentUploadTest {
     pass.submit();
     
     WebDriverWait wait = new WebDriverWait(driver, 10);
-    WebElement ylesanded = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Ülesanded")));
-    ylesanded.click(); 
+    WebElement ylesanded = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[href='#tasksview']")));
+    ylesanded.click();
+    
+    //#mainlist > li:nth-child(2) > a:nth-child(1)
+    
+    
     
     WebDriverWait wait2 = new WebDriverWait(driver, 10);
-    WebElement ylesanne = wait2.until(ExpectedConditions.elementToBeClickable(By.linkText("Maatriksi transponeerimine")));
+    WebElement courses = wait2.until(ExpectedConditions.elementToBeClickable(By.id("courses")));
+    new Select(driver.findElement(By.id("courses"))).selectByVisibleText("kursusJ");
+    
+    WebDriverWait wait3 = new WebDriverWait(driver, 10);
+    WebElement ylesanne = wait3.until(ExpectedConditions.elementToBeClickable(By.linkText("uus")));
     ylesanne.click();
     
     WebElement fileInput = (new WebDriverWait(driver, 10)).
