@@ -36,9 +36,9 @@ public class PlagiarismServlet extends HttpServlet {
 			if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
 				statement =  "SELECT "
 						+ "plagiarism.attempt1_id, "
-						+ "(SELECT username FROM attempt WHERE plagiarism.attempt1_id = attempt.id) AS '1st Student', "
+						+ "(SELECT users.fullname FROM attempt INNER JOIN users ON attempt.username = users.username WHERE plagiarism.attempt1_id = attempt.id) AS '1st Student', "
 						+ "plagiarism.attempt2_id, "
-						+ "(SELECT username FROM attempt WHERE plagiarism.attempt2_id = attempt.id) AS '2nd Student', "
+						+ "(SELECT users.fullname FROM attempt INNER JOIN users ON attempt.username = users.username WHERE plagiarism.attempt2_id = attempt.id) AS '2nd Student', "
 						+ "rating, "
 						+ "time "
 						+ "FROM plagiarism "
