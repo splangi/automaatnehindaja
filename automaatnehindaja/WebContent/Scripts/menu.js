@@ -119,7 +119,7 @@ function load(page){
 		
 		$('#userchoices a').trigger("click");
 	}
-	else if (page == "#plagiarism"){
+	else if (page.indexOf("#plagiarism")>-1){
 		$("#content").load("html/plagiarism.html", function(){
 			$.getScript("Scripts/plagiarism.js");
 		});

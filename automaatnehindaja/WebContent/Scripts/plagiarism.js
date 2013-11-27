@@ -1,8 +1,13 @@
+function init(){
+	getCourses();
+}
 
+function change(){
+	window.location.hash = "#plagiarism?course=" + $("#courses :selected").val();
+}
 	
-function changeCourse(){
+function changeCourse(course){
 	$("#resultsLoader").css("display", "");
-	var course = $("#courses option:selected").val();
 	jQuery.getJSON("getPlagiarismScores?course=" + course, function(data) {
 		$("#resultsLoader").css("display", "none");
 		tableCreate(data.Attempt1ID, data.Attempt2ID, data.username1, data.username2, data.rating, data.time);
@@ -18,7 +23,6 @@ function getCourses(){
 			$("#resultsLoader").css("display", "none");
 		}
 		else {
-			//TODO select the one which was lastly selected
 			$('#courses option').remove();
 			for (var i = 0; i<courses.length; i++){
 				var course = courses[i];
@@ -29,15 +33,18 @@ function getCourses(){
 					$('#courses').append($("<option></option>").attr("value",course).text(course + " (arhiveeritud)"));
 				}
 			};
-			$("#courses option:contains(" + currentSelected + ")").prop("selected", true);
-			changeCourse();
+			if (getUrlVars()["course"] !== undefined){
+				$('#courses option:eq('+ $.inArray(getUrlVars()["course"], courses) + ')').prop('selected', true);
+			}
+			if ($.inArray(getUrlVars()["course"], courses)>-1){
+				changeCourse(courses[$.inArray(getUrlVars()["course"], courses)]);
+			}
+			else if (courses.length > 0){
+				changeCourse(courses[0]);
+			}
 		}
 	});
 };
-
-function init(){
-	getCourses();
-}
 
 function tableCreate(Attempt1, Attempt2, username1, username2, rating, time){
 	var tableDiv = document.getElementById("attempts");
@@ -76,6 +83,14 @@ function tableCreate(Attempt1, Attempt2, username1, username2, rating, time){
 	});
 
 	search();
+}
+
+function getUrlVars() {
+    var vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
 }
 
 init();
