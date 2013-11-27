@@ -56,7 +56,7 @@ public class PlagiarismServlet extends HttpServlet {
 					json.append("Attempt2ID", rs.getString(3));
 					json.append("username2", rs.getString(4));
 					json.append("rating", rs.getInt(5));
-					json.append("time", rs.getTime(6));
+					json.append("time", rs.getTimestamp(6));
 				}
 				response.getWriter().write(json.toString());
 			}
@@ -64,6 +64,7 @@ public class PlagiarismServlet extends HttpServlet {
 				response.setContentType("text/plain");
 				response.getWriter().write("Not Authorized!");
 			}
+			c.close();
 		}
 		catch (SQLException e){
 			logger.error("SqlException", e);

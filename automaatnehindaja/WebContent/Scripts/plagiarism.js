@@ -54,7 +54,7 @@ function tableCreate(Attempt1, Attempt2, username1, username2, rating, time){
 	head.appendChild(row);
 	var body = document.createElement("tbody");
 	table.appendChild(body);
-	for (var i = 0; i < nameList.length; i++){
+	for (var i = 0; i < Attempt1.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
 		cell.innerHTML = "<a href = viewfile.html?id="+ Attempt1[i] + ">" + username1[i] + "</a>";
