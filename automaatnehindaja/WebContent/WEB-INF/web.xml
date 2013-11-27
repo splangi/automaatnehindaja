@@ -44,7 +44,11 @@
       <url-pattern>/html/addTask.html</url-pattern>
       <url-pattern>/html/addCourse.html</url-pattern>
       <url-pattern>/html/addusertocourse.html</url-pattern>
+      <url-pattern>/html/studentsview.html</url-pattern>
+      <url-pattern>/html/plagiarism.html</url-pattern>
       <url-pattern>/addTask</url-pattern>
+      <url-pattern>/StudentsTable</url-pattern>
+      <url-pattern>/getPlagiarismScores</url-pattern>
       <url-pattern>/viewoutput</url-pattern>
       <url-pattern>/addtocourse</url-pattern>
       <url-pattern>/addusermanually</url-pattern>

@@ -17,14 +17,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class StudentsTable
+ * Servlet implementation class PlagirismServlet
  */
-@WebServlet("/StudentsTable")
-public class StudentsTable extends HttpServlet {
+@WebServlet("/getPlagiarismScores")
+public class PlagiarismServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(StudentsTable.class);
-       
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private static Logger logger = Logger.getLogger(PlagiarismServlet.class);
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	Connection c = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -34,19 +34,29 @@ public class StudentsTable extends HttpServlet {
 		try {
 			c = new SqlConnectionService().getConnection();
 			if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
-				statement = "SELECT users_courses.username, count(attempt.username) FROM users_courses "
-						+ "INNER JOIN users_roles ON users_roles.username = users_courses.username "
-						+ "LEFT JOIN attempt ON attempt.username = users_courses.username "
-						+ "WHERE users_roles.rolename = 'tudeng' and users_courses.coursename = ? "
-						+ "GROUP BY attempt.username;";
+				statement =  "SELECT "
+						+ "plagiarism.attempt1_id, "
+						+ "(SELECT username FROM attempt WHERE plagiarism.attempt1_id = attempt.id) AS '1st Student', "
+						+ "plagiarism.attempt2_id, "
+						+ "(SELECT username FROM attempt WHERE plagiarism.attempt2_id = attempt.id) AS '2nd Student', "
+						+ "rating, "
+						+ "time "
+						+ "FROM plagiarism "
+						+ "INNER JOIN tasks "
+						+ "ON tasks.id = plagiarism.task_id "
+						+ "WHERE tasks.coursename = ?;";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, course);
 				rs = stmt.executeQuery();
 				response.setContentType("application/json");
 				JSONObject json = new JSONObject();
 				while (rs.next()){
-					json.append("name", rs.getString(1));
-					json.append("attemptCount", rs.getString(2));
+					json.append("Attempt1ID", rs.getString(1));
+					json.append("username1", rs.getString(2));
+					json.append("Attempt2ID", rs.getString(3));
+					json.append("username2", rs.getString(4));
+					json.append("rating", rs.getInt(5));
+					json.append("time", rs.getTime(6));
 				}
 				response.getWriter().write(json.toString());
 			}
@@ -54,7 +64,6 @@ public class StudentsTable extends HttpServlet {
 				response.setContentType("text/plain");
 				response.getWriter().write("Not Authorized!");
 			}
-			c.close();
 		}
 		catch (SQLException e){
 			logger.error("SqlException", e);

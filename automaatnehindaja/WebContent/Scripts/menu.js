@@ -1,5 +1,9 @@
 $(document).ready(function() {
 	$.get("getRole", function(data){
+		if (data == "responsible" || data == "admin"){
+			var plagiaat = "<li><a href='#plagiarism'><span>Plagiaadikontroll</span></a></li>";
+			$(plagiaat).insertAfter("#afterThis");
+		}
 		if (data == "admin"){
 			var logid = "<li><a href='#logs'><span>Logid</span></a></li>";
 			var kursusehaldus = "<li id = 'coursechoices' class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>" +
@@ -114,6 +118,13 @@ function load(page){
 		});
 		
 		$('#userchoices a').trigger("click");
+	}
+	else if (page == "#plagiarism"){
+		$("#content").load("html/plagiarism.html", function(){
+			$.getScript("Scripts/plagiarism.js");
+		});
+		
+		$('#plagiarism a').trigger("click");
 	}
 	else if (page.indexOf("#studentsView")>-1){
 		$("#content").load("html/studentsview.html", function(){
