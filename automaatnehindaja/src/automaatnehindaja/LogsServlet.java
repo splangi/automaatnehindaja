@@ -39,7 +39,7 @@ public class LogsServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			c = new SqlConnectionService().getConnection();
 			
-			statement = "SELECT DATED, LEVEL, MESSAGE FROM LOGS;";
+			statement = "SELECT DATED, LEVEL, MESSAGE FROM LOGS LIMIT 0,1000;";
 			stmt = c.prepareStatement(statement);
 			rs = stmt.executeQuery();
 			
