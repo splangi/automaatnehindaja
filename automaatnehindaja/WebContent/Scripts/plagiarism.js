@@ -57,11 +57,10 @@ function tableCreate(Attempt1, Attempt2, username1, username2, rating, time){
 	for (var i = 0; i < Attempt1.length; i++){
 		row = document.createElement("tr");
 		var cell = document.createElement("td");
-		cell.innerHTML = "<a href = viewfile.html?id="+ Attempt1[i] + ">" + username1[i] + "</a>";
+		cell.innerHTML = "<a href = viewfile?id="+ Attempt1[i] + ">" + username1[i] + "</a>";
 		row.appendChild(cell);
-		row = document.createElement("tr");
 		var cell = document.createElement("td");
-		cell.innerHTML = "<a href = viewfile.html?id="+ Attempt2[i] + ">" + username2[i] + "</a>";
+		cell.innerHTML = "<a href = viewfile?id="+ Attempt2[i] + ">" + username2[i] + "</a>";
 		row.appendChild(cell);
 		jQuery("<td />").text(rating[i]).appendTo(row);
 		jQuery("<td />").text(time[i]).appendTo(row);
