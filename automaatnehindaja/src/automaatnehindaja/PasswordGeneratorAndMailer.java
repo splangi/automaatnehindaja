@@ -77,6 +77,7 @@ public class PasswordGeneratorAndMailer {
 					+ "Sinu parool on: "
 					+ passwordToSend
 					+ "\n\n"
+					+ "Link meie saidile: ec2-54-237-98-146.compute-1.amazonaws.com/automaatnehindaja/ \n"
 					+ "Ärge unustage oma parool esimesel sisselogimisel vahetada");
 
 			Transport.send(message);

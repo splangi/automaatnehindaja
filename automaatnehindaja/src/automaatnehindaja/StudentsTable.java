@@ -34,11 +34,12 @@ public class StudentsTable extends HttpServlet {
 		try {
 			c = new SqlConnectionService().getConnection();
 			if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
-				statement = "SELECT users_courses.username, count(attempt.username) FROM users_courses "
-						+ "INNER JOIN users_roles ON users_roles.username = users_courses.username "
-						+ "LEFT JOIN attempt ON attempt.username = users_courses.username "
-						+ "WHERE users_roles.rolename = 'tudeng' and users_courses.coursename = ? "
-						+ "GROUP BY attempt.username;";
+				statement = "SELECT users_courses.username, count(attempt.id) FROM users_courses "
+						+ "LEFT JOIN attempt ON users_courses.username = attempt.username "
+						+ "INNER JOIN users_roles ON users_courses.username = users_roles.username "
+						+ "WHERE users_roles.rolename = 'tudeng' "
+						+ "AND users_courses.coursename = ? "
+						+ "GROUP BY users_courses.username;";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, course);
 				rs = stmt.executeQuery();
