@@ -34,7 +34,11 @@ public class StudentsTable extends HttpServlet {
 		try {
 			c = new SqlConnectionService().getConnection();
 			if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
-				statement = "SELECT users_courses.username, count(attempt.id) FROM users_courses "
+				statement = "SELECT users_courses.username, "
+						+ "(SELECT COUNT(attempt.id) FROM attempt "
+						+ "INNER JOIN tasks ON tasks.id = attempt.task "
+						+ "WHERE users_courses.username = attempt.username "
+						+ "AND tasks.coursename = ?) AS count FROM users_courses "
 						+ "LEFT JOIN attempt ON users_courses.username = attempt.username "
 						+ "INNER JOIN users_roles ON users_courses.username = users_roles.username "
 						+ "WHERE users_roles.rolename = 'tudeng' "
@@ -42,6 +46,7 @@ public class StudentsTable extends HttpServlet {
 						+ "GROUP BY users_courses.username;";
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, course);
+				stmt.setString(2, course);
 				rs = stmt.executeQuery();
 				response.setContentType("application/json");
 				JSONObject json = new JSONObject();

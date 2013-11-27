@@ -38,14 +38,6 @@ function init(){
 
 function manualsubmit(){
 	var validSubmission = true;
-	if ((studentId.value == "" || studentId.value.length != 6) && roleselection.selectedIndex == 2){
-		color(studentId);
-		warningtext.innerHTML = "  Ebakorrektne matriklinumber";
-		validSubmission = false;
-	}
-	else{
-		uncolor(studentId);
-	}
 	if (fullname.value == "" || fullname.value.length < 5){
 		color(fullname);
 		warningtext.innerHTML = "  Ebakorrektne täisnimi";
