@@ -35,7 +35,7 @@ public class ViewOutputServlet extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			c = new SqlConnectionService().getConnection();
 			if (request.isUserInRole("admin") || request.isUserInRole("responsible")){
-				String statement = "SELECT GROUP_CONCAT "
+				String statement = "SELECT GROUP_CONCAT"
 						+ "(tasks_input.input SEPARATOR ' ') "
 						+ "from attempt LEFT JOIN tasks_input on tasks_input.task_id = attempt.task "
 						+ "WHERE attempt.id = ? "
@@ -48,7 +48,7 @@ public class ViewOutputServlet extends HttpServlet {
 					TasksInput.add(rs.getString(1));
 				}
 				rs.close();
-				statement = "SELECT GROUP_CONCAT "
+				statement = "SELECT GROUP_CONCAT"
 						+ "(tasks_output.output SEPARATOR ' ') "
 						+ "from attempt LEFT JOIN tasks_output on tasks_output.task_id = ? attempt.task "
 						+ "WHERE attempt.id = ? "
