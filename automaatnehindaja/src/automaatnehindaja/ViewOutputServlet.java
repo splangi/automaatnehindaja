@@ -50,7 +50,7 @@ public class ViewOutputServlet extends HttpServlet {
 				rs.close();
 				statement = "SELECT GROUP_CONCAT"
 						+ "(tasks_output.output SEPARATOR ' ') "
-						+ "from attempt LEFT JOIN tasks_output on tasks_output.task_id = ? attempt.task "
+						+ "from attempt LEFT JOIN tasks_output on tasks_output.task_id = attempt.task "
 						+ "WHERE attempt.id = ? "
 						+ "GROUP BY outer_seq;";
 				stmt = c.prepareStatement(statement);
