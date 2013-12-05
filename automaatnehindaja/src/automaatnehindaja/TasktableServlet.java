@@ -53,7 +53,7 @@ public class TasktableServlet extends HttpServlet {
 				stmt = c.prepareStatement(statement);
 				stmt.setString(1, username);
 				stmt.setString(2, taskid);
-			} else if (request.isUserInRole("admin")) {
+			} else if (request.isUserInRole("admin")||request.isUserInRole("responsible")) {
 				statement = "select users.fullname, attempt.time, attempt.result, "
 						+ "attempt.language, attempt.id, tasks.deadline "
 						+ "FROM attempt "

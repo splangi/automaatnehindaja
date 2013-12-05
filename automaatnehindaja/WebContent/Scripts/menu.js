@@ -9,8 +9,7 @@ $(document).ready(function() {
 			var kursusehaldus = "<li id = 'coursechoices' class='has-sub'><a href='#addCourse'><span>Kursuste haldus</span></a>" +
 			"<ul>" + 
 			"<li><a href='#addCourse'><span>Lisa kursus</span></a></li>" + 
-			"<li><a href='#closeCourse'><span>Kursuse sulgemine</span></a></li>" +
-			"<li class='last'><a href='#studentsView'><span>Õpilased kursusel</span></a></li>" +
+			"<li class = 'last'><a href='#closeCourse'><span>Kursuse sulgemine</span></a></li>" +
 		"</ul></li>";
 			$(logid).insertAfter("#afterThis");
 			$(kursusehaldus).insertAfter("#afterThis");
@@ -20,7 +19,8 @@ $(document).ready(function() {
 					"<ul>" +
 						"<li><a href='#addUserManually'><span>Kasutaja lisamine</span></a></li>" +
 						"<li><a href='#addUsersCSV'><span>Automaatne lisamine</span></a></li>" +
-						"<li class = 'last'><a href='#addUserToCourse'><span>Lisa kasutaja kursusele</span></a></li>" +
+						"<li><a href='#addUserToCourse'><span>Lisa kasutaja kursusele</span></a></li>" +
+						"<li class='last'><a href='#studentsView'><span>Õpilased kursusel</span></a></li>" +
 					"</ul></li>";
 			var ulesannetehaldus = "<li id = 'taskchoices' class='has-sub'><a><span>Ülesannete haldus</span></a>" + 
 					"<ul>" +
