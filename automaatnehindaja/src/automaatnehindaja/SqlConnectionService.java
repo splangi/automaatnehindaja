@@ -14,7 +14,7 @@ public class SqlConnectionService {
 
 	public SqlConnectionService() {		
 		try {
-			Config config = new Config(SqlConnectionService.class.getClassLoader().getResource("").getPath() + "../../config/databaseConfig.cfg");
+			Config config = new Config(SqlConnectionService.class.getClassLoader().getResource("").getPath() + "../../config/Config.cfg");
 			String url = config.getString("url");
 			String port = config.getString("port");
 			String database = config.getString("database");

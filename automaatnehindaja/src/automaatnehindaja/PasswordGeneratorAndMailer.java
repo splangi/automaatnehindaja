@@ -14,6 +14,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import config.Config;
+import config.ConfigException;
+
 public class PasswordGeneratorAndMailer {
 
 	public PasswordGeneratorAndMailer() {
@@ -47,43 +50,42 @@ public class PasswordGeneratorAndMailer {
 	}
 
 	protected void emailPassword(String to, String passwordToSend) {
-		final String username = "automaatkontroll@gmail.com";
-		final String password = "k1rven2gu";
-
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
-
-		Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				});
 
 		try {
+			
+			Config config = new Config(PasswordGeneratorAndMailer.class.getClassLoader().getResource("").getPath() + "../../config/Config.cfg");
+			final String username = config.getString("emailUsername");
+			final String password = config.getString("emailPassword");
+			
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", config.getString("emailHost"));
+			props.put("mail.smtp.port", config.getString("emailPort"));
+
+			Session session = Session.getInstance(props,
+					new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(username, password);
+						}
+					});
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("automaatkontroll@gmail.com"));
+			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(to));
-			message.setSubject("Genereeritud parool");
-			message.setText("Tere, \n"
-					+ "Antud e-mail on automaatselt genereeritud ning ärge vastake sellele \n"
-					+ "Sinu kasutajatunnus on:  "
-					+ to + "\n"
-					+ "Sinu parool on: "
-					+ passwordToSend
-					+ "\n\n"
-					+ "Link meie saidile: ec2-54-237-98-146.compute-1.amazonaws.com/automaatnehindaja/ \n"
-					+ "Ärge unustage oma parool esimesel sisselogimisel vahetada");
-
+			message.setSubject(config.getString("emailSubject"));
+			message.setText(config.getString("emailHeader") + "\n"
+					+ config.getString("emailUsernameRow") + to + "\n"
+					+ config.getString("emailPasswordRow") + passwordToSend + "\n" 
+					+ config.getString("emailFooter") + "\n"
+					+ config.getString("emailSiteAddr"));
 			Transport.send(message);
 
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
+		} catch (ConfigException e) {
+			e.printStackTrace();
 		}
 	}
 
